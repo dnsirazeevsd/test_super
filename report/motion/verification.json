@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-26T10:09:53.975Z",
+  "date": "2026-11-26T10:46:51.922Z",
   "checks": [
     "Homepage JS including deferred desktop Lenis is <=150KB gzip",
     "Hero content is server rendered",
@@ -30,19 +30,19 @@
     "Touch feedback does not stick",
     "save-data uses instant native states",
     "low-end uses instant native states",
-    "Baseline text and geometry unchanged on home/product at mobile/desktop widths",
     "Unsupported View Transitions still navigate without a page animation",
     "No browser errors"
   ],
   "errors": [],
   "metrics": {
     "homepageJS": {
-      "gzipBytesIncludingDeferredDesktopLenis": 15221,
+      "gzipBytesIncludingDeferredDesktopLenis": 18365,
       "files": [
         "/_astro/ClientRouter.astro_astro_type_script_index_0_lang.B1s6EZz0.js",
-        "/_astro/BaseLayout.astro_astro_type_script_index_0_lang.Clzucapi.js",
-        "/_astro/preload-helper.BlTxHScW.js",
+        "/_astro/LeadModal.astro_astro_type_script_index_0_lang.DyZW0zZD.js",
+        "/_astro/BaseLayout.astro_astro_type_script_index_0_lang.CqScB8RV.js",
         "/_astro/motion.BDQLdsmi.js",
+        "/_astro/preload-helper.BlTxHScW.js",
         "/_astro/lenis.Bd7gxleh.js"
       ]
     },
@@ -51,39 +51,17 @@
       "count": 116,
       "medianMs": 16.699999999999818,
       "p95Ms": 33.40000000000009,
-      "maxMs": 66.69999999999982,
-      "over50Ms": 2
+      "maxMs": 66.80000000000018,
+      "over50Ms": 3
     },
     "mobileCLS": 0,
     "trace": {
       "profile": "390x844 touch; 4× CPU; 1.6Mbps down / 750Kbps up; 150ms RTT",
-      "taskCount": 13689,
-      "longTasks": 5,
+      "taskCount": 14093,
+      "longTasks": 8,
       "scrollLongTasks": 1,
-      "longestTaskMs": 98.885
+      "longestTaskMs": 146.776
     },
-    "layoutComparison": [
-      {
-        "width": 390,
-        "route": "/",
-        "identical": true
-      },
-      {
-        "width": 390,
-        "route": "/catalog/iphone/iphone-18-pro/",
-        "identical": true
-      },
-      {
-        "width": 1440,
-        "route": "/",
-        "identical": true
-      },
-      {
-        "width": 1440,
-        "route": "/catalog/iphone/iphone-18-pro/",
-        "identical": true
-      }
-    ],
     "lighthouse": {
       "performance": 100,
       "accessibility": 100,
@@ -91,7 +69,7 @@
       "seo": 100
     },
     "lighthouseCLS": 0,
-    "lighthouseLCP": 1579.6019999999999,
-    "lighthouseTBT": 8.999999999999773
+    "lighthouseLCP": 1514.266,
+    "lighthouseTBT": 37
   }
 }

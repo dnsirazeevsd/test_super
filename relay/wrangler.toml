@@ -1,0 +1,7 @@
+name = "superstore-lead-relay"
+main = "worker.js"
+compatibility_date = "2025-01-01"
+
+[vars]
+# Replace with your production site origin (no trailing slash)
+ALLOWED_ORIGIN = "https://superstore-rio.ru"

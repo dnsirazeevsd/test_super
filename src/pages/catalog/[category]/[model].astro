@@ -6,8 +6,13 @@ import {
   MANIFEST,
   type ProductModelGroup,
   formatPrice,
+  getDeliveryConditions,
+  getDeliveryOptions,
   getGroupedModels,
   getImageAsset,
+  getTelegramUrl,
+  getTrustStrip,
+  isTelegramEnabled,
 } from '../../../lib/catalog';
 
 export function getStaticPaths() {
@@ -30,9 +35,6 @@ const siteOrigin = Astro.site?.origin || siteData.brand.domain;
 const primaryAsset = getImageAsset(group.defaultImageKey);
 const ogImage = primaryAsset ? primaryAsset.src : '/og-default.jpg';
 
-// Representative default configuration (matches the configurator's initial selection —
-// the cheapest SKU, preferring Glacier): the clean H1 stays "iPhone 17 Pro", while the
-// full configuration name is preserved in <title>, meta description and per-SKU Offers.
 const minPrice = group.minPrice;
 const cheapest = group.items.filter((i) => i.price === minPrice);
 const defaultConfig =
@@ -41,6 +43,10 @@ const defaultConfig =
 const pricePhrase = group.hasMultipleConfigs
   ? `от ${formatPrice(group.minPrice)}`
   : formatPrice(group.minPrice);
+
+const availabilityUrl = group.inStock
+  ? 'https://schema.org/InStock'
+  : 'https://schema.org/OutOfStock';
 
 const productSchema = {
   '@context': 'https://schema.org',
@@ -65,13 +71,15 @@ const productSchema = {
           lowPrice: group.minPrice,
           highPrice: group.maxPrice,
           offerCount: group.items.length,
-          availability: 'https://schema.org/InStock',
+          availability: availabilityUrl,
           offers: group.items.map((sku) => ({
             '@type': 'Offer',
             name: sku.title,
             price: sku.price,
             priceCurrency: 'RUB',
-            availability: 'https://schema.org/InStock',
+            availability: sku.inStock
+              ? 'https://schema.org/InStock'
+              : 'https://schema.org/OutOfStock',
             itemCondition: 'https://schema.org/NewCondition',
             url: `${siteOrigin}${group.url}`,
           })),
@@ -80,7 +88,7 @@ const productSchema = {
           '@type': 'Offer',
           price: group.minPrice,
           priceCurrency: 'RUB',
-          availability: 'https://schema.org/InStock',
+          availability: availabilityUrl,
           itemCondition: 'https://schema.org/NewCondition',
           url: `${siteOrigin}${group.url}`,
         },
@@ -120,13 +128,14 @@ const productSchema = {
         primaryPhoneDisplay={siteData.contacts.phones[0].display}
         primaryPhoneHref={siteData.contacts.phones[0].href}
         viberHref={siteData.contacts.messengers.viber.url}
-        telegramHref={siteData.contacts.messengers.telegram.url}
-        giftNote={siteData.catalogSharedNotice.headline.includes('подарок')
-          ? 'Подарок при покупке каждого устройства, а также бонусы и приятные сюрпризы для постоянных клиентов.'
-          : siteData.advantages.find((a) => a.id === 'gift-and-loyalty')?.description || 'Подарок при покупке каждого устройства.'}
+        telegramEnabled={isTelegramEnabled()}
+        telegramHref={getTelegramUrl()}
+        giftDescription={siteData.giftDescription || ''}
+        deliveryOptions={getDeliveryOptions()}
+        deliveryConditions={getDeliveryConditions()}
+        trustStrip={getTrustStrip()}
+        warrantyText={siteData.warranty || ''}
       />
     </div>
   </section>
-
-  <!-- Shared availability sentence lives only on /catalog/ (removed from product pages) -->
 </BaseLayout>

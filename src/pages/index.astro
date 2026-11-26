@@ -6,14 +6,17 @@ import MessengerIcon from '../components/MessengerIcon.astro';
 import siteData from '../data/site.json';
 import {
   ALL_PRODUCTS,
-  buildWhatsAppUrl,
   getGroupedModels,
   getImageAsset,
+  getTelegramUrl,
   getYandexOrgLink,
+  isTelegramEnabled,
   pluralReviews,
 } from '../lib/catalog';
 
 const yandexOrgLink = getYandexOrgLink();
+const telegramHref = getTelegramUrl();
+const showTelegram = isTelegramEnabled() && Boolean(telegramHref);
 
 const allGroups = getGroupedModels();
 const featuredGroups = allGroups.slice(0, 8);
@@ -181,26 +184,18 @@ const catalogItemListSchema = {
             ))}
           </div>
           <div class="flex flex-wrap items-center gap-x-7 gap-y-3 pt-2">
-            <a
-              href={siteData.contacts.messengers.telegram.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-goal="click_telegram"
-              class="inline-flex items-center gap-2 font-semibold text-fg hover:text-brand transition-colors no-underline"
-            >
-              <MessengerIcon name="telegram" />
-              Telegram
-            </a>
-            <a
-              href={buildWhatsAppUrl()}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-goal="click_whatsapp"
-              class="inline-flex items-center gap-2 font-semibold text-fg hover:text-brand transition-colors no-underline"
-            >
-              <MessengerIcon name="whatsapp" />
-              WhatsApp
-            </a>
+            {showTelegram && (
+              <a
+                href={telegramHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-goal="click_telegram"
+                class="inline-flex items-center gap-2 font-semibold text-fg hover:text-brand transition-colors no-underline"
+              >
+                <MessengerIcon name="telegram" />
+                Telegram
+              </a>
+            )}
             <a
               href={siteData.contacts.messengers.viber.url}
               data-goal="click_viber"

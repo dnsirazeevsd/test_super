@@ -1,8 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import StoreMapBlock from '../../components/StoreMapBlock.astro';
+import TradeInEstimator from '../../components/TradeInEstimator.astro';
 import siteData from '../../data/site.json';
-import { buildWhatsAppUrl } from '../../lib/catalog';
+import { getTelegramUrl, isTelegramEnabled } from '../../lib/catalog';
 
 export function getStaticPaths() {
   return siteData.services.map((service) => ({
@@ -12,8 +13,16 @@ export function getStaticPaths() {
 }
 
 const { service } = Astro.props;
-const whatsappHref = buildWhatsAppUrl(service.whatsappPrefill);
+const primaryPhone = siteData.contacts.phones[0];
+const telegramHref = getTelegramUrl();
+const showTelegram = isTelegramEnabled() && Boolean(telegramHref);
 const otherServices = siteData.services.filter((s) => s.slug !== service.slug);
+
+const isTradeIn = service.slug === 'trade-in';
+const isBuyback = service.slug === 'buyback';
+const leadPayload = isBuyback
+  ? JSON.stringify({ type: 'buyback' })
+  : JSON.stringify({ type: 'reserve' });
 ---
 
 <BaseLayout
@@ -21,96 +30,140 @@ const otherServices = siteData.services.filter((s) => s.slug !== service.slug);
   description={`${service.summary} Офлайн-магазин техники SUPER STORE: Санкт-Петербург, ул. Фучика, д. 2, ТРЦ «РИО», ежедневно 10:00–22:00.`}
   canonicalPath={`/services/${service.slug}/`}
 >
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-14 space-y-12">
-    <nav aria-label="Хлебные крошки" class="text-xs font-medium text-fg-muted flex flex-wrap items-center gap-2">
-      <a href="/" class="hover:text-brand-link">Главная</a>
-      <span aria-hidden="true">/</span>
-      <a href="/services/" class="hover:text-brand-link">Услуги</a>
-      <span aria-hidden="true">/</span>
-      <span class="text-fg">{service.shortTitle}</span>
-    </nav>
+  <section class="pt-10 lg:pt-16 pb-20 lg:pb-28">
+    <div class="shell space-y-14">
+      <nav aria-label="Хлебные крошки" class="type-small text-fg-muted flex flex-wrap items-center gap-2">
+        <a href="/" class="hover:text-brand transition-colors no-underline">Главная</a>
+        <span aria-hidden="true">/</span>
+        <a href="/services/" class="hover:text-brand transition-colors no-underline">Услуги</a>
+        <span aria-hidden="true">/</span>
+        <span class="text-fg">{service.shortTitle}</span>
+      </nav>
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-      <div class="lg:col-span-8 rounded-3xl bg-bg-card border border-line p-6 sm:p-10 shadow-card space-y-6">
-        <h1 class="text-3xl sm:text-5xl font-extrabold text-fg tracking-tight leading-tight">
-          {service.title}
-        </h1>
-        <p class="text-base sm:text-lg text-fg-muted leading-relaxed">
-          {service.summary}
-        </p>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+        <div class="lg:col-span-8 space-y-8">
+          <div class="space-y-5 max-w-[60ch]">
+            <h1 class="type-display !text-[2.25rem] lg:!text-[3rem] m-0">
+              {service.title}
+            </h1>
+            <p class="type-body text-fg-muted m-0">
+              {service.summary}
+            </p>
+          </div>
 
-        <div class="pt-4 border-t border-line space-y-3">
-          <h2 class="text-lg font-bold text-fg">Ключевые особенности</h2>
-          <ul class="space-y-3">
-            {service.highlights.map((item) => (
-              <li class="flex items-start gap-3 text-sm sm:text-base text-fg">
-                <span class="w-6 h-6 rounded-lg bg-brand-soft text-brand-link font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
-                  ✓
-                </span>
-                <span>{item}</span>
+          <div class="pt-6 space-y-4" style="border-top: 1px solid var(--divider);">
+            <h2 class="text-lg font-semibold text-fg m-0">Условия</h2>
+            <ul class="list-none m-0 p-0">
+              {service.highlights.map((item, idx) => (
+                <li
+                  class="py-3 type-body text-fg max-w-[60ch]"
+                  style={idx > 0 ? 'border-top: 1px solid var(--divider);' : undefined}
+                >
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {isTradeIn && <TradeInEstimator />}
+
+          {service.slug === 'data-transfer' && (
+            <div
+              class="p-6 rounded-xl space-y-2 max-w-[60ch]"
+              style="background-color: var(--surface);"
+            >
+              <h3 class="text-base font-semibold text-fg m-0">
+                Установка приложений, которых нет в App Store
+              </h3>
+              <p class="type-small text-fg-muted m-0">
+                Для подсказок по установке приложений работает специальный Telegram-бот магазина:{' '}
+                <a
+                  href={siteData.contacts.messengers.appsTelegramBot.domain}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-brand font-semibold underline underline-offset-2"
+                >
+                  {siteData.contacts.messengers.appsTelegramBot.label}
+                </a>.
+              </p>
+            </div>
+          )}
+
+          {!isTradeIn && (
+            <div class="pt-6 flex flex-wrap items-center gap-x-8 gap-y-4" style="border-top: 1px solid var(--divider);">
+              {isBuyback ? (
+                <a
+                  href={primaryPhone.href}
+                  data-lead-open={leadPayload}
+                  class="btn"
+                >
+                  Отправить заявку
+                </a>
+              ) : (
+                <a
+                  href={primaryPhone.href}
+                  data-goal="click_phone"
+                  class="btn tabular-nums"
+                >
+                  Позвонить · {primaryPhone.display}
+                </a>
+              )}
+
+              {showTelegram ? (
+                <a
+                  href={telegramHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-goal="click_telegram"
+                  class="arrow-link"
+                >
+                  Написать в Telegram
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </a>
+              ) : isBuyback ? (
+                <a
+                  href={primaryPhone.href}
+                  data-goal="click_phone"
+                  class="arrow-link tabular-nums whitespace-nowrap"
+                >
+                  Позвонить · {primaryPhone.display}
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </a>
+              ) : null}
+            </div>
+          )}
+        </div>
+
+        <aside class="lg:col-span-4 space-y-4 pt-6 lg:pt-0" style="border-top: 1px solid var(--divider);">
+          <h2 class="type-small font-semibold text-fg-muted uppercase tracking-wide m-0 pt-4">
+            Другие услуги
+          </h2>
+          <ul class="list-none m-0 p-0">
+            {otherServices.map((s) => (
+              <li style="border-bottom: 1px solid var(--divider);">
+                <a
+                  href={`/services/${s.slug}/`}
+                  class="block py-4 no-underline group"
+                >
+                  <div class="text-base font-semibold text-fg group-hover:text-brand transition-colors">
+                    {s.shortTitle}
+                  </div>
+                  <div class="type-small text-fg-muted mt-1 line-clamp-2">{s.summary}</div>
+                </a>
               </li>
             ))}
           </ul>
-        </div>
-
-        {service.slug === 'data-transfer' && (
-          <div class="p-5 rounded-2xl bg-bg-muted border border-line space-y-2">
-            <h3 class="text-base font-bold text-fg">
-              Установка приложений, которых нет в App Store
-            </h3>
-            <p class="text-sm text-fg-muted">
-              Мы также подготовили специального Telegram-бота для подсказок по установке Сбербанка, ВКонтакте, Авито и других приложений:{' '}
-              <a
-                href={siteData.contacts.messengers.appsTelegramBot.domain}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-brand-link font-semibold underline underline-offset-2"
-              >
-                {siteData.contacts.messengers.appsTelegramBot.label}
-              </a>.
-            </p>
-          </div>
-        )}
-
-        <div class="pt-4 flex flex-wrap gap-3">
-          <a
-            href={whatsappHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-goal="click_whatsapp"
-            class="px-6 py-3.5 rounded-xl bg-brand hover:bg-brand-hover text-white text-sm sm:text-base font-bold transition-colors"
-          >
-            Проконсультироваться в WhatsApp
-          </a>
-          <a
-            href={siteData.contacts.phones[0].href}
-            data-goal="click_phone"
-            class="px-6 py-3.5 rounded-xl bg-bg-muted hover:bg-line border border-line text-sm sm:text-base font-bold text-fg tabular-nums transition-colors"
-          >
-            Позвонить {siteData.contacts.phones[0].display}
-          </a>
-        </div>
+        </aside>
       </div>
 
-      <aside class="lg:col-span-4 rounded-3xl bg-bg-card border border-line p-6 shadow-card space-y-4">
-        <h2 class="text-base font-bold text-fg">Другие услуги магазина</h2>
-        <div class="space-y-2">
-          {otherServices.map((s) => (
-            <a
-              href={`/services/${s.slug}/`}
-              class="block p-3.5 rounded-2xl bg-bg-muted hover:border-brand border border-transparent transition-colors"
-            >
-              <div class="text-sm font-bold text-fg">{s.shortTitle}</div>
-              <div class="text-xs text-fg-muted mt-0.5 line-clamp-2">{s.summary}</div>
-            </a>
-          ))}
-        </div>
-      </aside>
+      <section class="space-y-6 pt-8" style="border-top: 1px solid var(--divider);">
+        <h2 class="type-display !text-[1.5rem] lg:!text-[2rem] m-0">Адрес магазина</h2>
+        <StoreMapBlock />
+      </section>
     </div>
-
-    <section class="space-y-4">
-      <h2 class="text-2xl font-extrabold text-fg">Где воспользоваться услугой</h2>
-      <StoreMapBlock />
-    </section>
-  </div>
+  </section>
 </BaseLayout>

@@ -79,7 +79,9 @@
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": null
+      "note": null,
+      "description": "",
+      "specs": []
     },
     {
       "id": "iphone-18-pro-2tb-silver-sim-esim",
@@ -102,7 +104,9 @@
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": null
+      "note": null,
+      "description": "",
+      "specs": []
     },
     {
       "id": "iphone-18-pro-2tb-glacier-sim-esim",
@@ -125,7 +129,9 @@
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": null
+      "note": null,
+      "description": "",
+      "specs": []
     },
     {
       "id": "iphone-18-pro-2tb-burgundy-sim-esim",
@@ -148,7 +154,9 @@
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": null
+      "note": null,
+      "description": "",
+      "specs": []
     },
     {
       "id": "iphone-18-pro-2tb-silver-esim",
@@ -171,7 +179,9 @@
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": null
+      "note": null,
+      "description": "",
+      "specs": []
     },
     {
       "id": "iphone-18-pro-2tb-glacier-esim",
@@ -194,7 +204,9 @@
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": null
+      "note": null,
+      "description": "",
+      "specs": []
     },
     {
       "id": "iphone-18-pro-2tb-burgundy-esim",
@@ -217,7 +229,9 @@
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": null
+      "note": null,
+      "description": "",
+      "specs": []
     },
     {
       "id": "iphone-18-pro-2tb-black-esim",
@@ -240,7 +254,9 @@
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": null
+      "note": null,
+      "description": "",
+      "specs": []
     },
     {
       "id": "iphone-18-pro-1tb-glacier-sim-esim",
@@ -263,7 +279,9 @@
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": null
+      "note": null,
+      "description": "",
+      "specs": []
     },
     {
       "id": "iphone-18-pro-1tb-silver-sim-esim",
@@ -286,7 +304,9 @@
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": null
+      "note": null,
+      "description": "",
+      "specs": []
     },
     {
       "id": "iphone-18-pro-1tb-burgundy-sim-esim",
@@ -309,7 +329,9 @@
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": null
+      "note": null,
+      "description": "",
+      "specs": []
     },
     {
       "id": "iphone-18-pro-1tb-black-sim-esim",
@@ -332,7 +354,9 @@
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": null
+      "note": null,
+      "description": "",
+      "specs": []
     },
     {
       "id": "iphone-18-pro-1tb-burgundy-esim",
@@ -355,7 +379,9 @@
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": null
+      "note": null,
+      "description": "",
+      "specs": []
     },
     {
       "id": "iphone-18-pro-1tb-black-esim",
@@ -378,7 +404,9 @@
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": null
+      "note": null,
+      "description": "",
+      "specs": []
     },
     {
       "id": "iphone-18-pro-1tb-glacier-esim",
@@ -401,7 +429,9 @@
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": null
+      "note": null,
+      "description": "",
+      "specs": []
     },
     {
       "id": "iphone-18-pro-512gb-glacier",
@@ -424,7 +454,9 @@
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": "Тип SIM (eSIM или SIM + eSIM) и актуальную цену уточняйте у менеджера по телефону"
+      "note": "Тип SIM (eSIM или SIM + eSIM) и актуальную цену уточняйте у менеджера по телефону",
+      "description": "",
+      "specs": []
     },
     {
       "id": "iphone-17-pro-1tb-silver-sim-esim",
@@ -447,7 +479,9 @@
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": null
+      "note": null,
+      "description": "",
+      "specs": []
     },
     {
       "id": "iphone-17-pro-256gb-silver-sim-esim",
@@ -470,7 +504,9 @@
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": null
+      "note": null,
+      "description": "",
+      "specs": []
     },
     {
       "id": "iphone-17-pro-256gb-deep-blue-sim-esim",
@@ -493,7 +529,9 @@
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": null
+      "note": null,
+      "description": "",
+      "specs": []
     },
     {
       "id": "iphone-17-pro-256gb-deep-blue-esim",
@@ -516,7 +554,9 @@
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": null
+      "note": null,
+      "description": "",
+      "specs": []
     },
     {
       "id": "iphone-17-pro-max-512gb-cosmic-orange-sim-esim",
@@ -539,7 +579,9 @@
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": null
+      "note": null,
+      "description": "",
+      "specs": []
     },
     {
       "id": "iphone-17-pro-max-512gb-silver-esim",
@@ -562,7 +604,9 @@
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": null
+      "note": null,
+      "description": "",
+      "specs": []
     },
     {
       "id": "iphone-17-air-1tb-space-black",
@@ -585,7 +629,9 @@
       "isTemporaryPhoto": true,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": null
+      "note": null,
+      "description": "",
+      "specs": []
     },
     {
       "id": "iphone-17-256gb-must-blue-esim",
@@ -608,7 +654,9 @@
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": null
+      "note": null,
+      "description": "",
+      "specs": []
     },
     {
       "id": "iphone-16-pro-128gb",
@@ -631,7 +679,9 @@
       "isTemporaryPhoto": true,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": "Цвет и тип SIM в наличии уточняйте у менеджера"
+      "note": "Цвет и тип SIM в наличии уточняйте у менеджера",
+      "description": "",
+      "specs": []
     },
     {
       "id": "macbook-air-13-m5-16-1tb",
@@ -654,7 +704,9 @@
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": null
+      "note": null,
+      "description": "",
+      "specs": []
     },
     {
       "id": "macbook-neo-13-a16-8-256gb",
@@ -677,7 +729,9 @@
       "isTemporaryPhoto": true,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": "Фотографии данной модели обновляются — уточните внешний вид и комплектацию у менеджера"
+      "note": "Фотографии данной модели обновляются — уточните внешний вид и комплектацию у менеджера",
+      "description": "",
+      "specs": []
     },
     {
       "id": "samsung-a57-5g-8-128gb",
@@ -700,7 +754,9 @@
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": null
+      "note": null,
+      "description": "",
+      "specs": []
     },
     {
       "id": "samsung-galaxy-watch-8-ultra-47mm",
@@ -723,7 +779,9 @@
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": null
+      "note": null,
+      "description": "",
+      "specs": []
     },
     {
       "id": "sony-playstation-5-slim-disc",
@@ -746,7 +804,9 @@
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
-      "note": null
+      "note": null,
+      "description": "",
+      "specs": []
     }
   ]
 }

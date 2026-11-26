@@ -1,7 +1,8 @@
 ---
 /**
- * Single source of the store logo: flat violet rounded square with the white "S" monogram.
- * No gradient, no small text inside. Used by Header (28px) and Footer (32px).
+ * Single source of the brand logo.
+ * Owner drops `src/assets/brand/logo-mark.svg` (or `.png`) and/or `logo-full.svg` manually.
+ * Until those files exist, renders ONLY the text wordmark "SUPER STORE" (no invented mark).
  */
 interface Props {
   size?: number;
@@ -9,37 +10,68 @@ interface Props {
 }
 
 const { size = 28, withWordmark = true } = Astro.props;
+
+const fullSvgModules = import.meta.glob<string>('../assets/brand/logo-full.svg', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+});
+const markSvgModules = import.meta.glob<string>('../assets/brand/logo-mark.svg', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+});
+const markPngModules = import.meta.glob<{ default: { src: string; width: number; height: number } }>(
+  '../assets/brand/logo-mark.png',
+  { eager: true }
+);
+
+const fullSvg = Object.values(fullSvgModules)[0] ?? null;
+const markSvg = Object.values(markSvgModules)[0] ?? null;
+const markPng = Object.values(markPngModules)[0]?.default ?? null;
 ---
 
-<span class="logo-lockup" style={`gap: 10px;`}>
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 40 40"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    aria-hidden="true"
-    focusable="false"
-  >
-    <rect width="40" height="40" rx="10" fill="#6D28D9"></rect>
-    <path
-      d="M28.5 11H15.5C13.0147 11 11 13.0147 11 15.5C11 17.9853 13.0147 20 15.5 20H24.5C26.9853 20 29 22.0147 29 24.5C29 26.9853 26.9853 29 24.5 29H11.5"
-      stroke="#FFFFFF"
-      stroke-width="4.5"
-      stroke-linecap="round"
-    ></path>
-  </svg>
-  {withWordmark && <span class="logo-wordmark">SUPER STORE</span>}
-</span>
+{withWordmark && fullSvg ? (
+  <span class="logo-lockup logo-full" style={`height: ${size}px;`} set:html={fullSvg} />
+) : (
+  <span class="logo-lockup" style="gap: 10px;">
+    {markSvg ? (
+      <span
+        class="logo-mark"
+        style={`width: ${size}px; height: ${size}px;`}
+        aria-hidden="true"
+        set:html={markSvg}
+      />
+    ) : markPng ? (
+      <img
+        src={markPng.src}
+        alt=""
+        width={size}
+        height={size}
+        aria-hidden="true"
+        class="logo-mark"
+      />
+    ) : null}
+    {(withWordmark || (!markSvg && !markPng)) && (
+      <span class="logo-wordmark">SUPER STORE</span>
+    )}
+  </span>
+)}
 
 <style>
   .logo-lockup {
     display: inline-flex;
     align-items: center;
   }
+  .logo-full :global(svg),
+  .logo-mark :global(svg) {
+    height: 100%;
+    width: auto;
+    display: block;
+  }
   .logo-wordmark {
     font-weight: 600;
-    color: #111111;
+    color: var(--text);
     letter-spacing: 0.02em;
     line-height: 1;
     font-size: 15px;

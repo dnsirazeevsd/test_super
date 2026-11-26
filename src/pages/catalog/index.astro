@@ -2,7 +2,14 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CatalogExplorer from '../../components/CatalogExplorer';
 import siteData from '../../data/site.json';
-import { ALL_PRODUCTS, CATEGORIES, MANIFEST, getGroupedModels } from '../../lib/catalog';
+import {
+  ALL_PRODUCTS,
+  CATEGORIES,
+  MANIFEST,
+  getGroupedModels,
+  getTelegramUrl,
+  isTelegramEnabled,
+} from '../../lib/catalog';
 
 const groupedModels = getGroupedModels();
 const siteOrigin = Astro.site?.origin || siteData.brand.domain;
@@ -37,6 +44,9 @@ const itemListSchema = {
         categories={CATEGORIES}
         manifest={MANIFEST}
         initialCategory="all"
+        primaryPhoneHref={siteData.contacts.phones[0].href}
+        telegramEnabled={isTelegramEnabled()}
+        telegramHref={getTelegramUrl()}
       />
     </div>
   </section>

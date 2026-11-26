@@ -49,7 +49,7 @@ function initMotion() {
 
   const scan = () => {
     document.querySelectorAll<HTMLElement>('main h1, main h2, main h3, main img').forEach(el => {
-      if (seen.has(el) || el.closest('#hero, .config-image, .config-snapshot')) return;
+      if (seen.has(el) || el.closest('#hero, .config-image, .config-snapshot, .config-thumbs, dialog')) return;
       seen.add(el);
       // Only offscreen elements are ever armed; hydration never flashes visible text.
       if (el.getBoundingClientRect().top <= innerHeight + 24) return;

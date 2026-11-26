@@ -1,14 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TradeInEstimator from '../../components/TradeInEstimator.astro';
+import TrustStrip from '../../components/TrustStrip.astro';
 import siteData from '../../data/site.json';
-import { buildWhatsAppUrl } from '../../lib/catalog';
 
-const service = (slug: string) => siteData.services.find((s) => s.slug === slug);
-const buyback = service('buyback');
-const credit = service('credit');
-const transfer = service('data-transfer');
-const payment = service('payment');
+const primaryPhone = siteData.contacts.phones[0];
 
 const faq = [
   {
@@ -50,7 +46,7 @@ const faqSchema = {
   canonicalPath="/services/"
   jsonLd={faqSchema}
 >
-  <section class="pt-10 lg:pt-16 pb-2">
+  <section class="pt-10 lg:pt-16 pb-4">
     <div class="shell max-w-[60ch] space-y-5">
       <h1 class="type-display !text-[2.25rem] lg:!text-[3rem] m-0">Услуги магазина</h1>
       <p class="type-body text-fg-muted m-0">
@@ -59,6 +55,9 @@ const faqSchema = {
       </p>
     </div>
   </section>
+
+  <!-- Data-driven plain-text trust strip with thin 1px dividers (no icon boxes) -->
+  <TrustStrip />
 
   <!-- Compact two-column editorial rows: heading left (~35%), description + CTA right (~65%),
        separated by 1px #E6E6EA dividers; tight vertical rhythm for fast scanning. -->
@@ -102,13 +101,14 @@ const faqSchema = {
           </div>
           <div>
             <a
-              href={buildWhatsAppUrl(buyback?.whatsappPrefill)}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-goal="click_whatsapp"
-              class="btn"
+              href={primaryPhone.href}
+              data-lead-open='{"type":"buyback"}'
+              class="arrow-link"
             >
-              Оценить в WhatsApp
+              Отправить заявку
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
             </a>
           </div>
         </div>
@@ -131,13 +131,14 @@ const faqSchema = {
           </div>
           <div>
             <a
-              href={buildWhatsAppUrl(credit?.whatsappPrefill)}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-goal="click_whatsapp"
-              class="btn"
+              href={primaryPhone.href}
+              data-goal="click_phone"
+              class="arrow-link tabular-nums whitespace-nowrap"
             >
-              Спросить в WhatsApp
+              Позвонить · {primaryPhone.display}
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
             </a>
           </div>
         </div>
@@ -161,13 +162,14 @@ const faqSchema = {
           </div>
           <div>
             <a
-              href={buildWhatsAppUrl(transfer?.whatsappPrefill)}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-goal="click_whatsapp"
-              class="btn"
+              href={primaryPhone.href}
+              data-goal="click_phone"
+              class="arrow-link tabular-nums whitespace-nowrap"
             >
-              Спросить в WhatsApp
+              Позвонить · {primaryPhone.display}
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
             </a>
           </div>
         </div>
@@ -181,17 +183,14 @@ const faqSchema = {
         <div class="space-y-6">
           <p class="type-body text-fg-muted max-w-[60ch] m-0">
             Принимаем наличный расчёт, оплату по QR и по банковской карте, доступно кредитование.
-            Оплатить покупку можно в магазине после осмотра и проверки устройства.
+            Оплатить покупку можно после осмотра и проверки устройства.
           </p>
           <div>
-            <a
-              href={buildWhatsAppUrl(payment?.whatsappPrefill)}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-goal="click_whatsapp"
-              class="btn"
-            >
-              Спросить в WhatsApp
+            <a href="/payment/" class="arrow-link">
+              Подробнее об оплате
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
             </a>
           </div>
         </div>
@@ -226,7 +225,6 @@ const faqSchema = {
 </BaseLayout>
 
 <style>
-  /* Compact service rows: 36px mobile / 64px desktop vertical padding; 1px divider between rows */
   .services-row {
     display: grid;
     grid-template-columns: 1fr;
@@ -255,8 +253,6 @@ const faqSchema = {
     .services-row > :global(div) {
       grid-column: auto;
     }
-    /* Trade-In: center the title in the left column so the empty space below it
-       is split evenly above/below — balanced two-column row without any image. */
     .services-row#trade-in :global(h2) {
       align-self: center;
     }

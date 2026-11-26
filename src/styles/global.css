@@ -5,7 +5,7 @@
 /*
  * Editorial retail minimalism — one light theme.
  * Neutrals: #FFFFFF / #F7F7F9 / #111111 / #6B6B76 / #E6E6EA.
- * Violet #6D28D9 is a small accent only (logo mark, link hover, focus rings).
+ * Deep plum #531C79 (hover #3F1559) is a small accent only (link hover, focus rings).
  * Typeface: self-hosted Manrope, weights 400 & 600 only.
  */
 
@@ -87,10 +87,15 @@
   --divider: #E6E6EA;
 
   /* Small brand accent only — never fills, banners or gradients */
-  --accent: #6D28D9;
+  --accent: #531C79;
+  --accent-hover: #3F1559;
   --btn: #111111;
   --btn-hover: #333333;
-  --focus-ring: #6D28D9;
+  --focus-ring: #531C79;
+  /* Semantic stock status color — used ONLY for the in-stock dot and its text */
+  --status-in-stock: #1A7F4B;
+  --dur-modal-open: 220ms;
+  --dur-modal-close: 150ms;
   color-scheme: light;
 }
 
@@ -248,6 +253,71 @@
     border: 0;
     border-top: 1px solid var(--divider);
   }
+
+  /* Semantic in-stock indicator (#1A7F4B used strictly for this dot and its text) */
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+  .status-badge--in {
+    color: var(--status-in-stock);
+  }
+  .status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 9999px;
+    background-color: var(--status-in-stock);
+    flex-shrink: 0;
+  }
+}
+
+/* Native <dialog> motion: backdrop fade + 10px lift (220ms open, 150ms close) */
+dialog.modal-dialog {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  max-width: none;
+  max-height: none;
+}
+dialog.modal-dialog::backdrop {
+  background: rgba(17, 17, 17, 0.42);
+  animation: modal-backdrop-in var(--dur-modal-open) var(--ease-out) both;
+}
+dialog.modal-dialog[open] .modal-panel {
+  animation: modal-panel-in var(--dur-modal-open) var(--ease-out) both;
+}
+dialog.modal-dialog.is-closing::backdrop {
+  animation: modal-backdrop-out var(--dur-modal-close) var(--ease-out) both;
+}
+dialog.modal-dialog.is-closing .modal-panel {
+  animation: modal-panel-out var(--dur-modal-close) var(--ease-out) both;
+}
+.lead-state-enter {
+  animation: modal-fade-in var(--dur-modal-open) var(--ease-out) both;
+}
+@keyframes modal-backdrop-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes modal-backdrop-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes modal-panel-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes modal-panel-out {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(8px); }
+}
+@keyframes modal-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* Motion is deliberately compositor-only. Color/background state changes stay instant. */
@@ -311,7 +381,7 @@
 ::view-transition-group(root) { animation: none; }
 
 /* Constrained devices use the same instant states as reduced motion. */
-html.motion-simple *, html.motion-simple *::before, html.motion-simple *::after {
+html.motion-simple *, html.motion-simple *::before, html.motion-simple *::after, html.motion-simple dialog.modal-dialog::backdrop {
   animation: none !important;
   transition: none !important;
   scroll-behavior: auto !important;
@@ -323,7 +393,7 @@ html.motion-simple .group:hover .group-hover\:scale-\[1\.03\],
 html.motion-simple .group:hover .group-hover\:scale-\[1\.02\] { transform: none !important; }
 html.motion-simple::view-transition-old(root), html.motion-simple::view-transition-new(root) { animation: none; }
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  *, *::before, *::after, dialog.modal-dialog::backdrop { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
   .hero-headline, .hero-subline, .hero-actions, .hero-image, .reveal-pending { opacity: 1 !important; transform: none !important; }
   /* Preserve functional transforms (e.g. the hidden action bar), not decorative ones. */
   .product-tile:hover, .product-tile:active, .product-tile.is-pressed, .product-tile:hover img,

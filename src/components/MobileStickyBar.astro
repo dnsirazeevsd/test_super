@@ -1,9 +1,7 @@
 ---
 import siteData from '../data/site.json';
-import { buildWhatsAppUrl } from '../lib/catalog';
 
 const primaryPhone = siteData.contacts.phones[0];
-const whatsappHref = buildWhatsAppUrl();
 ---
 
 <!-- Mobile-only slim bar: appears after scrolling past the hero; text links keep "one filled button per screen" true.
@@ -25,13 +23,11 @@ const whatsappHref = buildWhatsAppUrl();
     </a>
     <span class="w-px h-4" style="background-color: var(--divider);" aria-hidden="true"></span>
     <a
-      href={whatsappHref}
-      target="_blank"
-      rel="noopener noreferrer"
-      data-goal="click_whatsapp"
+      href={primaryPhone.href}
+      data-lead-open='{"type":"reserve"}'
       class="type-small font-semibold whitespace-nowrap text-fg hover:text-brand transition-colors no-underline inline-flex items-center gap-1.5"
     >
-      WhatsApp
+      Забронировать
       <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
         <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
       </svg>
@@ -40,27 +36,26 @@ const whatsappHref = buildWhatsAppUrl();
 </div>
 
 <script>
- document.addEventListener('astro:page-load', () => {
-  // Reveal the bar once the visitor scrolls past the hero section.
-  const bar = document.getElementById('mobile-action-bar');
-  const hero = document.getElementById('hero');
-  const setShown = (shown: boolean) => {
-    bar?.classList.toggle('opacity-0', !shown);
-    bar?.classList.toggle('translate-y-full', !shown);
-    if (shown) bar?.removeAttribute('inert');
-    else bar?.setAttribute('inert', '');
-  };
+  document.addEventListener('astro:page-load', () => {
+    // Reveal the bar once the visitor scrolls past the hero section.
+    const bar = document.getElementById('mobile-action-bar');
+    const hero = document.getElementById('hero');
+    const setShown = (shown: boolean) => {
+      bar?.classList.toggle('opacity-0', !shown);
+      bar?.classList.toggle('translate-y-full', !shown);
+      if (shown) bar?.removeAttribute('inert');
+      else bar?.setAttribute('inert', '');
+    };
 
-  if (bar && hero && 'IntersectionObserver' in window) {
-    const io = new IntersectionObserver(
-      ([entry]) => setShown(!entry.isIntersecting),
-      { threshold: 0.05 }
-    );
-    io.observe(hero);
-    document.addEventListener('astro:before-swap', () => io.disconnect(), { once: true });
-  } else if (bar) {
-    setShown(true);
-  }
-
- });
+    if (bar && hero && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        ([entry]) => setShown(!entry.isIntersecting),
+        { threshold: 0.05 }
+      );
+      io.observe(hero);
+      document.addEventListener('astro:before-swap', () => io.disconnect(), { once: true });
+    } else if (bar) {
+      setShown(true);
+    }
+  });
 </script>

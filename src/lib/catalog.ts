@@ -5,6 +5,8 @@ import siteData from '../data/site.json';
 import imageManifest from '../data/image-manifest.json';
 import imageRegistry from '../data/images.json';
 
+export type ProductSpec = string | { label: string; value: string };
+
 export interface ProductItem {
   id: string;
   legacyId: string;
@@ -23,10 +25,13 @@ export interface ProductItem {
   sim: string | null;
   simSlug: string | null;
   imageKey: string | null;
+  images?: string[];
   isTemporaryPhoto: boolean;
   inStock: boolean;
   status: string;
   note: string | null;
+  description?: string | null;
+  specs?: ProductSpec[];
 }
 
 export interface CategoryInfo {
@@ -59,19 +64,42 @@ export interface ProductModelGroup {
   configCount: number;
   defaultImageKey: string | null;
   isTemporaryPhoto: boolean;
+  inStock: boolean;
   storages: string[];
   colors: Array<{ name: string; nameRu: string | null; hex: string; imageKey: string | null }>;
   sims: string[];
   items: ProductItem[];
 }
 
-export const ALL_PRODUCTS: ProductItem[] = productsData.items as ProductItem[];
+export interface DeliveryOption {
+  id: string;
+  label: string;
+  detail: string;
+  price: number;
+  priceLabel: string;
+}
+
+/** Strip raw technical IDs / UUIDs if ever present in titles or subtitles. */
+export function cleanProductTitle(raw: string): string {
+  return raw
+    .replace(/\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b/gi, '')
+    .replace(/\s*(?:#|id[:\s-]*)\d{5,}\b/gi, '')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+}
+
+export const ALL_PRODUCTS: ProductItem[] = (productsData.items as ProductItem[]).map((item) => ({
+  ...item,
+  modelTitle: cleanProductTitle(item.modelTitle),
+  title: cleanProductTitle(item.title),
+  inStock: Boolean(item.inStock),
+}));
 export const CATEGORIES: CategoryInfo[] = productsData.categories as CategoryInfo[];
 export const MANIFEST: Record<string, ImageAsset> = imageManifest as Record<string, ImageAsset>;
 
 /**
  * Build-time resolution of owner-supplied product photos. Each entry in
- * images.json → products points to an expected file in public/images/products/.
+ * images.json -> products points to an expected file in public/images/products/.
  * When the file is present it is wired automatically (catalog tiles, product page
  * gallery, structured data); while it is missing, the «Фото уточняется у менеджера»
  * placeholder stays — the placeholder is the fallback, never a broken image.
@@ -117,16 +145,35 @@ export function formatPrice(price: number): string {
   return `${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '\u00A0')}\u00A0₽`;
 }
 
-export function buildWhatsAppUrl(text?: string): string {
-  const msg = text || siteData.contacts.messengers.whatsapp.defaultText;
-  return `${siteData.contacts.messengers.whatsapp.baseUrl}?phone=${siteData.contacts.messengers.whatsapp.phone}&text=${encodeURIComponent(msg)}`;
+/**
+ * Telegram link from site.json `telegram: { enabled, username, phone }`.
+ * Renders only when `telegram.enabled` is true.
+ * With a username -> `https://t.me/<username>`; with only a phone -> `https://t.me/+<phone>` (no `?text=`).
+ */
+export function isTelegramEnabled(): boolean {
+  return Boolean(siteData.telegram?.enabled);
 }
 
-export function buildProductWhatsAppUrl(productTitle: string, price?: number): string {
-  const pricePart = price ? ` (${formatPrice(price)})` : '';
-  return buildWhatsAppUrl(
-    `Здравствуйте! Хочу уточнить наличие в SUPER STORE (ТРЦ «РИО»): ${productTitle}${pricePart}.`
-  );
+export function getTelegramUrl(): string {
+  const tg = siteData.telegram;
+  if (!tg?.enabled) return '';
+  const username = (tg.username || '').trim().replace(/^@/, '');
+  if (username) return `https://t.me/${username}`;
+  const phone = (tg.phone || '').trim().replace(/^\+/, '');
+  if (phone) return `https://t.me/+${phone}`;
+  return '';
+}
+
+export function getDeliveryOptions(): DeliveryOption[] {
+  return (siteData.delivery?.options ?? []) as DeliveryOption[];
+}
+
+export function getDeliveryConditions(): string[] {
+  return (siteData.delivery?.conditions ?? []) as string[];
+}
+
+export function getTrustStrip(): string[] {
+  return ((siteData.trustStrip ?? []) as string[]).filter((s) => Boolean(s && s.trim()));
 }
 
 export function getCategoryBySlug(slug: string): CategoryInfo | undefined {
@@ -186,6 +233,7 @@ export function getGroupedModels(categorySlug?: string): ProductModelGroup[] {
       configCount: items.length,
       defaultImageKey: preferred.imageKey,
       isTemporaryPhoto: items.some((i) => i.isTemporaryPhoto),
+      inStock: items.some((i) => i.inStock),
       storages,
       colors: Array.from(colorMap.values()),
       sims,
@@ -218,7 +266,7 @@ export function getGroupedModels(categorySlug?: string): ProductModelGroup[] {
 }
 
 /**
- * Verified Yandex Maps organization data (rating + review count, see site.json → contacts.yandexOrg).
+ * Verified Yandex Maps organization data (rating + review count, see site.json -> contacts.yandexOrg).
  * The org URL is owner-supplied config: while it holds the `[YANDEX_ORG_URL]` placeholder,
  * nothing that links to it is rendered (never render bracketed placeholders), and the map
  * links fall back to their previous behavior.

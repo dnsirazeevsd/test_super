@@ -1,0 +1,55 @@
+---
+import { getTrustStrip } from '../lib/catalog';
+
+const items = getTrustStrip();
+---
+
+{items.length > 0 && (
+  <section aria-label="Условия покупки в магазине" class="py-6 lg:py-8">
+    <div class="shell">
+      <ul
+        class="trust-strip list-none m-0 p-0"
+        style={`--trust-cols: ${items.length};`}
+      >
+        {items.map((item) => (
+          <li class="trust-strip-item type-small text-fg">
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+)}
+
+<style>
+  .trust-strip {
+    display: grid;
+    grid-template-columns: 1fr;
+    border-top: 1px solid var(--divider);
+    border-bottom: 1px solid var(--divider);
+  }
+  .trust-strip-item {
+    padding: 14px 0;
+    border-top: 1px solid var(--divider);
+  }
+  .trust-strip-item:first-child {
+    border-top: 0;
+  }
+  @media (min-width: 1024px) {
+    .trust-strip {
+      grid-template-columns: repeat(var(--trust-cols, 5), minmax(0, 1fr));
+    }
+    .trust-strip-item {
+      padding: 20px 20px;
+      border-top: 0;
+      border-left: 1px solid var(--divider);
+    }
+    .trust-strip-item:first-child {
+      padding-left: 0;
+      border-left: 0;
+    }
+    .trust-strip-item:last-child {
+      padding-right: 0;
+    }
+  }
+</style>

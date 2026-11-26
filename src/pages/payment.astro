@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import siteData from '../data/site.json';
+
+const primaryPhone = siteData.contacts.phones[0];
+const paymentService = siteData.services.find((s) => s.slug === 'payment');
+const creditService = siteData.services.find((s) => s.slug === 'credit');
+const methods = paymentService?.highlights ?? siteData.paymentMethods;
+---
+
+<BaseLayout
+  title="Способы оплаты в магазине SUPER STORE СПб — наличные, QR, карта, кредит"
+  description="Способы оплаты в офлайн-магазине SUPER STORE (Санкт-Петербург, ТРЦ «РИО»): наличный расчёт, оплата по QR, банковская карта и кредитование после осмотра устройства."
+  canonicalPath="/payment/"
+>
+  <section class="pt-10 lg:pt-16 pb-20 lg:pb-28">
+    <div class="shell space-y-14">
+      <nav aria-label="Хлебные крошки" class="type-small text-fg-muted flex items-center gap-2">
+        <a href="/" class="hover:text-brand transition-colors no-underline">Главная</a>
+        <span aria-hidden="true">/</span>
+        <span class="text-fg">Оплата</span>
+      </nav>
+
+      <div class="max-w-[60ch] space-y-5">
+        <h1 class="type-display !text-[2.25rem] lg:!text-[3rem] m-0">Способы оплаты</h1>
+        <p class="type-body text-fg-muted m-0">
+          Оплата производится после личного осмотра и проверки устройства — в магазине в ТРЦ «РИО»
+          или при получении у курьера. На сайте нет онлайн-оплаты и корзины.
+        </p>
+      </div>
+
+      <!-- Payment methods from site.json -->
+      <section aria-labelledby="payment-methods-title" class="space-y-6">
+        <h2 id="payment-methods-title" class="type-display !text-[1.5rem] lg:!text-[2rem] m-0">
+          Доступные варианты расчёта
+        </h2>
+        <ul class="list-none m-0 p-0" style="border-top: 1px solid var(--divider);">
+          {methods.map((method) => (
+            <li
+              class="py-5 text-lg font-semibold text-fg"
+              style="border-bottom: 1px solid var(--divider);"
+            >
+              {method}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <!-- Credit & Trade-In combination (confirmed facts from site.json) -->
+      {creditService && (
+        <section aria-labelledby="credit-info-title" class="space-y-4 max-w-[60ch]">
+          <h2 id="credit-info-title" class="type-display !text-[1.5rem] lg:!text-[2rem] m-0">
+            Кредитование и зачёт по Trade-In
+          </h2>
+          <p class="type-body text-fg-muted m-0">
+            {creditService.summary} Кредит можно сочетать с программой Trade-In: сумма за старое
+            устройство идёт в зачёт при покупке нового.
+          </p>
+        </section>
+      )}
+
+      <div
+        class="pt-8 space-y-6 max-w-[60ch]"
+        style="border-top: 1px solid var(--divider);"
+      >
+        <p class="type-small text-fg-muted m-0">
+          {siteData.disclaimer}
+        </p>
+        <div class="flex flex-wrap items-center gap-x-8 gap-y-4">
+          <a href="/catalog/" class="btn">
+            Перейти в каталог
+          </a>
+          <a
+            href={primaryPhone.href}
+            data-goal="click_phone"
+            class="arrow-link tabular-nums whitespace-nowrap"
+          >
+            Уточнить у менеджера · {primaryPhone.display}
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
