@@ -28,9 +28,11 @@ interface Props {
   manifest: Record<string, ImageAsset>;
   primaryPhoneDisplay: string;
   primaryPhoneHref: string;
-  viberHref: string;
+  whatsappEnabled: boolean;
+  whatsappHref: string;
   telegramEnabled: boolean;
   telegramHref: string;
+  telegramUsername: string;
   giftDescription: string;
   deliveryOptions: DeliveryOption[];
   deliveryConditions: string[];
@@ -52,9 +54,11 @@ export default function ProductConfigurator({
   manifest,
   primaryPhoneDisplay,
   primaryPhoneHref,
-  viberHref,
+  whatsappEnabled,
+  whatsappHref,
   telegramEnabled,
   telegramHref,
+  telegramUsername,
   giftDescription,
   deliveryOptions,
   deliveryConditions,
@@ -336,6 +340,31 @@ export default function ProductConfigurator({
   const trimmedGiftDescription = (giftDescription || '').trim();
   const trimmedWarranty = (warrantyText || '').trim();
   const showTelegram = telegramEnabled && Boolean(telegramHref);
+  const showWhatsApp = whatsappEnabled && Boolean(whatsappHref);
+
+  // Prefilled messenger text with the exact configuration, e.g.:
+  // "Здравствуйте! Интересует iPhone 18 Pro, Glacier, 256 GB, SIM + eSIM. Есть в наличии?"
+  const messengerText = useMemo(() => {
+    const colorDisplay = current.color
+      ? current.colorRu && current.colorRu !== current.color
+        ? `${current.color} (${current.colorRu})`
+        : current.color
+      : null;
+    const parts = [modelTitle];
+    if (colorDisplay) parts.push(colorDisplay);
+    if (current.storage) parts.push(current.storage);
+    if (current.sim) parts.push(current.sim);
+    return `Здравствуйте! Интересует ${parts.join(', ')}. Есть в наличии?`;
+  }, [current, modelTitle]);
+
+  // WhatsApp always carries the prefilled text; Telegram carries it only when a
+  // username is set (the phone-only t.me link never gets a ?text= parameter).
+  const whatsappMessengerHref = showWhatsApp
+    ? `${whatsappHref}?text=${encodeURIComponent(messengerText)}`
+    : '';
+  const telegramMessengerHref = showTelegram
+    ? (telegramUsername.trim() ? `${telegramHref}?text=${encodeURIComponent(messengerText)}` : telegramHref)
+    : '';
 
   return (
     <div
@@ -762,23 +791,41 @@ export default function ProductConfigurator({
             )}
           </div>
 
-          <div class="flex flex-wrap items-center gap-x-7 gap-y-2 type-small">
+        <div class="flex flex-wrap items-center gap-x-7 gap-y-2 type-small">
+          <a
+            href={primaryPhoneHref}
+            data-goal="click_phone"
+            class="font-semibold tabular-nums whitespace-nowrap text-fg-muted hover:text-brand transition-colors no-underline"
+          >
+            {primaryPhoneDisplay}
+          </a>
+          {showTelegram && (
             <a
-              href={primaryPhoneHref}
-              data-goal="click_phone"
-              class="font-semibold tabular-nums whitespace-nowrap text-fg-muted hover:text-brand transition-colors no-underline"
+              href={telegramMessengerHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-goal="click_telegram"
+              aria-label="Написать в Telegram"
+              class="inline-flex items-center gap-1.5 font-semibold text-fg-muted hover:text-brand transition-colors no-underline min-h-[44px]"
             >
-              {primaryPhoneDisplay}
+              <MessengerGlyph name="telegram" />
+              Telegram
             </a>
+          )}
+          {showWhatsApp && (
             <a
-              href={viberHref}
-              data-goal="click_viber"
-              class="inline-flex items-center gap-1.5 font-semibold text-fg-muted hover:text-brand transition-colors no-underline"
+              href={whatsappMessengerHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-goal="click_whatsapp"
+              aria-label="Написать в WhatsApp"
+              class="inline-flex items-center gap-1.5 font-semibold text-fg-muted hover:text-brand transition-colors no-underline min-h-[44px]"
             >
-              <MessengerGlyph name="viber" />
-              Viber
+              <MessengerGlyph name="whatsapp" />
+              WhatsApp
             </a>
-          </div>
+          )}
+        </div>
         </div>
 
         {/* Optional "Описание" — rendered ONLY when filled */}

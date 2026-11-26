@@ -4,11 +4,20 @@ import StoreMapBlock from '../components/StoreMapBlock.astro';
 import StorePhotos from '../components/StorePhotos.astro';
 import MessengerIcon from '../components/MessengerIcon.astro';
 import siteData from '../data/site.json';
-import { getTelegramUrl, getYandexOrgLink, isTelegramEnabled, pluralReviews } from '../lib/catalog';
+import {
+  getTelegramUrl,
+  getWhatsAppUrl,
+  isTelegramEnabled,
+  isWhatsAppEnabled,
+  getYandexOrgLink,
+  pluralReviews,
+} from '../lib/catalog';
 
 const addr = siteData.contacts.address;
 const telegramHref = getTelegramUrl();
 const showTelegram = isTelegramEnabled() && Boolean(telegramHref);
+const whatsappHref = getWhatsAppUrl();
+const showWhatsApp = isWhatsAppEnabled() && Boolean(whatsappHref);
 // When the verified org URL is configured, the route link lands on the store card with reviews;
 // otherwise it falls back to address search (no invented coordinates).
 const routeSearchUrl = `https://yandex.ru/maps/?text=${encodeURIComponent(`${addr.city}, ${addr.street}, ${addr.mall}`)}`;
@@ -86,20 +95,24 @@ const mallDirections = (siteData.contacts.mallDirections || '').trim();
                 target="_blank"
                 rel="noopener noreferrer"
                 data-goal="click_telegram"
-                class="inline-flex items-center gap-2 font-semibold text-fg hover:text-brand transition-colors no-underline"
+                class="inline-flex items-center gap-2 min-h-[44px] font-semibold text-fg hover:text-brand transition-colors no-underline"
               >
                 <MessengerIcon name="telegram" />
                 Telegram
               </a>
             )}
-            <a
-              href={siteData.contacts.messengers.viber.url}
-              data-goal="click_viber"
-              class="inline-flex items-center gap-2 font-semibold text-fg hover:text-brand transition-colors no-underline"
-            >
-              <MessengerIcon name="viber" />
-              Viber
-            </a>
+            {showWhatsApp && (
+              <a
+                href={whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-goal="click_whatsapp"
+                class="inline-flex items-center gap-2 min-h-[44px] font-semibold text-fg hover:text-brand transition-colors no-underline"
+              >
+                <MessengerIcon name="whatsapp" />
+                WhatsApp
+              </a>
+            )}
           </div>
         </div>
       </section>

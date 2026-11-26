@@ -9,7 +9,9 @@ import {
   type CategoryInfo,
   getGroupedModels,
   getTelegramUrl,
+  getWhatsAppUrl,
   isTelegramEnabled,
+  isWhatsAppEnabled,
 } from '../../../lib/catalog';
 
 export function getStaticPaths() {
@@ -59,6 +61,8 @@ const itemListSchema = {
         primaryPhoneHref={siteData.contacts.phones[0].href}
         telegramEnabled={isTelegramEnabled()}
         telegramHref={getTelegramUrl()}
+        whatsappEnabled={isWhatsAppEnabled()}
+        whatsappHref={getWhatsAppUrl()}
       />
     </div>
   </section>

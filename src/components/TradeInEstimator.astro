@@ -4,15 +4,20 @@
  * Compact borderless #F7F7F9 surface block (radius 12, zero borders/shadows) with a
  * 3-column select grid (desktop, gap 16px) and primary CTA «Отправить заявку»
  * opening the accessible Lead Modal (passing model, storage, condition — zero prices).
+ * Secondary text links «Узнать оценку в Telegram / WhatsApp →» are prefilled with the
+ * selected model, storage and condition (Telegram prefilled only with a username).
  * Without JS, falls back to the primary store phone `tel:` link.
  */
 import MessengerIcon from './MessengerIcon.astro';
 import siteData from '../data/site.json';
-import { getTelegramUrl, isTelegramEnabled } from '../lib/catalog';
+import { getTelegramUrl, getWhatsAppUrl, isTelegramEnabled, isWhatsAppEnabled } from '../lib/catalog';
 
 const primaryPhoneHref = siteData.contacts.phones[0].href;
 const telegramHref = getTelegramUrl();
 const showTelegram = isTelegramEnabled() && Boolean(telegramHref);
+const whatsappHref = getWhatsAppUrl();
+const showWhatsApp = isWhatsAppEnabled() && Boolean(whatsappHref);
+const telegramUsername = (siteData.telegram?.username || '').trim();
 
 const models = [
   'iPhone 18 Pro Max',
@@ -40,12 +45,24 @@ const conditions = [
   'Есть сколы или трещины',
   'Требует ремонта',
 ];
+
+// Prefilled Trade-In text; the Telegram link carries it only when a username is set.
+const defaultTradeInText = `Здравствуйте! Интересует Trade-In: ${models[0]}, ${storages[0]}, ${conditions[0]}.`;
+const telegramHrefWithText = showTelegram
+  ? (telegramUsername ? `${telegramHref}?text=${encodeURIComponent(defaultTradeInText)}` : telegramHref)
+  : '';
+const whatsappHrefWithText = showWhatsApp
+  ? `${whatsappHref}?text=${encodeURIComponent(defaultTradeInText)}`
+  : '';
 ---
 
 <div
   class="rounded-xl p-6 lg:p-7 mt-2"
   style="background-color: var(--surface);"
   data-trade-in-estimator
+  data-tg-href={telegramHref}
+  data-wa-href={whatsappHref}
+  data-tg-username={telegramUsername}
 >
   <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-4 gap-y-5">
     <div>
@@ -85,14 +102,31 @@ const conditions = [
     </a>
     {showTelegram && (
       <a
-        href={telegramHref}
+        href={telegramHrefWithText}
         target="_blank"
         rel="noopener noreferrer"
         data-goal="click_telegram"
-        class="inline-flex items-center gap-2 font-semibold text-fg hover:text-brand transition-colors"
+        data-ti-link="telegram"
+        class="inline-flex items-center gap-2 min-h-[44px] font-semibold text-fg hover:text-brand transition-colors"
       >
         <MessengerIcon name="telegram" size={18} />
-        Написать в Telegram
+        Узнать оценку в Telegram
+        <svg class="w-4 h-4 tg-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </a>
+    )}
+    {showWhatsApp && (
+      <a
+        href={whatsappHrefWithText}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-goal="click_whatsapp"
+        data-ti-link="whatsapp"
+        class="inline-flex items-center gap-2 min-h-[44px] font-semibold text-fg hover:text-brand transition-colors"
+      >
+        <MessengerIcon name="whatsapp" size={18} />
+        Узнать оценку в WhatsApp
         <svg class="w-4 h-4 tg-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
           <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path>
         </svg>
@@ -139,6 +173,31 @@ const conditions = [
     const modelSel = root.querySelector<HTMLSelectElement>('[data-estimator-field="model"]');
     const storageSel = root.querySelector<HTMLSelectElement>('[data-estimator-field="storage"]');
     const conditionSel = root.querySelector<HTMLSelectElement>('[data-estimator-field="condition"]');
+
+    // Keep the secondary messenger links prefilled with the selected model,
+    // storage and condition. Telegram carries ?text= only when a username is set.
+    const tgBase = root.dataset.tgHref || '';
+    const waBase = root.dataset.waHref || '';
+    const tgUsername = (root.dataset.tgUsername || '').trim();
+    const tgLink = root.querySelector<HTMLAnchorElement>('[data-ti-link="telegram"]');
+    const waLink = root.querySelector<HTMLAnchorElement>('[data-ti-link="whatsapp"]');
+
+    const updateMessengerLinks = () => {
+      const text = `Здравствуйте! Интересует Trade-In: ${
+        modelSel?.value || ''
+      }, ${storageSel?.value || ''}, ${conditionSel?.value || ''}.`;
+      if (tgLink && tgBase) {
+        tgLink.setAttribute('href', tgUsername ? `${tgBase}?text=${encodeURIComponent(text)}` : tgBase);
+      }
+      if (waLink && waBase) {
+        waLink.setAttribute('href', `${waBase}?text=${encodeURIComponent(text)}`);
+      }
+    };
+
+    updateMessengerLinks();
+    [modelSel, storageSel, conditionSel].forEach((sel) =>
+      sel?.addEventListener('change', updateMessengerLinks)
+    );
 
     cta?.addEventListener('click', (ev) => {
       ev.preventDefault();

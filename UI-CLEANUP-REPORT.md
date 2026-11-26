@@ -2,7 +2,7 @@
 
 **Date:** 2026-11-25 · **Scope:** global theme, header/footer, product renders & cards, homepage, catalog, product configurator, news, map, owner-dependent elements.
 
-All information was preserved: **30 products with exact RUB prices**, **5 news articles with verbatim bodies**, both phones (`+7 (931) 202-00-78`, `+7 (931) 202-00-88`), address (`Россия, Санкт-Петербург, улица Фучика, д. 2, ТРЦ «РИО»`), hours (ежедневно 10:00–22:00), Viber (`79312020078`), payment methods, all services, non-public-offer disclaimer, and the review form.
+All information was preserved: **30 products with exact RUB prices**, **5 news articles with verbatim bodies**, both phones (`+7 (931) 202-00-78`, `+7 (931) 202-00-88`), address (`Россия, Санкт-Петербург, улица Фучика, д. 2, ТРЦ «РИО»`), hours (ежедневно 10:00–22:00), Telegram + WhatsApp (`79312020078`), payment methods, all services, non-public-offer disclaimer, and the review form.
 
 Automated checks after the cleanup: `npm run build` (34 pages) ✓ · `npm run verify-data` (30 prices match the source 100%, phones, hours, 5 news, unique titles/descriptions, canonical, H1, JSON-LD, `lang="ru"`, zero external hotlinking) ✓ · Playwright **375 px / 1440 px** — zero horizontal overflow on `/`, `/catalog/`, product page, `/contacts/` ✓ · **axe-core (light & dark): 0 violations** on 5 audited routes ✓ · **Lighthouse Mobile: Performance 98 / Accessibility 100 / Best Practices 100 / SEO 100**, LCP 2.2 s, CLS 0, TBT 0 ms.
 
@@ -14,7 +14,7 @@ Automated checks after the cleanup: `npm run build` (34 pages) ✓ · `npm run v
 - Light theme is now the **default** (dark theme available via the header toggle).
 - `scroll-margin-top: 96px` on all anchored sections (plus `scroll-padding-top: 96px` on `html`) — no more overlap under the fixed header.
 - Header: square logo replaced by the text wordmark **SUPER STORE** + caption **«СПб · ТРЦ «РИО»»** (square logo kept for favicon & footer); the «Написать» button replaced by the clickable **+7 (931) 202-00-78**.
-- Footer & `/contacts/` show both phones; footer social row is a single non-wrapping Viber row (Viber kept).
+- Footer & `/contacts/` show both phones; footer social row is a non-wrapping Telegram + WhatsApp icon row (previous messenger removed, owner decision).
 - Floor references («1 этаж») removed from every page **and** from JSON-LD structured data.
 
 ## 2. Product cards & renders
@@ -51,7 +51,7 @@ Automated checks after the cleanup: `npm run build` (34 pages) ✓ · `npm run v
 - H1 is the clean model name (e.g. **«iPhone 17 Pro»**); the full configuration stays in `<title>`, meta description and per-SKU JSON-LD Offers; selected storage/color/SIM show in the selectors.
 - «Поделиться конфигурацией» is now a compact icon with a copy-confirmation tooltip.
 - The SIM/eSIM explanation moved into a **(?)** tooltip next to «Версия SIM».
-- One primary **«Узнать наличие»** button (мессенджер prefilled with the exact model, configuration and price) + compact **«Позвонить +7 (931) 202-00-78»** (never wraps) and a Viber link.
+- One primary **«Узнать наличие»** button (мессенджер prefilled with the exact model, configuration and price) + compact **«Позвонить +7 (931) 202-00-78»** (never wraps) and Telegram + WhatsApp links.
 - Left photo block: uniform white background, no inner rectangle, no magnifier icon, no blue text over the photo; **«Подарок при покупке каждого устройства»** moved under the price.
 
 ---
@@ -82,7 +82,7 @@ All three show a clean device-line placeholder with «Фото уточняет�
 
 ## 8. Items hidden because owner data is missing (no placeholders in UI)
 
-1. **Telegram handle/link** — not rendered anywhere (kept only Viber). The separate apps helper bot `superstore.arfgift.ru` (real source data from the news post) remains linked on `/services/data-transfer/`.
+1. **Telegram handle/link** — rendered across the site (product pages, contacts, footer, estimator) alongside WhatsApp; the previous messenger is removed completely. The separate apps helper bot `superstore.arfgift.ru` (real source data from the news post) remains linked on `/services/data-transfer/`.
 2. **VK link** — legacy `vk.com/Apple_SS_178` stored in `site.json` but not rendered; restore after owner confirmation.
 3. **Company legal details** (`[OWNER_COMPANY_NAME]`, `[OWNER_INN]`, `[OWNER_OGRN]`, `[OWNER_LEGAL_ADDRESS]`, `[OWNER_EMAIL]`) — the footer «Реквизиты продавца» line and the `/contacts/` «Реквизиты организации» block are hidden; `/privacy/` + `/terms/` now use neutral wording (requisites on request) instead of placeholders, and the orange owner-note boxes were removed.
 4. **Reviews/ratings widget** — only the «Оставить отзыв» form is shown (its `[EMAIL_OR_TELEGRAM_BOT]` debug caption removed; endpoint stays in `site.json`/README). No ratings until real reviews or Yandex/2GIS org IDs arrive.

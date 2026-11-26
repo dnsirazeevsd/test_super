@@ -134,23 +134,22 @@ Source images live in `assets/source/` and optimized AVIF/WebP derivatives are g
 - **Anchors:** `scroll-margin-top: 96px` on every `[id]` element so the sticky 64px header never overlaps anchored sections.
 - **Homepage is exactly 5 blocks:** header, hero, featured catalog, Trade-In slim band, contacts+map. Everything else (advantages, services grid, FAQ, news preview, review form, SEO paragraphs) lives on subpages.
 - **Logo & favicons:** `src/components/Logo.astro` is the single source of the brand logo. Drop `src/assets/brand/logo-mark.svg` (or `.png`) and/or `src/assets/brand/logo-full.svg` to activate the real brand mark; until those files exist, `Logo.astro` renders only the text wordmark `SUPER STORE`.
-- **Messengers:** icons live once in `src/lib/messenger-icons.ts` (monochrome paths) rendered by `src/components/MessengerIcon.astro` (Astro) / `MESSENGER_PATHS` (Preact). Viber renders in the footer, homepage contacts, `/contacts/` and product pages; Telegram renders only when `site.json` `telegram.enabled` is `true` (`https://t.me/<username>` or `https://t.me/+<phone>` without `?text=`).
+- **Messengers:** icons live once in `src/lib/messenger-icons.ts` (monochrome paths from Simple Icons, CC0) rendered by `src/components/MessengerIcon.astro` (Astro) / `MESSENGER_PATHS` (Preact). Telegram and WhatsApp are the messengers and render across the site — footer, homepage contacts, `/contacts/`, product pages, catalog empty state and the Trade-In estimator. Each messenger renders only when its `enabled` flag in `src/data/site.json` is `true`. Telegram links use `https://t.me/<username>` when `telegram.username` is filled (prefilled text may be attached via `?text=`), otherwise `https://t.me/+<phone>` with no `?text=`; WhatsApp links use `https://wa.me/<phone>` (prefilled via `?text=`).
 
 ---
 
 ## Hidden UI Elements Pending Owner Data
 
-Elements that require owner-only data are **hidden, never shown as placeholders**. They live in `src/data/site.json` (`legalPlaceholders`, `ownerPending`, `telegram`, `giftDescription`, `about`, `warranty`) and `src/data/products.json` (`description`, `specs`):
+Elements that require owner-only data are **hidden, never shown as placeholders**. They live in `src/data/site.json` (`legalPlaceholders`, `ownerPending`, `giftDescription`, `about`, `warranty`) and `src/data/products.json` (`description`, `specs`):
 
-1. **Telegram** — configured in `src/data/site.json` → `telegram: { enabled: false, username: "", phone: "79312020078" }`. Hidden while `enabled` is `false`. Set `enabled: true` (and optionally fill `username`) to render Telegram links across the site. *(The apps helper bot `superstore.arfgift.ru` referenced by the news post is separate and already linked on `/services/data-transfer/`.)*
-2. **Gift description, About & Warranty pages, Product specs** — `giftDescription`, `about`, and `warranty` in `site.json`, plus `description` and `specs[]` per item in `products.json`, stay hidden while empty; filling `about` or `warranty` automatically publishes `/about/` or `/warranty/` and enables the corresponding Footer link.
+1. **Gift description, About & Warranty pages, Product specs** — `giftDescription`, `about`, and `warranty` in `site.json`, plus `description` and `specs[]` per item in `products.json`, stay hidden while empty; filling `about` or `warranty` automatically publishes `/about/` or `/warranty/` and enables the corresponding Footer link.
 2. **VK link** — the legacy `vk.com/Apple_SS_178` URL is kept in `site.json` (`contacts.messengers.vk`) but intentionally not rendered; restore the footer button only if the owner confirms that page.
 3. **Company legal details** (`[OWNER_COMPANY_NAME]`, `[OWNER_INN]`, `[OWNER_OGRN]`, `[OWNER_LEGAL_ADDRESS]`, `[OWNER_EMAIL]`) — the footer "Реквизиты продавца" line and the `/contacts/` "Реквизиты организации" block are hidden; `/privacy/` and `/terms/` use neutral wording ("реквизиты предоставляются по запросу"). Fill `legalPlaceholders` and re-add the blocks to publish.
 4. **Reviews / ratings** — the review form and all review UI were REMOVED entirely (owner decision, 2026-11-25): the `ReviewForm` component, its Metrika goal (`submit_review_form`) and the form-endpoint config no longer exist. Do not re-add reviews or ratings blocks; if the owner revisits this, a new decision is required.
 5. **Floor number (`"1 этаж"`)** — not present in verifiable source data; removed from every page and from JSON-LD structured data. Re-add only after owner confirmation.
 6. **Real store interior photos & indoor mall floor plan** — not provided; no fake photos or floor-plan graphics are used. Provide real photos to enrich hero/contacts.
 7. **Yandex Maps rating line** — the verified rating (`5,0 · 55 отзывов`, as of 2026-11) lives in `site.json` → `contacts.yandexOrg`. The clean text link `★ 5,0 · 55 отзывов на Яндекс Картах →` (homepage contacts + `/contacts/`) and both map links («Открыть…» / «Построить маршрут…») activate the moment the owner pastes the real organization URL into `contacts.yandexOrg.url` (currently the `[YANDEX_ORG_URL]` placeholder — until then the line is hidden and map links keep their previous targets). Update `reviewCount` alongside and bump `asOf`.
-8. 7. **Store photos** — the `/contacts/` «Магазин» section renders CSS placeholders until real photos are provided. Drop `store-1.webp … store-4.webp` into `public/images/store/` (dimensions and shooting guide in `report/images-needed.md`); they replace placeholders automatically. Optional per-photo alt/caption live in `src/data/site.json` (`storePhotos`); route hint lives in `contacts.mallDirections` (hidden while empty).
+8. **Store photos** — the `/contacts/` «Магазин» section renders CSS placeholders until real photos are provided. Drop `store-1.webp … store-4.webp` into `public/images/store/` (dimensions and shooting guide in `report/images-needed.md`); they replace placeholders automatically. Optional per-photo alt/caption live in `src/data/site.json` (`storePhotos`); route hint lives in `contacts.mallDirections` (hidden while empty).
 
 ---
 
@@ -169,12 +168,15 @@ Before pointing your production domain to the site, fill in these placeholders:
    - Create 7 JavaScript event goals in Yandex.Metrika matching these exact identifiers:
      - `click_phone` — clicks on `+7 (931) 202-00-78` or `+7 (931) 202-00-88`
      - `click_telegram` — clicks on Telegram links (when `telegram.enabled` is true)
-     - `click_viber` — clicks on Viber buttons
+     - `click_whatsapp` — clicks on WhatsApp links (when `whatsapp.enabled` is true)
      - `trade_in_request` — clicks on the Trade-In estimator CTA «Отправить заявку» on `/services/#trade-in`
      - `lead_open` — opening the Lead Modal («Забронировать» / «Отправить заявку»)
      - `lead_submit_success` — successful lead submission
      - `lead_submit_error` — failed lead submission / phone fallback
-4. **Lead Relay (`/relay` Cloudflare Worker):**
+4. **Messengers (Telegram + WhatsApp):**
+   - **Telegram** — `src/data/site.json` → `telegram: { enabled: true, username: "", phone: "79312020078" }`. While `enabled` is `true`, Telegram links render across the site. To switch from the phone-only link (`https://t.me/+79312020078`, never with `?text=`) to a clean handle link (`https://t.me/<username>`), set `username` to the owner's `@handle` — this also enables prefilled text (`?text=`) on the product-page and Trade-In Telegram links. Ask the owner for the `@username` if it is not yet known.
+   - **WhatsApp** — `src/data/site.json` → `whatsapp: { enabled: true, phone: "79312020078" }`. Renders `https://wa.me/79312020078` across the site, with prefilled text (`?text=`) on the product-page and Trade-In links.
+5. **Lead Relay (`/relay` Cloudflare Worker):**
    - Deploy `relay/worker.js` following `relay/README.md` (`TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` stored strictly as Worker secrets) and pass `PUBLIC_LEAD_ENDPOINT` when running `npm run build`.
 
 ---

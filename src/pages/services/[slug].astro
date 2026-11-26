@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import StoreMapBlock from '../../components/StoreMapBlock.astro';
 import TradeInEstimator from '../../components/TradeInEstimator.astro';
 import siteData from '../../data/site.json';
-import { getTelegramUrl, isTelegramEnabled } from '../../lib/catalog';
+import { getTelegramUrl, getWhatsAppUrl, isTelegramEnabled, isWhatsAppEnabled } from '../../lib/catalog';
 
 export function getStaticPaths() {
   return siteData.services.map((service) => ({
@@ -16,6 +16,8 @@ const { service } = Astro.props;
 const primaryPhone = siteData.contacts.phones[0];
 const telegramHref = getTelegramUrl();
 const showTelegram = isTelegramEnabled() && Boolean(telegramHref);
+const whatsappHref = getWhatsAppUrl();
+const showWhatsApp = isWhatsAppEnabled() && Boolean(whatsappHref);
 const otherServices = siteData.services.filter((s) => s.slug !== service.slug);
 
 const isTradeIn = service.slug === 'trade-in';
@@ -134,6 +136,20 @@ const leadPayload = isBuyback
                   </svg>
                 </a>
               ) : null}
+              {showWhatsApp && (
+                <a
+                  href={whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-goal="click_whatsapp"
+                  class="arrow-link"
+                >
+                  Написать в WhatsApp
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </a>
+              )}
             </div>
           )}
         </div>

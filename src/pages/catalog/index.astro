@@ -8,7 +8,9 @@ import {
   MANIFEST,
   getGroupedModels,
   getTelegramUrl,
+  getWhatsAppUrl,
   isTelegramEnabled,
+  isWhatsAppEnabled,
 } from '../../lib/catalog';
 
 const groupedModels = getGroupedModels();
@@ -47,6 +49,8 @@ const itemListSchema = {
         primaryPhoneHref={siteData.contacts.phones[0].href}
         telegramEnabled={isTelegramEnabled()}
         telegramHref={getTelegramUrl()}
+        whatsappEnabled={isWhatsAppEnabled()}
+        whatsappHref={getWhatsAppUrl()}
       />
     </div>
   </section>

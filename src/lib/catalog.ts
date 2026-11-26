@@ -149,12 +149,15 @@ export function formatPrice(price: number): string {
  * Telegram link from site.json `telegram: { enabled, username, phone }`.
  * Renders only when `telegram.enabled` is true.
  * With a username -> `https://t.me/<username>`; with only a phone -> `https://t.me/+<phone>` (no `?text=`).
+ * Optional prefilled `text` (e.g. a configured product) is appended as `?text=<encoded>`
+ * ONLY when a username is set — the phone-only link never carries a `?text=` parameter.
  */
 export function isTelegramEnabled(): boolean {
   return Boolean(siteData.telegram?.enabled);
 }
 
-export function getTelegramUrl(): string {
+/** Raw (no prefilled text) Telegram link, or '' when disabled / nothing configured. */
+export function getTelegramBaseUrl(): string {
   const tg = siteData.telegram;
   if (!tg?.enabled) return '';
   const username = (tg.username || '').trim().replace(/^@/, '');
@@ -162,6 +165,29 @@ export function getTelegramUrl(): string {
   const phone = (tg.phone || '').trim().replace(/^\+/, '');
   if (phone) return `https://t.me/+${phone}`;
   return '';
+}
+
+export function getTelegramUrl(text?: string): string {
+  const base = getTelegramBaseUrl();
+  if (!base) return '';
+  if (!text) return base;
+  const username = (siteData.telegram?.username || '').trim().replace(/^@/, '');
+  if (!username) return base; // phone-only link: never append ?text=
+  return `${base}?text=${encodeURIComponent(text)}`;
+}
+
+/** WhatsApp link from site.json `whatsapp: { enabled, phone }`: `https://wa.me/<phone>`. */
+export function isWhatsAppEnabled(): boolean {
+  return Boolean(siteData.whatsapp?.enabled);
+}
+
+/** WhatsApp link, optionally with a prefilled `text` (URL-encoded, Cyrillic OK). */
+export function getWhatsAppUrl(text?: string): string {
+  const wa = siteData.whatsapp;
+  if (!wa?.enabled) return '';
+  const phone = (wa.phone || '').trim().replace(/^\+/, '');
+  if (!phone) return '';
+  return text ? `https://wa.me/${phone}?text=${encodeURIComponent(text)}` : `https://wa.me/${phone}`;
 }
 
 export function getDeliveryOptions(): DeliveryOption[] {

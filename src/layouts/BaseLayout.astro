@@ -7,6 +7,7 @@ import Footer from '../components/Footer.astro';
 import MobileStickyBar from '../components/MobileStickyBar.astro';
 import LeadModal from '../components/LeadModal.astro';
 import CookieBanner from '../components/CookieBanner.astro';
+import { getTelegramBaseUrl, getWhatsAppUrl, isTelegramEnabled, isWhatsAppEnabled } from '../lib/catalog';
 import type { ImageAsset } from '../lib/catalog';
 
 interface Props {
@@ -55,6 +56,11 @@ const localBusinessSchema = {
     areaServed: 'RU-SPE',
     availableLanguage: ['Russian'],
   })),
+  // SameAs lists only the enabled messenger channels (Telegram, WhatsApp)
+  sameAs: [
+    ...(isTelegramEnabled() && getTelegramBaseUrl() ? [getTelegramBaseUrl()] : []),
+    ...(isWhatsAppEnabled() && getWhatsAppUrl() ? [getWhatsAppUrl()] : []),
+  ],
   address: {
     '@type': 'PostalAddress',
     streetAddress: `${siteData.contacts.address.street}, ${siteData.contacts.address.mall}`,

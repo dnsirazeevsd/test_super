@@ -50,6 +50,8 @@ interface Props {
   primaryPhoneHref: string;
   telegramEnabled?: boolean;
   telegramHref?: string;
+  whatsappEnabled?: boolean;
+  whatsappHref?: string;
 }
 
 function fmtPrice(p: number) {
@@ -84,6 +86,8 @@ export default function CatalogExplorer({
   primaryPhoneHref,
   telegramEnabled = false,
   telegramHref = '',
+  whatsappEnabled = false,
+  whatsappHref = '',
 }: Props) {
   const [category, setCategory] = useState(initialCategory);
   const [series, setSeries] = useState<string>('all');
@@ -337,6 +341,7 @@ export default function CatalogExplorer({
     ...categories.map((c) => ({ slug: c.slug, title: c.title })),
   ];
   const showTelegram = telegramEnabled && Boolean(telegramHref);
+  const showWhatsApp = whatsappEnabled && Boolean(whatsappHref);
 
   return (
     <div class="space-y-10">
@@ -676,6 +681,20 @@ export default function CatalogExplorer({
                 class="arrow-link"
               >
                 Позвонить
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </a>
+            )}
+            {showWhatsApp && (
+              <a
+                href={whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-goal="click_whatsapp"
+                class="arrow-link"
+              >
+                Написать в WhatsApp
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                   <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
