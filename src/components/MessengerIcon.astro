@@ -1,0 +1,27 @@
+---
+/**
+ * Crisp monochrome messenger icon (telegram / whatsapp / viber), 18×18 by default,
+ * colored via currentColor so the surrounding link sets the tone.
+ */
+import { MESSENGER_PATHS, type MessengerName } from '../lib/messenger-icons';
+
+interface Props {
+  name: MessengerName;
+  size?: number;
+  class?: string;
+}
+
+const { name, size = 18, class: className } = Astro.props;
+---
+
+<svg
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="currentColor"
+  aria-hidden="true"
+  focusable="false"
+  class={className}
+>
+  <path d={MESSENGER_PATHS[name]} fill-rule="evenodd"></path>
+</svg>

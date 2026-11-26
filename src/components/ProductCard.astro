@@ -1,0 +1,49 @@
+---
+import type { ProductModelGroup } from '../lib/catalog';
+import { formatPrice, getImageAsset } from '../lib/catalog';
+import OptimizedImage from './OptimizedImage.astro';
+
+interface Props {
+  group: ProductModelGroup;
+}
+
+const { group } = Astro.props;
+
+// Display-only: clean model name on the tile; the full configuration stays on the product page.
+const displayName = group.modelTitle.replace(' с дисководом', '');
+
+// Prefer the #F7F7F9 background variant so the render melts into the tile surface;
+// fall back to the base key for owner-supplied photos that have no -f7 variant.
+const baseKey = group.defaultImageKey;
+const resolvedKey = baseKey
+  ? getImageAsset(`${baseKey}-f7`)
+    ? `${baseKey}-f7`
+    : baseKey
+  : null;
+---
+
+<a
+  href={group.url}
+  class="group block"
+  data-reveal
+>
+  <div
+    class="aspect-square flex items-center justify-center overflow-hidden"
+    style="background-color: var(--surface);"
+  >
+    <OptimizedImage
+      imageKey={resolvedKey}
+      alt={group.modelTitle}
+      sizes="(max-width: 640px) 44vw, (max-width: 1024px) 30vw, 260px"
+      class="w-full h-full"
+      imgClass="w-full h-full object-cover object-left"
+      placeholderLabel="Фото уточняется у менеджера"
+    />
+  </div>
+  <div class="pt-3 pb-1">
+    <h3 class="text-[1rem] font-semibold text-fg leading-snug m-0">{displayName}</h3>
+    <p class="text-[0.9375rem] text-fg-muted mt-1 mb-0 tabular-nums">
+      {group.hasMultipleConfigs ? `от ${formatPrice(group.minPrice)}` : formatPrice(group.minPrice)}
+    </p>
+  </div>
+</a>

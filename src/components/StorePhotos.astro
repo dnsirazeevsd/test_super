@@ -1,0 +1,76 @@
+---
+/**
+ * «Магазин» photo section for /contacts/ (never on the homepage — it keeps exactly 5 blocks).
+ * One wide 4:3 slot + a row of three 4:3 slots on desktop; single column on mobile.
+ * CSS-only placeholders with a fixed aspect ratio (zero layout shift): as soon as real
+ * files appear at public/images/store/store-1.webp … store-4.webp (see src/data/images.json),
+ * they replace the placeholders automatically. No JS, lazy-loaded, borderless, no overlays.
+ * Optional per-photo caption/alt come from site.json `storePhotos`; captions render only
+ * when filled. Default alt: «Магазин SUPER STORE в ТРЦ «РИО», фото N».
+ */
+import fs from 'node:fs';
+import path from 'node:path';
+import registry from '../data/images.json';
+import siteData from '../data/site.json';
+
+const slots = registry.store.map((entry, i) => {
+  const file = path.resolve('public/images/store', `${entry.key}.webp`);
+  const exists = fs.existsSync(file);
+  const meta = (siteData.storePhotos && siteData.storePhotos[i]) || {};
+  const alt = (meta.alt && meta.alt.trim()) ||
+    `Магазин SUPER STORE в ТРЦ «РИО», фото ${i + 1}`;
+  const caption = (meta.caption && meta.caption.trim()) || null;
+  return { ...entry, index: i + 1, exists, alt, caption };
+});
+
+const wide = slots[0];
+const row = slots.slice(1);
+---
+
+<section aria-labelledby="store-photos-title" class="space-y-8">
+  <h2 id="store-photos-title" class="type-display !text-[1.75rem] lg:!text-[2.25rem] m-0">
+    Магазин
+  </h2>
+
+  <div class="space-y-6">
+    <!-- Wide 4:3 lead slot (object-top keeps the store sign visible) -->
+    <div class="w-full" style="aspect-ratio: 4 / 3;">
+      {wide.exists ? (
+        <img
+          src={`/images/store/${wide.key}.webp`}
+          alt={wide.alt}
+          width={wide.width}
+          height={wide.height}
+          loading="lazy"
+          decoding="async"
+          class="w-full h-full object-cover object-top"
+        />
+      ) : (
+        <div class="w-full h-full" style="background-color: var(--surface);" aria-hidden="true"></div>
+      )}
+      {wide.caption && <p class="type-small text-fg-muted mt-2 mb-0">{wide.caption}</p>}
+    </div>
+
+    <!-- Row of three 4:3 slots (stacked single column on mobile) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {row.map((slot) => (
+        <div class="w-full" style={`aspect-ratio: ${slot.ratio};`}>
+          {slot.exists ? (
+            <img
+              src={`/images/store/${slot.key}.webp`}
+              alt={slot.alt}
+              width={slot.width}
+              height={slot.height}
+              loading="lazy"
+              decoding="async"
+              class="w-full h-full object-cover"
+            />
+          ) : (
+            <div class="w-full h-full" style="background-color: var(--surface);" aria-hidden="true"></div>
+          )}
+          {slot.caption && <p class="type-small text-fg-muted mt-2 mb-0">{slot.caption}</p>}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

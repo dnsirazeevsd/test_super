@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CatalogExplorer from '../../../components/CatalogExplorer';
+import siteData from '../../../data/site.json';
+import {
+  ALL_PRODUCTS,
+  CATEGORIES,
+  MANIFEST,
+  type CategoryInfo,
+  getGroupedModels,
+} from '../../../lib/catalog';
+
+export function getStaticPaths() {
+  return CATEGORIES.map((cat) => ({
+    params: { category: cat.slug },
+    props: { categoryInfo: cat },
+  }));
+}
+
+interface Props {
+  categoryInfo: CategoryInfo;
+}
+
+const { categoryInfo } = Astro.props;
+const categoryGroups = getGroupedModels(categoryInfo.slug);
+const siteOrigin = Astro.site?.origin || siteData.brand.domain;
+
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: `${categoryInfo.title} в наличии в Санкт-Петербурге — SUPER STORE`,
+  itemListElement: categoryGroups.map((g, idx) => ({
+    '@type': 'ListItem',
+    position: idx + 1,
+    url: `${siteOrigin}${g.url}`,
+    name: g.modelTitle,
+  })),
+};
+---
+
+<BaseLayout
+  title={`${categoryInfo.title} — купить в СПб в ТРЦ «РИО» | SUPER STORE`}
+  description={`${categoryInfo.description} Гарантия, проверка при вас, подарок при покупке и программа Trade-In в Санкт-Петербурге.`}
+  canonicalPath={`/catalog/${categoryInfo.slug}/`}
+  jsonLd={itemListSchema}
+>
+  <section class="pt-10 lg:pt-16 pb-10 lg:pb-16">
+    <div class="shell space-y-10">
+      <h1 class="type-display !text-[2.25rem] lg:!text-[3rem] m-0">{categoryInfo.title}</h1>
+
+      <CatalogExplorer
+        client:load
+        products={ALL_PRODUCTS}
+        categories={CATEGORIES}
+        manifest={MANIFEST}
+        initialCategory={categoryInfo.slug}
+      />
+    </div>
+  </section>
+
+  <!-- Shared availability sentence, once, above the footer -->
+  <aside class="pb-16 lg:pb-24">
+    <div class="shell">
+      <p class="type-small text-fg-muted m-0 w-full" data-reveal>
+        Новый, запечатанный. Все устройства в наличии в СПб. Оригинальная техника, честное
+        состояние, проверка при вас.
+      </p>
+    </div>
+  </aside>
+</BaseLayout>

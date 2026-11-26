@@ -1,0 +1,242 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import productsData from '../data/products.json';
+import siteData from '../data/site.json';
+import imageManifest from '../data/image-manifest.json';
+import imageRegistry from '../data/images.json';
+
+export interface ProductItem {
+  id: string;
+  legacyId: string;
+  category: string;
+  modelSlug: string;
+  modelTitle: string;
+  title: string;
+  sourceTitle: string;
+  price: number;
+  currency: string;
+  storage: string | null;
+  storageSlug: string | null;
+  color: string | null;
+  colorRu: string | null;
+  colorHex: string | null;
+  sim: string | null;
+  simSlug: string | null;
+  imageKey: string | null;
+  isTemporaryPhoto: boolean;
+  inStock: boolean;
+  status: string;
+  note: string | null;
+}
+
+export interface CategoryInfo {
+  slug: string;
+  title: string;
+  description: string;
+  heroImageKey: string;
+}
+
+export interface ImageAsset {
+  key: string;
+  original: string;
+  width: number;
+  height: number;
+  aspectRatio: number;
+  avifSrcset: string;
+  webpSrcset: string;
+  src: string;
+}
+
+export interface ProductModelGroup {
+  modelSlug: string;
+  modelTitle: string;
+  category: string;
+  categoryTitle: string;
+  url: string;
+  minPrice: number;
+  maxPrice: number;
+  hasMultipleConfigs: boolean;
+  configCount: number;
+  defaultImageKey: string | null;
+  isTemporaryPhoto: boolean;
+  storages: string[];
+  colors: Array<{ name: string; nameRu: string | null; hex: string; imageKey: string | null }>;
+  sims: string[];
+  items: ProductItem[];
+}
+
+export const ALL_PRODUCTS: ProductItem[] = productsData.items as ProductItem[];
+export const CATEGORIES: CategoryInfo[] = productsData.categories as CategoryInfo[];
+export const MANIFEST: Record<string, ImageAsset> = imageManifest as Record<string, ImageAsset>;
+
+/**
+ * Build-time resolution of owner-supplied product photos. Each entry in
+ * images.json → products points to an expected file in public/images/products/.
+ * When the file is present it is wired automatically (catalog tiles, product page
+ * gallery, structured data); while it is missing, the «Фото уточняется у менеджера»
+ * placeholder stays — the placeholder is the fallback, never a broken image.
+ */
+interface ExpectedProductPhoto {
+  slug: string;
+  imageKey: string;
+  expectedFile: string;
+  width: number;
+  height: number;
+  alt?: string;
+}
+
+const expectedProductPhotos: ExpectedProductPhoto[] =
+  (imageRegistry as { products?: ExpectedProductPhoto[] }).products ?? [];
+
+for (const entry of expectedProductPhotos) {
+  const absPath = path.join(process.cwd(), 'public', entry.expectedFile);
+  if (!fs.existsSync(absPath)) continue;
+  MANIFEST[entry.imageKey] = {
+    key: entry.imageKey,
+    original: entry.expectedFile,
+    width: entry.width,
+    height: entry.height,
+    aspectRatio: Number((entry.width / entry.height).toFixed(4)),
+    avifSrcset: '',
+    webpSrcset: `${entry.expectedFile} ${entry.width}w`,
+    src: entry.expectedFile,
+  };
+  for (const item of ALL_PRODUCTS) {
+    if (item.modelSlug === entry.slug && !item.imageKey) {
+      item.imageKey = entry.imageKey;
+    }
+  }
+}
+
+export function getImageAsset(key: string | null | undefined): ImageAsset | null {
+  if (!key) return null;
+  return MANIFEST[key] ?? null;
+}
+
+export function formatPrice(price: number): string {
+  return `${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '\u00A0')}\u00A0₽`;
+}
+
+export function buildWhatsAppUrl(text?: string): string {
+  const msg = text || siteData.contacts.messengers.whatsapp.defaultText;
+  return `${siteData.contacts.messengers.whatsapp.baseUrl}?phone=${siteData.contacts.messengers.whatsapp.phone}&text=${encodeURIComponent(msg)}`;
+}
+
+export function buildProductWhatsAppUrl(productTitle: string, price?: number): string {
+  const pricePart = price ? ` (${formatPrice(price)})` : '';
+  return buildWhatsAppUrl(
+    `Здравствуйте! Хочу уточнить наличие в SUPER STORE (ТРЦ «РИО»): ${productTitle}${pricePart}.`
+  );
+}
+
+export function getCategoryBySlug(slug: string): CategoryInfo | undefined {
+  return CATEGORIES.find((c) => c.slug === slug);
+}
+
+export function getGroupedModels(categorySlug?: string): ProductModelGroup[] {
+  const filtered = categorySlug
+    ? ALL_PRODUCTS.filter((p) => p.category === categorySlug)
+    : ALL_PRODUCTS;
+
+  const map = new Map<string, ProductItem[]>();
+  for (const item of filtered) {
+    const list = map.get(item.modelSlug) || [];
+    list.push(item);
+    map.set(item.modelSlug, list);
+  }
+
+  const groups: ProductModelGroup[] = [];
+  for (const [modelSlug, items] of map.entries()) {
+    const first = items[0];
+    const catInfo = getCategoryBySlug(first.category);
+    const prices = items.map((i) => i.price);
+    const minPrice = Math.min(...prices);
+    const maxPrice = Math.max(...prices);
+
+    // Prefer Glacier render as hero card thumbnail for iPhone 18 Pro if present
+    const preferred =
+      items.find((i) => i.color === 'Glacier' && i.imageKey) ||
+      items.find((i) => i.imageKey) ||
+      first;
+
+    const storages = Array.from(new Set(items.map((i) => i.storage).filter(Boolean))) as string[];
+    const sims = Array.from(new Set(items.map((i) => i.sim).filter(Boolean))) as string[];
+
+    const colorMap = new Map<string, { name: string; nameRu: string | null; hex: string; imageKey: string | null }>();
+    for (const i of items) {
+      if (i.color && !colorMap.has(i.color)) {
+        colorMap.set(i.color, {
+          name: i.color,
+          nameRu: i.colorRu,
+          hex: i.colorHex || '#888888',
+          imageKey: i.imageKey,
+        });
+      }
+    }
+
+    groups.push({
+      modelSlug,
+      modelTitle: first.modelTitle,
+      category: first.category,
+      categoryTitle: catInfo?.title || first.category,
+      url: `/catalog/${first.category}/${modelSlug}/`,
+      minPrice,
+      maxPrice,
+      hasMultipleConfigs: items.length > 1,
+      configCount: items.length,
+      defaultImageKey: preferred.imageKey,
+      isTemporaryPhoto: items.some((i) => i.isTemporaryPhoto),
+      storages,
+      colors: Array.from(colorMap.values()),
+      sims,
+      items,
+    });
+  }
+
+  // Ensure flagship order: iPhone 18 Pro first, followed by iPhone 17 family, MacBook, etc.
+  const priorityOrder = [
+    'iphone-18-pro',
+    'iphone-17-pro-max',
+    'iphone-17-pro',
+    'iphone-17-air',
+    'iphone-17',
+    'iphone-16-pro',
+    'macbook-air-13-m5',
+    'macbook-neo-13-a16',
+    'sony-playstation-5-slim',
+    'samsung-a57-5g',
+    'samsung-galaxy-watch-8-ultra',
+  ];
+
+  groups.sort((a, b) => {
+    const ia = priorityOrder.indexOf(a.modelSlug);
+    const ib = priorityOrder.indexOf(b.modelSlug);
+    return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+  });
+
+  return groups;
+}
+
+/**
+ * Verified Yandex Maps organization data (rating + review count, see site.json → contacts.yandexOrg).
+ * The org URL is owner-supplied config: while it holds the `[YANDEX_ORG_URL]` placeholder,
+ * nothing that links to it is rendered (never render bracketed placeholders), and the map
+ * links fall back to their previous behavior.
+ */
+export function isConfiguredUrl(url: string | null | undefined): boolean {
+  return Boolean(url && /^https:\/\//.test(url) && !url.includes('['));
+}
+
+export function getYandexOrgLink(): string | null {
+  const org = siteData.contacts.yandexOrg;
+  return isConfiguredUrl(org?.url) ? (org.url as string) : null;
+}
+
+/** Russian plural for review counts: 51 отзыв, 2 отзыва, 55 отзывов. */
+export function pluralReviews(n: number): string {
+  const mod10 = n % 10;
+  const mod100 = n % 100;
+  if (mod10 === 1 && mod100 !== 11) return 'отзыв';
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return 'отзыва';
+  return 'отзывов';
+}

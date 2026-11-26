@@ -1,0 +1,58 @@
+<div
+  id="cookie-consent-banner"
+  class="hidden fixed bottom-[64px] md:bottom-5 left-0 right-0 md:left-6 md:right-auto md:max-w-lg z-50 bg-bg pt-3 pb-[calc(10px+env(safe-area-inset-bottom))] md:p-4 px-5 md:rounded-xl"
+  style="box-shadow: none;"
+  role="region"
+  aria-label="Уведомление об использовании файлов cookie"
+>
+  <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-5">
+    <p class="type-small text-fg-muted leading-snug flex-1 m-0">
+      Используем cookie и Яндекс.Метрику согласно{' '}
+      <a href="/privacy/" class="text-fg underline underline-offset-2 hover:text-brand transition-colors">
+        политике конфиденциальности
+      </a>.
+    </p>
+    <div class="flex items-center gap-5 shrink-0">
+      <button
+        type="button"
+        id="cookie-decline-btn"
+        class="type-small font-medium text-fg-muted hover:text-fg transition-colors p-0 bg-transparent"
+      >
+        Скрыть
+      </button>
+      <button
+        type="button"
+        id="cookie-accept-btn"
+        class="type-small font-semibold text-fg underline underline-offset-2 hover:text-brand transition-colors p-0 bg-transparent"
+      >
+        Принять
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = 'superstore_cookie_consent';
+  const banner = document.getElementById('cookie-consent-banner');
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved && banner) {
+      banner.classList.remove('hidden');
+    }
+  } catch {}
+
+  document.getElementById('cookie-accept-btn')?.addEventListener('click', () => {
+    try {
+      localStorage.setItem(STORAGE_KEY, 'accepted');
+    } catch {}
+    banner?.classList.add('hidden');
+    window.dispatchEvent(new CustomEvent('superstore:analytics-consent'));
+  });
+
+  document.getElementById('cookie-decline-btn')?.addEventListener('click', () => {
+    try {
+      localStorage.setItem(STORAGE_KEY, 'minimal');
+    } catch {}
+    banner?.classList.add('hidden');
+  });
+</script>

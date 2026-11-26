@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CatalogExplorer from '../../components/CatalogExplorer';
+import siteData from '../../data/site.json';
+import { ALL_PRODUCTS, CATEGORIES, MANIFEST, getGroupedModels } from '../../lib/catalog';
+
+const groupedModels = getGroupedModels();
+const siteOrigin = Astro.site?.origin || siteData.brand.domain;
+
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Каталог устройств SUPER STORE в Санкт-Петербурге',
+  numberOfItems: ALL_PRODUCTS.length,
+  itemListElement: groupedModels.map((g, idx) => ({
+    '@type': 'ListItem',
+    position: idx + 1,
+    url: `${siteOrigin}${g.url}`,
+    name: g.modelTitle,
+  })),
+};
+---
+
+<BaseLayout
+  title="Каталог техники Apple, Samsung и Sony в наличии в СПб — SUPER STORE"
+  description="Каталог новых запечатанных устройств в офлайн-магазине SUPER STORE (ТРЦ «РИО», ул. Фучика, д. 2): iPhone 18 Pro, iPhone 17 Pro, MacBook Air M5, Samsung, PlayStation 5 Slim."
+  canonicalPath="/catalog/"
+  jsonLd={itemListSchema}
+>
+  <section class="pt-10 lg:pt-16 pb-10 lg:pb-16">
+    <div class="shell space-y-10">
+      <h1 class="type-display !text-[2.25rem] lg:!text-[3rem] m-0">Каталог</h1>
+
+      <CatalogExplorer
+        client:load
+        products={ALL_PRODUCTS}
+        categories={CATEGORIES}
+        manifest={MANIFEST}
+        initialCategory="all"
+      />
+    </div>
+  </section>
+
+  <!-- Shared availability sentence, once, above the footer -->
+  <aside class="pb-16 lg:pb-24">
+    <div class="shell">
+      <p class="type-small text-fg-muted m-0 w-full" data-reveal>
+        Новый, запечатанный. Все устройства в наличии в СПб. Оригинальная техника, честное
+        состояние, проверка при вас.
+      </p>
+    </div>
+  </aside>
+</BaseLayout>

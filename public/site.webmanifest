@@ -1,0 +1,22 @@
+{
+  "name": "SUPER STORE — магазин техники в ТРЦ «РИО»",
+  "short_name": "SUPER STORE",
+  "description": "Оригинальная техника Apple, Samsung и Sony в Санкт-Петербурге, ТРЦ «РИО». Новая, запечатанная, с гарантией.",
+  "lang": "ru",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#6D28D9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

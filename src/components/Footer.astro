@@ -1,0 +1,151 @@
+---
+import siteData from '../data/site.json';
+import Logo from './Logo.astro';
+import MessengerIcon from './MessengerIcon.astro';
+import { buildWhatsAppUrl } from '../lib/catalog';
+
+const messengers = siteData.contacts.messengers;
+const navLinks = [
+  { href: '/catalog/', label: 'Каталог' },
+  { href: '/services/', label: 'Услуги' },
+  { href: '/news/', label: 'Новости' },
+  { href: '/contacts/', label: 'Контакты' },
+];
+
+// Only channels with owner-confirmed links are rendered: Telegram (+79…), WhatsApp, Viber.
+const messengerLinks = [
+  {
+    name: 'telegram' as const,
+    label: 'Написать в Telegram',
+    href: messengers.telegram.url,
+    goal: 'click_telegram',
+    external: true,
+  },
+  {
+    name: 'whatsapp' as const,
+    label: 'Написать в WhatsApp',
+    href: buildWhatsAppUrl(),
+    goal: 'click_whatsapp',
+    external: true,
+  },
+  {
+    name: 'viber' as const,
+    label: 'Написать в Viber',
+    href: messengers.viber.url,
+    goal: 'click_viber',
+    external: false,
+  },
+];
+---
+
+<footer class="bg-bg">
+  <div class="shell pt-10 pb-16 lg:pt-14 lg:pb-20">
+    <div class="footer-grid">
+      <!-- Brand -->
+      <div>
+        <a href="/" class="inline-flex" aria-label="SUPER STORE — На главную">
+          <Logo size={32} />
+        </a>
+        <p class="text-[13px] text-fg-muted mt-2.5 mb-0">
+          Магазин техники · Санкт-Петербург
+        </p>
+      </div>
+
+      <!-- Navigation -->
+      <nav aria-label="Навигация в подвале">
+        <ul class="space-y-3 list-none m-0 p-0">
+          {navLinks.map((link) => (
+            <li>
+              <a href={link.href} class="type-small text-fg hover:text-brand transition-colors no-underline">
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <!-- Contacts -->
+      <div class="space-y-3">
+        {siteData.contacts.phones.map((phone) => (
+          <a
+            href={phone.href}
+            data-goal="click_phone"
+            class="block type-small font-semibold tabular-nums text-fg hover:text-brand transition-colors no-underline"
+          >
+            {phone.display}
+          </a>
+        ))}
+        <p class="type-small text-fg-muted m-0">
+          {siteData.contacts.address.city}, {siteData.contacts.address.street},<br />
+          {siteData.contacts.address.mall}
+        </p>
+        <p class="type-small text-fg-muted m-0">
+          {siteData.contacts.hours.display}
+        </p>
+      </div>
+
+      <!-- Payment, legal links, messengers -->
+      <div class="space-y-5">
+        <p class="type-small text-fg-muted m-0">
+          {siteData.paymentMethods.join(' · ')}
+        </p>
+        <div class="flex flex-col gap-3">
+          <a href="/privacy/" class="type-small text-fg hover:text-brand transition-colors no-underline">
+            Политика конфиденциальности
+          </a>
+          <a href="/terms/" class="type-small text-fg hover:text-brand transition-colors no-underline">
+            Пользовательское соглашение
+          </a>
+        </div>
+        <!-- 20×20 crisp icon links, aria-labelled -->
+        <div class="flex items-center gap-5">
+          {messengerLinks.map((m) => (
+            <a
+              href={m.href}
+              target={m.external ? '_blank' : undefined}
+              rel={m.external ? 'noopener noreferrer' : undefined}
+              data-goal={m.goal}
+              class="text-fg hover:text-brand transition-colors"
+              aria-label={m.label}
+            >
+              <MessengerIcon name={m.name} size={20} />
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- Full-width bottom bar: legal disclaimer spans cleanly across 2 balanced lines -->
+    <div class="mt-6 w-full">
+      <p class="type-small text-fg-muted m-0 max-w-none w-full" style="text-align: left; line-height: 1.5;">
+        {siteData.disclaimer} Независимый розничный магазин техники, не является официальным
+        представительством Apple Inc. Все товарные знаки принадлежат их законным правообладателям.
+      </p>
+    </div>
+
+    <hr class="rule mt-8 mb-6" />
+
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+      <p class="type-small text-fg-muted m-0">© 2026 SUPER STORE · Санкт-Петербург, ТРЦ «РИО»</p>
+      <p class="type-small text-fg-muted m-0">Ежедневно с 10:00 до 22:00</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  /* Balanced 4-column grid: brand / nav / contacts / payment+legal.
+     Columns 2–4 carry no extra top margin or padding, and `align-items: start`
+     keeps SUPER STORE, «Каталог», the phone number and «Наличный расчёт» on one top line. */
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 44px;
+    align-items: start;
+  }
+  @media (min-width: 1024px) {
+    .footer-grid {
+      grid-template-columns: 1.4fr 0.8fr 1.2fr 1.2fr;
+      gap: 32px;
+    }
+  }
+</style>

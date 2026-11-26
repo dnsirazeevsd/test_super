@@ -1,0 +1,221 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProductCard from '../components/ProductCard.astro';
+import StoreMapBlock from '../components/StoreMapBlock.astro';
+import MessengerIcon from '../components/MessengerIcon.astro';
+import siteData from '../data/site.json';
+import {
+  ALL_PRODUCTS,
+  buildWhatsAppUrl,
+  getGroupedModels,
+  getImageAsset,
+  getYandexOrgLink,
+  pluralReviews,
+} from '../lib/catalog';
+
+const yandexOrgLink = getYandexOrgLink();
+
+const allGroups = getGroupedModels();
+const featuredGroups = allGroups.slice(0, 8);
+// Seamless hero: the plain (pure-white background) render sits directly on the #FFFFFF
+// page surface — no gray box. The -f7 surface variant is only a fallback if missing.
+const lcpAsset = getImageAsset('iphones/iphone-18-pro-glacier') ||
+  getImageAsset('iphones/iphone-18-pro-glacier-f7');
+
+const heroImage = getImageAsset('iphones/iphone-18-pro-glacier') ||
+  getImageAsset('iphones/iphone-18-pro-glacier-f7');
+// Trade-In band: sentence curated to exclude timings/prices (spec); the ONE filled
+// button links to the estimator on /services/#trade-in — no selects on the homepage.
+
+const catalogItemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Популярные устройства в SUPER STORE',
+  itemListElement: allGroups.slice(0, 10).map((g, idx) => ({
+    '@type': 'ListItem',
+    position: idx + 1,
+    url: `${Astro.site?.origin || siteData.brand.domain}${g.url}`,
+    name: g.modelTitle,
+  })),
+};
+---
+
+<BaseLayout
+  title="Apple Super Store | Продажа техники | ТРЦ «РИО» — Санкт-Петербург"
+  description="Офлайн-магазин оригинальной техники Apple, Samsung и Sony в Санкт-Петербурге (ул. Фучика, д. 2, ТРЦ «РИО»). Новые запечатанные устройства с гарантией, Trade-In, выкуп, кредит."
+  canonicalPath="/"
+  lcpAsset={lcpAsset}
+  jsonLd={catalogItemListSchema}
+>
+  <!-- ================= 1/5 · HERO ================= -->
+  <section id="hero" class="band" aria-label="О магазине">
+    <div class="shell grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+      <div class="lg:col-span-6 hero-fade">
+        <h1 class="type-display m-0">
+          Техника Apple в наличии в СПб
+        </h1>
+        <p class="type-body text-fg-muted mt-6 mb-0 measure">
+          Новая, запечатанная, с гарантией. ТРЦ «РИО», ежедневно с 10:00 до 22:00.
+        </p>
+        <div class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+          <a href="/catalog/" class="btn">Смотреть каталог</a>
+          <a
+            href="/services/trade-in/"
+            class="arrow-link"
+          >
+            Trade-In и выкуп
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="lg:col-span-6 hero-fade hero-fade--late">
+        {heroImage ? (
+          <picture class="block w-full">
+            <source type="image/avif" srcset={heroImage.avifSrcset} sizes="(max-width: 1024px) 92vw, 520px" />
+            <source type="image/webp" srcset={heroImage.webpSrcset} sizes="(max-width: 1024px) 92vw, 520px" />
+            <img
+              src={heroImage.src}
+              alt="iPhone 18 Pro в цвете Glacier — в наличии в магазине SUPER STORE"
+              width={heroImage.width}
+              height={heroImage.height}
+              loading="eager"
+              fetchpriority="high"
+              decoding="sync"
+              class="w-full h-auto object-contain max-h-[520px]"
+              style="mix-blend-mode: multiply; -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 25%, #000 52%, #000 100%); mask-image: linear-gradient(to right, transparent 0%, transparent 25%, #000 52%, #000 100%);"
+            />
+          </picture>
+        ) : (
+          <div class="aspect-[4/5]" style="background-color: var(--surface);"></div>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 2/5 · FEATURED CATALOG (on #F7F7F9) ================= -->
+  <section class="band band--surface" aria-label="Устройства в наличии">
+    <div class="shell space-y-12">
+      <h2 class="type-display !text-[2rem] lg:!text-[2.75rem] m-0" data-reveal>
+        В наличии в магазине
+      </h2>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
+        {featuredGroups.map((group) => (
+          <ProductCard group={group} />
+        ))}
+      </div>
+
+      <div class="text-center pt-4" data-reveal>
+        <a href="/catalog/" class="arrow-link">
+          Весь каталог ({ALL_PRODUCTS.length} устройств)
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 3/5 · TRADE-IN SLIM BAND ================= -->
+  <section class="band band--slim" aria-label="Trade-In и выкуп">
+    <div class="shell">
+      <div class="max-w-[60ch]">
+        <h2 class="type-display !text-[1.75rem] lg:!text-[2.5rem] m-0" data-reveal>
+          Обменяем старое на новое
+        </h2>
+        <p class="type-body text-fg-muted mt-5 mb-0" data-reveal>
+          Приносите старое устройство — оценим его и сразу зачтём стоимость в покупку нового.
+        </p>
+        <div class="mt-8" data-reveal>
+          <a href="/services/#trade-in" class="btn">
+            Оценить устройство
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 4/5 · CONTACTS (on #F7F7F9) ================= -->
+  <section id="contacts" class="band band--surface" aria-label="Контакты магазина">
+    <div class="shell space-y-12">
+      <h2 class="type-display !text-[2rem] lg:!text-[2.75rem] m-0" data-reveal>
+        Приезжайте в ТРЦ «РИО»
+      </h2>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+        <div class="lg:col-span-5 space-y-6" data-reveal>
+          <p class="type-body m-0">
+            {siteData.contacts.address.full}
+          </p>
+          <p class="type-body text-fg-muted m-0">
+            {siteData.contacts.hours.display}
+          </p>
+          {yandexOrgLink && (
+            <a
+              href={yandexOrgLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1.5 w-fit hover:text-brand transition-colors"
+            >
+              <span class="font-semibold text-fg whitespace-nowrap">★ {siteData.contacts.yandexOrg.rating}</span>
+              <span class="text-fg-muted whitespace-nowrap">
+                · {siteData.contacts.yandexOrg.reviewCount} {pluralReviews(siteData.contacts.yandexOrg.reviewCount)} на Яндекс Картах
+              </span>
+              <svg class="w-4 h-4 text-fg-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </a>
+          )}
+          <div class="space-y-2">
+            {siteData.contacts.phones.map((phone) => (
+              <a
+                href={phone.href}
+                data-goal="click_phone"
+                class="block text-xl font-semibold tabular-nums text-fg hover:text-brand transition-colors no-underline"
+              >
+                {phone.display}
+              </a>
+            ))}
+          </div>
+          <div class="flex flex-wrap items-center gap-x-7 gap-y-3 pt-2">
+            <a
+              href={siteData.contacts.messengers.telegram.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-goal="click_telegram"
+              class="inline-flex items-center gap-2 font-semibold text-fg hover:text-brand transition-colors no-underline"
+            >
+              <MessengerIcon name="telegram" />
+              Telegram
+            </a>
+            <a
+              href={buildWhatsAppUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-goal="click_whatsapp"
+              class="inline-flex items-center gap-2 font-semibold text-fg hover:text-brand transition-colors no-underline"
+            >
+              <MessengerIcon name="whatsapp" />
+              WhatsApp
+            </a>
+            <a
+              href={siteData.contacts.messengers.viber.url}
+              data-goal="click_viber"
+              class="inline-flex items-center gap-2 font-semibold text-fg hover:text-brand transition-colors no-underline"
+            >
+              <MessengerIcon name="viber" />
+              Viber
+            </a>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7" data-reveal>
+          <StoreMapBlock />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

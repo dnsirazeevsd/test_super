@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import siteData from '../data/site.json';
+import { buildWhatsAppUrl } from '../lib/catalog';
+---
+
+<BaseLayout
+  title="Страница не найдена (404) — SUPER STORE"
+  description="Запрашиваемая страница не найдена. Перейдите в каталог техники SUPER STORE или свяжитесь с менеджером магазина в ТРЦ «РИО»."
+  canonicalPath="/404"
+>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 text-center space-y-6">
+    <div class="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-brand-soft text-brand-link text-sm font-extrabold tabular-nums">
+      Ошибка 404
+    </div>
+    <h1 class="text-3xl sm:text-5xl font-extrabold text-fg tracking-tight">
+      Такой страницы нет, но техника в наличии
+    </h1>
+    <p class="text-base sm:text-lg text-fg-muted max-w-xl mx-auto leading-relaxed">
+      Возможно, ссылка устарела после обновления сайта. Откройте каталог устройств или напишите нам в WhatsApp — мы поможем найти нужную модель.
+    </p>
+    <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+      <a
+        href="/catalog/"
+        class="px-6 py-3.5 rounded-xl bg-brand hover:bg-brand-hover text-white text-sm sm:text-base font-bold transition-colors"
+      >
+        Перейти в каталог
+      </a>
+      <a
+        href={buildWhatsAppUrl()}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-goal="click_whatsapp"
+        class="px-6 py-3.5 rounded-xl bg-bg-card hover:bg-bg-muted border border-line text-fg text-sm sm:text-base font-bold transition-colors"
+      >
+        Написать в WhatsApp
+      </a>
+      <a
+        href={siteData.contacts.phones[0].href}
+        data-goal="click_phone"
+        class="px-6 py-3.5 rounded-xl bg-bg-card hover:bg-bg-muted border border-line text-fg text-sm sm:text-base font-bold tabular-nums transition-colors"
+      >
+        {siteData.contacts.phones[0].display}
+      </a>
+    </div>
+  </div>
+</BaseLayout>

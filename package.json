@@ -1,0 +1,28 @@
+{
+  "name": "super-store-rio-spb",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Self-hosted static website for SUPER STORE (ТРЦ «РИО», Санкт-Петербург) built with Astro, Tailwind CSS, and Preact islands",
+  "scripts": {
+    "dev": "astro dev --host 0.0.0.0 --port 4321",
+    "start": "astro dev --host 0.0.0.0 --port 4321",
+    "build": "astro build && node scripts/images-check.mjs",
+    "preview": "astro preview --host 0.0.0.0 --port 4321",
+    "optimize-images": "node scripts/optimize-images.mjs",
+    "verify-data": "node scripts/verify-data.mjs",
+    "images:check": "node scripts/images-check.mjs",
+    "images:prepare": "node scripts/images-prepare.mjs"
+  },
+  "dependencies": {
+    "@astrojs/preact": "^4.0.4",
+    "@astrojs/sitemap": "^3.3.0",
+    "@astrojs/tailwind": "^6.0.2",
+    "@tailwindcss/typography": "^0.5.16",
+    "astro": "^5.5.4",
+    "photoswipe": "^5.4.4",
+    "preact": "^10.26.4",
+    "sharp": "^0.33.5",
+    "tailwindcss": "^3.4.17"
+  }
+}

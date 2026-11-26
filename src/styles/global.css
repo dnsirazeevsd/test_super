@@ -1,0 +1,291 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Editorial retail minimalism — one light theme.
+ * Neutrals: #FFFFFF / #F7F7F9 / #111111 / #6B6B76 / #E6E6EA.
+ * Violet #6D28D9 is a small accent only (logo mark, link hover, focus rings).
+ * Typeface: self-hosted Manrope, weights 400 & 600 only.
+ */
+
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('/fonts/manrope-cyrillic-ext-400-normal.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('/fonts/manrope-cyrillic-400-normal.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('/fonts/manrope-latin-ext-400-normal.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('/fonts/manrope-latin-400-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url('/fonts/manrope-cyrillic-ext-600-normal.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url('/fonts/manrope-cyrillic-600-normal.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url('/fonts/manrope-latin-ext-600-normal.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url('/fonts/manrope-latin-600-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  --bg: #FFFFFF;
+  --surface: #F7F7F9;
+  --text: #111111;
+  --muted: #6B6B76;
+  --divider: #E6E6EA;
+
+  /* Small brand accent only — never fills, banners or gradients */
+  --accent: #6D28D9;
+  --btn: #111111;
+  --btn-hover: #333333;
+  --focus-ring: #6D28D9;
+  color-scheme: light;
+}
+
+@layer base {
+  html {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    scroll-padding-top: 96px;
+  }
+
+  /* Desktop type scale: root 17.5px (109.375%) so all rem-based typography
+     scales up proportionally on wide monitors (1280px+). */
+  @media (min-width: 1280px) {
+    html {
+      font-size: 17.5px;
+    }
+  }
+
+  /* Anchored sections never hide under the sticky header */
+  [id] {
+    scroll-margin-top: 96px;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    font-size: 1.0625rem; /* 17px at 16px root — body >= 17px on mobile */
+    line-height: 1.6;
+  }
+
+  @media (min-width: 768px) {
+    body {
+      font-size: 1.125rem; /* 18px at 16px root */
+    }
+  }
+
+  /* WCAG-visible violet focus ring */
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  /* Page container — max 1380px (wide-desktop scale) */
+  .shell {
+    max-width: 1380px;
+    margin-inline: auto;
+    padding-inline: 24px;
+  }
+  @media (min-width: 768px) {
+    .shell {
+      padding-inline: 40px;
+    }
+  }
+
+  /* Full-bleed alternating sections */
+  .band {
+    padding-block: 80px;
+  }
+  @media (min-width: 1024px) {
+    .band {
+      padding-block: 140px;
+    }
+  }
+  .band--surface {
+    background-color: var(--surface);
+  }
+  /* The one slim band (Trade-In) */
+  .band--slim {
+    padding-block: 72px;
+  }
+  @media (min-width: 1024px) {
+    .band--slim {
+      padding-block: 128px;
+    }
+  }
+
+  /* Exactly three type sizes: display, body, small */
+  .type-display {
+    font-size: clamp(2.375rem, 4.2vw + 1rem, 4.125rem); /* 38 -> 66px */
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+  }
+  .type-body {
+    font-size: 1.0625rem; /* 17px at 16px root */
+    line-height: 1.6;
+  }
+  @media (min-width: 768px) {
+    .type-body {
+      font-size: 1.125rem; /* 18px at 16px root */
+    }
+  }
+  .type-small {
+    font-size: 0.875rem; /* 14px at 16px root */
+    line-height: 1.55;
+  }
+  .measure {
+    max-width: 60ch;
+  }
+
+  /* The one filled button style */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: var(--btn);
+    color: #FFFFFF;
+    font-weight: 600;
+    font-size: 1rem; /* 16px at 16px root */
+    padding: 15px 30px;
+    border-radius: 12px;
+    transition: background-color 0.2s ease-out;
+  }
+  .btn:hover {
+    background-color: var(--btn-hover);
+  }
+
+  /* The one link style — text with arrow */
+  .arrow-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 1rem; /* 16px at 16px root */
+    color: var(--text);
+    text-decoration: none;
+    transition: color 0.2s ease-out;
+  }
+  .arrow-link svg {
+    transition: transform 0.2s ease-out;
+  }
+  .arrow-link:hover {
+    color: var(--accent);
+  }
+  .arrow-link:hover svg {
+    transform: translateX(3px);
+  }
+  .arrow-link--muted {
+    color: var(--muted);
+  }
+  .arrow-link--muted:hover {
+    color: var(--accent);
+  }
+
+  /* Hairline divider (separator, not a box border) */
+  .rule {
+    border: 0;
+    border-top: 1px solid var(--divider);
+  }
+}
+
+/* One motion system: fade + 20px translate, 550ms ease-out (gated on JS) */
+html.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.55s ease-out, transform 0.55s ease-out;
+}
+html.js [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Gentle one-time hero reveal */
+html.js .hero-fade {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: hero-in 0.6s ease-out forwards;
+}
+html.js .hero-fade--late {
+  animation-delay: 0.15s;
+}
+@keyframes hero-in {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js [data-reveal],
+  html.js .hero-fade {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

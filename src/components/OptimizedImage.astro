@@ -1,0 +1,65 @@
+---
+import { getImageAsset } from '../lib/catalog';
+
+interface Props {
+  imageKey: string | null | undefined;
+  alt: string;
+  sizes?: string;
+  class?: string;
+  imgClass?: string;
+  priority?: boolean;
+  placeholderLabel?: string;
+}
+
+const {
+  imageKey,
+  alt,
+  sizes = '(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 360px',
+  class: wrapperClass = '',
+  imgClass = 'w-full h-full object-contain',
+  priority = false,
+  placeholderLabel = 'Фотографии данной конфигурации обновляются',
+} = Astro.props;
+
+const asset = getImageAsset(imageKey);
+---
+
+{asset ? (
+  <picture class={`block ${wrapperClass}`}>
+    <source type="image/avif" srcset={asset.avifSrcset} sizes={sizes} />
+    <source type="image/webp" srcset={asset.webpSrcset} sizes={sizes} />
+    <img
+      src={asset.src}
+      alt={alt}
+      width={asset.width}
+      height={asset.height}
+      loading={priority ? 'eager' : 'lazy'}
+      fetchpriority={priority ? 'high' : 'auto'}
+      decoding={priority ? 'sync' : 'async'}
+      class={imgClass}
+    />
+  </picture>
+) : (
+  <div
+    class={`flex flex-col items-center justify-center text-center p-6 bg-white text-fg-muted select-none ${wrapperClass}`}
+    role="img"
+    aria-label={alt}
+  >
+    <svg
+      class="w-14 h-14 mb-3 opacity-40"
+      viewBox="0 0 48 48"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.75"
+      aria-hidden="true"
+    >
+      <rect x="13" y="5" width="22" height="38" rx="4.5" />
+      <circle cx="19" cy="11" r="1.5" fill="currentColor" />
+      <circle cx="19" cy="16" r="1.5" fill="currentColor" />
+      <line x1="20" y1="38" x2="28" y2="38" stroke-linecap="round" />
+    </svg>
+    <span class="text-xs font-medium max-w-[18ch] leading-snug">
+      {placeholderLabel}
+    </span>
+  </div>
+)}

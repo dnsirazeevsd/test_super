@@ -1,0 +1,275 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TradeInEstimator from '../../components/TradeInEstimator.astro';
+import siteData from '../../data/site.json';
+import { buildWhatsAppUrl } from '../../lib/catalog';
+
+const service = (slug: string) => siteData.services.find((s) => s.slug === slug);
+const buyback = service('buyback');
+const credit = service('credit');
+const transfer = service('data-transfer');
+const payment = service('payment');
+
+const faq = [
+  {
+    question: 'Какие способы оплаты?',
+    answer:
+      'Наличный расчёт, оплата по QR, банковская карта и кредитование. Оплатить покупку можно в магазине после осмотра и проверки устройства.',
+  },
+  {
+    question: 'Как работает Trade-In?',
+    answer:
+      'Вы приносите старый смартфон, менеджер проверяет его при вас. Стоимость фиксируется сразу и идёт в зачёт при покупке нового устройства. Особенно высокая оценка — у устройств в родном корпусе и с оригинальным экраном.',
+  },
+  {
+    question: 'Можно ли продать своё устройство?',
+    answer:
+      'Да, в магазине действует выкуп устройств: оцениваем состояние при вас в ТРЦ «РИО» и покупаем без объявлений и встреч с незнакомыми покупателями. Сумму оценки уточняйте у менеджера.',
+  },
+  {
+    question: 'Переносите ли вы данные со старого устройства?',
+    answer:
+      'Да. Менеджеры бесплатно и аккуратно перенесут фото, видео, заметки и контакты на новое устройство — без потерь и лишних переживаний.',
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: { '@type': 'Answer', text: f.answer },
+  })),
+};
+---
+
+<BaseLayout
+  title="Услуги магазина SUPER STORE в СПб — Trade-In, выкуп, кредит, перенос данных"
+  description="Услуги офлайн-магазина SUPER STORE в ТРЦ «РИО» (Санкт-Петербург): Trade-In, выкуп устройств, кредит, бесплатный перенос данных, наличный и безналичный расчёт."
+  canonicalPath="/services/"
+  jsonLd={faqSchema}
+>
+  <section class="pt-10 lg:pt-16 pb-2">
+    <div class="shell max-w-[60ch] space-y-5">
+      <h1 class="type-display !text-[2.25rem] lg:!text-[3rem] m-0">Услуги магазина</h1>
+      <p class="type-body text-fg-muted m-0">
+        Продажа новой и Б/У техники Apple с гарантией, помощь в выборе устройства и подарок
+        при покупке каждого устройства.
+      </p>
+    </div>
+  </section>
+
+  <!-- Compact two-column editorial rows: heading left (~35%), description + CTA right (~65%),
+       separated by 1px #E6E6EA dividers; tight vertical rhythm for fast scanning. -->
+  <section class="pb-14 lg:pb-20">
+    <div class="shell">
+      <!-- #trade-in -->
+      <section id="trade-in" class="services-row" aria-labelledby="trade-in-title">
+        <h2 id="trade-in-title" class="type-display !text-[1.5rem] lg:!text-[2rem] m-0">
+          Trade-In — обмен с зачётом
+        </h2>
+        <div class="space-y-5">
+          <div class="space-y-4 max-w-[60ch]">
+            <p class="type-body m-0">
+              Приносите старый смартфон — менеджер проверяет его при вас в магазине.
+            </p>
+            <p class="type-body text-fg-muted m-0">
+              Стоимость фиксируется сразу, а сумма за старое устройство идёт в зачёт при покупке
+              нового. Особенно высокая оценка — у устройств в родном корпусе и с оригинальным
+              экраном.
+            </p>
+          </div>
+          <TradeInEstimator />
+        </div>
+      </section>
+
+      <!-- #buyback -->
+      <section id="buyback" class="services-row" aria-labelledby="buyback-title">
+        <h2 id="buyback-title" class="type-display !text-[1.5rem] lg:!text-[2rem] m-0">
+          Выкуп устройств
+        </h2>
+        <div class="space-y-6">
+          <div class="space-y-4 max-w-[60ch]">
+            <p class="type-body m-0">
+              Выкупаем устройства в офлайн-магазине в ТРЦ «РИО» — без объявлений и встреч
+              с незнакомыми покупателями.
+            </p>
+            <p class="type-body text-fg-muted m-0">
+              Состояние оценивают при вас опытные менеджеры, сделка проходит безопасно.
+              Сумму оценки уточняйте у менеджера.
+            </p>
+          </div>
+          <div>
+            <a
+              href={buildWhatsAppUrl(buyback?.whatsappPrefill)}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-goal="click_whatsapp"
+              class="btn"
+            >
+              Оценить в WhatsApp
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- #credit -->
+      <section id="credit" class="services-row" aria-labelledby="credit-title">
+        <h2 id="credit-title" class="type-display !text-[1.5rem] lg:!text-[2rem] m-0">
+          Кредит и рассрочка
+        </h2>
+        <div class="space-y-6">
+          <div class="space-y-4 max-w-[60ch]">
+            <p class="type-body m-0">
+              Оформляем технику в кредит непосредственно при покупке в магазине.
+            </p>
+            <p class="type-body text-fg-muted m-0">
+              Менеджер проконсультирует по доступным программам кредитования. Кредит можно
+              сочетать с программой Trade-In; подробные условия уточняйте у менеджера.
+            </p>
+          </div>
+          <div>
+            <a
+              href={buildWhatsAppUrl(credit?.whatsappPrefill)}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-goal="click_whatsapp"
+              class="btn"
+            >
+              Спросить в WhatsApp
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- #transfer -->
+      <section id="transfer" class="services-row" aria-labelledby="transfer-title">
+        <h2 id="transfer-title" class="type-display !text-[1.5rem] lg:!text-[2rem] m-0">
+          Перенос данных и подбор
+        </h2>
+        <div class="space-y-6">
+          <div class="space-y-4 max-w-[60ch]">
+            <p class="type-body m-0">
+              Бесплатно и аккуратно переносим фото, видео, заметки и контакты со старого
+              устройства на новое.
+            </p>
+            <p class="type-body text-fg-muted m-0">
+              Помогаем подобрать модель, объём памяти и тип SIM. Для установки приложений,
+              которых нет в App Store, работает Telegram-бот магазина (superstore.arfgift.ru).
+            </p>
+          </div>
+          <div>
+            <a
+              href={buildWhatsAppUrl(transfer?.whatsappPrefill)}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-goal="click_whatsapp"
+              class="btn"
+            >
+              Спросить в WhatsApp
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- #payment -->
+      <section id="payment" class="services-row" aria-labelledby="payment-title">
+        <h2 id="payment-title" class="type-display !text-[1.5rem] lg:!text-[2rem] m-0">
+          Способы оплаты
+        </h2>
+        <div class="space-y-6">
+          <p class="type-body text-fg-muted max-w-[60ch] m-0">
+            Принимаем наличный расчёт, оплату по QR и по банковской карте, доступно кредитование.
+            Оплатить покупку можно в магазине после осмотра и проверки устройства.
+          </p>
+          <div>
+            <a
+              href={buildWhatsAppUrl(payment?.whatsappPrefill)}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-goal="click_whatsapp"
+              class="btn"
+            >
+              Спросить в WhatsApp
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <!-- FAQ: borderless accordion, separated only by 1px #E6E6EA lines -->
+  <section class="pb-14 lg:pb-20" aria-labelledby="services-faq-title">
+    <div class="shell">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10">
+        <h2
+          id="services-faq-title"
+          class="lg:col-span-4 type-display !text-[1.5rem] lg:!text-[2rem] m-0"
+        >
+          Частые вопросы
+        </h2>
+        <div class="lg:col-span-8" style="border-top: 1px solid var(--divider);">
+          {faq.map((item) => (
+            <details class="services-faq-item" style="border-bottom: 1px solid var(--divider);">
+              <summary class="flex items-center justify-between gap-4 py-4 cursor-pointer font-semibold text-fg list-none">
+                <span>{item.question}</span>
+                <span class="faq-plus shrink-0 text-fg-muted" aria-hidden="true">+</span>
+              </summary>
+              <p class="type-body text-fg-muted pb-5 mt-0 mb-0 max-w-[60ch]">{item.answer}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Compact service rows: 36px mobile / 64px desktop vertical padding; 1px divider between rows */
+  .services-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding-block: 36px;
+    border-top: 1px solid var(--divider);
+  }
+  .services-row:first-child {
+    border-top: 0;
+  }
+  .services-row :global(h2) {
+    grid-column: 1 / -1;
+  }
+  .services-row > :global(div) {
+    grid-column: 1 / -1;
+  }
+  @media (min-width: 1024px) {
+    .services-row {
+      grid-template-columns: 35fr 65fr;
+      gap: 40px;
+      padding-block: 64px;
+    }
+    .services-row :global(h2) {
+      grid-column: auto;
+    }
+    .services-row > :global(div) {
+      grid-column: auto;
+    }
+    /* Trade-In: center the title in the left column so the empty space below it
+       is split evenly above/below — balanced two-column row without any image. */
+    .services-row#trade-in :global(h2) {
+      align-self: center;
+    }
+  }
+  .services-faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-plus {
+    font-size: 20px;
+    line-height: 1;
+    transition: transform 0.2s ease-out;
+  }
+  .services-faq-item[open] .faq-plus {
+    transform: rotate(45deg);
+  }
+</style>

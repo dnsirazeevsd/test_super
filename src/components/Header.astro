@@ -1,0 +1,219 @@
+---
+import siteData from '../data/site.json';
+import { CATEGORIES, getImageAsset } from '../lib/catalog';
+import Logo from './Logo.astro';
+
+const primaryPhone = siteData.contacts.phones[0];
+const navLinks = [
+  { href: '/catalog/', label: 'Каталог', dropdown: true },
+  { href: '/services/', label: 'Услуги' },
+  { href: '/news/', label: 'Новости' },
+  { href: '/contacts/', label: 'Контакты' },
+];
+---
+
+<header class="sticky top-0 z-50 h-16 bg-bg" data-header>
+  <div class="shell h-full flex items-center justify-between gap-6">
+    <!-- Wordmark with the violet logo mark (single source: Logo.astro) -->
+    <a href="/" class="shrink-0" aria-label="SUPER STORE — На главную">
+      <Logo size={28} />
+    </a>
+
+    <!-- Desktop navigation -->
+    <nav class="hidden md:flex items-center gap-8" aria-label="Основная навигация">
+      {navLinks.map((link) =>
+        link.dropdown ? (
+          <div class="nav-drop" data-nav-drop>
+            <a
+              href={link.href}
+              class="nav-drop-trigger type-small font-medium text-fg hover:text-brand transition-colors"
+              aria-haspopup="true"
+            >
+              {link.label}
+            </a>
+            <!-- Full-width white panel with category thumbnails -->
+            <div
+              class="nav-drop-panel invisible opacity-0 transition-opacity duration-200 absolute left-0 right-0 top-full bg-bg border-t border-line"
+            >
+              <div class="shell py-8 grid grid-cols-5 gap-8">
+                {CATEGORIES.map((cat) => {
+                  // Prefer the #F7F7F9 surface variant so the render melts into the tile
+                  const thumb = getImageAsset(`${cat.heroImageKey}-f7`) ||
+                    getImageAsset(cat.heroImageKey);
+                  return (
+                    <a
+                      href={`/catalog/${cat.slug}/`}
+                      class="group flex flex-col items-start gap-3"
+                    >
+                      <div class="w-full aspect-[4/3] flex items-center justify-center overflow-hidden rounded-xl" style="background-color: var(--surface);">
+                        {thumb && (
+                          <img
+                            src={thumb.src}
+                            alt={cat.title}
+                            width={thumb.width}
+                            height={thumb.height}
+                            loading="lazy"
+                            class="w-full h-full object-contain p-2"
+                          />
+                        )}
+                      </div>
+                      <span class="type-small font-semibold text-fg group-hover:text-brand transition-colors">
+                        {cat.title}
+                      </span>
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <a
+            href={link.href}
+            class="type-small font-medium text-fg hover:text-brand transition-colors py-2"
+          >
+            {link.label}
+          </a>
+        )
+      )}
+    </nav>
+
+    <div class="flex items-center gap-4">
+      <!-- Phone: number on desktop, icon on mobile -->
+      <a
+        href={primaryPhone.href}
+        data-goal="click_phone"
+        data-copy-phone={primaryPhone.display}
+        class="type-small font-semibold tabular-nums whitespace-nowrap text-fg hover:text-brand transition-colors hidden md:inline-flex"
+      >
+        {primaryPhone.display}
+      </a>
+      <a
+        href={primaryPhone.href}
+        data-goal="click_phone"
+        class="md:hidden p-2 -mr-2 text-fg hover:text-brand transition-colors"
+        aria-label={`Позвонить ${primaryPhone.display}`}
+      >
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <!-- Burger (mobile only) -->
+      <button
+        type="button"
+        id="menu-open"
+        class="md:hidden p-2 -mr-2 text-fg"
+        aria-label="Открыть меню"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+          <path d="M4 8h16M4 16h16" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile menu (white, keyboard-operable dialog) -->
+<dialog
+  id="mobile-menu"
+  class="m-0 p-0 w-full max-w-none h-full max-h-none bg-bg text-fg backdrop:bg-white"
+  aria-label="Меню"
+>
+  <div class="shell h-full flex flex-col pt-5 pb-10">
+    <div class="flex items-center justify-between h-11">
+      <span class="inline-flex items-center">
+        <Logo size={28} />
+      </span>
+      <button
+        type="button"
+        id="menu-close"
+        class="p-2 -mr-2 text-fg"
+        aria-label="Закрыть меню"
+      >
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+          <path d="M6 6l12 12M18 6 6 18" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+
+    <nav class="mt-14 flex flex-col gap-7" aria-label="Мобильная навигация">
+      {navLinks.map((link) => (
+        <a href={link.href} class="type-display !text-[2rem] text-fg no-underline">
+          {link.label}
+        </a>
+      ))}
+    </nav>
+
+    <div class="mt-auto pt-14 flex flex-col gap-3">
+      <a
+        href={primaryPhone.href}
+        data-goal="click_phone"
+        class="text-xl font-semibold tabular-nums text-fg no-underline"
+      >
+        {primaryPhone.display}
+      </a>
+      <p class="type-small text-fg-muted m-0">
+        {siteData.contacts.hours.display}
+      </p>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  /* Catalog hover menu: opens on hover and keyboard focus, closes on Escape.
+     The panel is fixed to the viewport so it spans the full page width under the 64px header. */
+  .nav-drop-panel {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 64px;
+  }
+  .nav-drop:hover .nav-drop-panel,
+  .nav-drop:focus-within .nav-drop-panel {
+    visibility: visible;
+    opacity: 1;
+  }
+  /* Trigger alignment fix: make the «Каталог» item structurally identical to the three
+     sibling links — the wrapper generates no box (display: contents) so all four items
+     are direct flex items, and the trigger itself drops its own box metrics. */
+  .nav-drop {
+    display: contents;
+  }
+  .nav-drop-trigger {
+    background: none;
+    border: 0;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+  }
+  /* Invisible bridge so hovering from the trigger down to the fixed panel never breaks */
+  .nav-drop-trigger::after {
+    content: '';
+    position: absolute;
+    left: -12px;
+    right: -12px;
+    top: 100%;
+    height: 26px;
+  }
+</style>
+
+<script>
+  const menu = document.getElementById('mobile-menu') as HTMLDialogElement | null;
+  const openBtn = document.getElementById('menu-open');
+  const closeBtn = document.getElementById('menu-close');
+
+  openBtn?.addEventListener('click', () => {
+    menu?.showModal();
+    openBtn.setAttribute('aria-expanded', 'true');
+  });
+  closeBtn?.addEventListener('click', () => {
+    menu?.close();
+    openBtn?.setAttribute('aria-expanded', 'false');
+  });
+  menu?.addEventListener('close', () => {
+    openBtn?.setAttribute('aria-expanded', 'false');
+  });
+</script>

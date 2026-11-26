@@ -1,0 +1,120 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import NewsGallery from '../../components/NewsGallery';
+import siteData from '../../data/site.json';
+import { buildWhatsAppUrl, getImageAsset, type ImageAsset } from '../../lib/catalog';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('news');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const siteOrigin = Astro.site?.origin || siteData.brand.domain;
+
+const galleryAssets = post.data.images
+  .map((key: string) => getImageAsset(key))
+  .filter(Boolean) as ImageAsset[];
+
+const ogImage = galleryAssets[0]?.src || '/og-default.jpg';
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: post.data.seoTitle,
+  description: post.data.seoDescription,
+  datePublished: post.data.date,
+  dateModified: post.data.date,
+  image: galleryAssets.map((img) => `${siteOrigin}${img.src}`),
+  author: {
+    '@type': 'Organization',
+    name: siteData.brand.seoName,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: siteData.brand.seoName,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${siteOrigin}/apple-touch-icon.png`,
+    },
+  },
+  mainEntityOfPage: `${siteOrigin}/news/${post.id}/`,
+};
+---
+
+<BaseLayout
+  title={`${post.data.seoTitle} | SUPER STORE СПб`}
+  description={post.data.seoDescription}
+  canonicalPath={`/news/${post.id}/`}
+  ogImage={ogImage}
+  ogType="article"
+  jsonLd={articleSchema}
+>
+  <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-14 space-y-8">
+    <nav aria-label="Хлебные крошки" class="text-xs font-medium text-fg-muted flex flex-wrap items-center gap-2">
+      <a href="/" class="hover:text-brand-link">Главная</a>
+      <span aria-hidden="true">/</span>
+      <a href="/news/" class="hover:text-brand-link">Новости и статьи</a>
+      <span aria-hidden="true">/</span>
+      <span class="text-fg truncate max-w-[240px] sm:max-w-md">{post.data.seoTitle}</span>
+    </nav>
+
+    <header class="space-y-3">
+      <time
+        datetime={post.data.date}
+        class="inline-block px-3 py-1 rounded-full bg-bg-muted border border-line text-xs font-bold text-fg-muted tabular-nums"
+      >
+        {post.data.displayDate}
+      </time>
+      <h1 class="text-2xl sm:text-4xl font-extrabold text-fg tracking-tight leading-tight">
+        {post.data.displayTitle || post.data.title}
+      </h1>
+    </header>
+
+    <div class="rounded-3xl bg-bg-card border border-line p-6 sm:p-10 shadow-card space-y-8">
+      <div class="prose prose-slate dark:prose-invert max-w-none prose-a:text-brand-link prose-li:my-1">
+        <Content />
+      </div>
+
+      {galleryAssets.length > 0 && (
+        <div class="pt-4 border-t border-line space-y-3">
+          <h2 class="text-sm font-bold text-fg-muted">
+            Иллюстрации к публикации (нажмите для увеличения)
+          </h2>
+          <NewsGallery client:idle images={galleryAssets} title={post.data.seoTitle} />
+        </div>
+      )}
+    </div>
+
+    <div class="rounded-3xl bg-bg-card border border-line p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div class="space-y-1">
+        <h2 class="text-lg font-bold text-fg">Остались вопросы по теме публикации?</h2>
+        <p class="text-sm text-fg-muted">
+          Напишите нашим менеджерам в WhatsApp или приезжайте в ТРЦ «РИО» (ул. Фучика, д. 2).
+        </p>
+      </div>
+      <div class="flex flex-wrap gap-2.5 shrink-0">
+        <a
+          href={buildWhatsAppUrl(`Здравствуйте! Вопрос по публикации «${post.data.seoTitle}» в SUPER STORE.`)}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-goal="click_whatsapp"
+          class="px-5 py-3 rounded-xl bg-brand hover:bg-brand-hover text-white text-sm font-bold transition-colors"
+        >
+          Написать в WhatsApp
+        </a>
+        <a
+          href="/news/"
+          class="px-4 py-3 rounded-xl bg-bg-muted hover:bg-line text-sm font-semibold text-fg transition-colors"
+        >
+          Ко всем новостям
+        </a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

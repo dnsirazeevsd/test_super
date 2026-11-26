@@ -1,0 +1,131 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import StoreMapBlock from '../components/StoreMapBlock.astro';
+import StorePhotos from '../components/StorePhotos.astro';
+import MessengerIcon from '../components/MessengerIcon.astro';
+import siteData from '../data/site.json';
+import { buildWhatsAppUrl, getYandexOrgLink, pluralReviews } from '../lib/catalog';
+
+const addr = siteData.contacts.address;
+// When the verified org URL is configured, the route link lands on the store card with reviews;
+// otherwise it falls back to address search (no invented coordinates).
+const routeSearchUrl = `https://yandex.ru/maps/?text=${encodeURIComponent(`${addr.city}, ${addr.street}, ${addr.mall}`)}`;
+const yandexOrgLink = getYandexOrgLink();
+const routeLink = yandexOrgLink ?? routeSearchUrl;
+const mallDirections = (siteData.contacts.mallDirections || '').trim();
+---
+
+<BaseLayout
+  title="Контакты магазина SUPER STORE в Санкт-Петербурге — ул. Фучика, д. 2, ТРЦ «РИО»"
+  description="Адрес, телефоны и режим работы магазина техники SUPER STORE: Санкт-Петербург, улица Фучика, д. 2, ТРЦ «РИО», ежедневно с 10:00 до 22:00. Телефоны +7 (931) 202-00-78 и +7 (931) 202-00-88."
+  canonicalPath="/contacts/"
+>
+  <section class="pt-10 lg:pt-16 pb-20 lg:pb-28">
+    <div class="shell space-y-14">
+      <nav aria-label="Хлебные крошки" class="type-small text-fg-muted flex items-center gap-2">
+        <a href="/" class="hover:text-brand transition-colors no-underline">Главная</a>
+        <span aria-hidden="true">/</span>
+        <span class="text-fg">Контакты</span>
+      </nav>
+
+      <div class="max-w-[60ch] space-y-6">
+        <h1 class="type-display !text-[2.25rem] lg:!text-[3rem] m-0">Контакты и адрес магазина</h1>
+        <p class="type-body text-fg-muted m-0">
+          Мы находимся в ТРЦ «РИО» в Санкт-Петербурге и работаем ежедневно без выходных
+          с 10:00 до 22:00. Перед приездом рекомендуем уточнить наличие выбранной модели
+          по телефону или в мессенджере.
+        </p>
+      </div>
+
+      <!-- Store photos (CSS placeholders until real files are dropped in) — first, right after the intro -->
+      <StorePhotos />
+
+      <!-- Address, hours, phones -->
+      <section class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16" aria-label="Адрес и телефоны">
+        <div class="space-y-3">
+          <h2 class="type-small font-semibold text-fg-muted uppercase tracking-wide m-0">Адрес</h2>
+          <p class="type-body m-0">{addr.full}</p>
+          <p class="type-body text-fg-muted m-0">{siteData.contacts.hours.display}</p>
+          {yandexOrgLink && (
+            <a
+              href={yandexOrgLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1.5 w-fit hover:text-brand transition-colors"
+            >
+              <span class="font-semibold text-fg whitespace-nowrap">★ {siteData.contacts.yandexOrg.rating}</span>
+              <span class="text-fg-muted whitespace-nowrap">
+                · {siteData.contacts.yandexOrg.reviewCount} {pluralReviews(siteData.contacts.yandexOrg.reviewCount)} на Яндекс Картах
+              </span>
+              <svg class="w-4 h-4 text-fg-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </a>
+          )}
+        </div>
+        <div class="space-y-3">
+          <h2 class="type-small font-semibold text-fg-muted uppercase tracking-wide m-0">Телефоны</h2>
+          <div class="space-y-1">
+            {siteData.contacts.phones.map((phone) => (
+              <a
+                href={phone.href}
+                data-goal="click_phone"
+                data-copy-phone={phone.display}
+                class="block text-xl font-semibold tabular-nums text-fg hover:text-brand transition-colors no-underline w-fit"
+              >
+                {phone.display}
+              </a>
+            ))}
+          </div>
+          <div class="flex flex-wrap items-center gap-x-7 gap-y-3 pt-2">
+            <a
+              href={siteData.contacts.messengers.telegram.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-goal="click_telegram"
+              class="inline-flex items-center gap-2 font-semibold text-fg hover:text-brand transition-colors no-underline"
+            >
+              <MessengerIcon name="telegram" />
+              Telegram
+            </a>
+            <a
+              href={buildWhatsAppUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-goal="click_whatsapp"
+              class="inline-flex items-center gap-2 font-semibold text-fg hover:text-brand transition-colors no-underline"
+            >
+              <MessengerIcon name="whatsapp" />
+              WhatsApp
+            </a>
+            <a
+              href={siteData.contacts.messengers.viber.url}
+              data-goal="click_viber"
+              class="inline-flex items-center gap-2 font-semibold text-fg hover:text-brand transition-colors no-underline"
+            >
+              <MessengerIcon name="viber" />
+              Viber
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Map: action links live ABOVE the container so they never overlap the map -->
+      <section class="space-y-6" aria-label="Карта проезда">
+        <div class="flex flex-wrap items-center gap-x-10 gap-y-2">
+          <a href={routeLink} target="_blank" rel="noopener noreferrer" class="arrow-link">
+            Построить маршрут в Яндекс Картах
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+        </div>
+        {mallDirections && (
+          <p class="type-body text-fg-muted max-w-[60ch] m-0">{mallDirections}</p>
+        )}
+        <StoreMapBlock />
+      </section>
+
+    </div>
+  </section>
+</BaseLayout>

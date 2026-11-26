@@ -1,0 +1,39 @@
+{
+  "_comment": "Registry of swappable real photos. Drop a file into public/images/store/<key>.webp and it replaces the CSS placeholder automatically on the next build. Keep the listed dimensions.",
+  "store": [
+    { "key": "store-1", "width": 2400, "height": 1350, "ratio": "16 / 9" },
+    { "key": "store-2", "width": 1600, "height": 1200, "ratio": "4 / 3" },
+    { "key": "store-3", "width": 1600, "height": 1200, "ratio": "4 / 3" },
+    { "key": "store-4", "width": 1600, "height": 1200, "ratio": "4 / 3" }
+  ],
+  "_products_comment": "Expected product photos (owner-supplied). Each entry points to the exact file the app looks for at build time: if the file is present in public/images/products/, the product image is wired automatically (catalog tiles, product page gallery, structured data); while the file is missing, the «Фото уточняется у менеджера» placeholder stays. Spec per file: WebP (AVIF optional), portrait 4:5, 1600×2000 px, device centered with even margins, transparent or uniform #F7F7F9 background, no text, no watermark, ≤ 300 KB. Run `npm run images:check` to see which files are present, `npm run images:prepare -- <input-file> <slug>` to prep a dropped photo. See docs/ADDING-PRODUCT-PHOTOS.md.",
+  "products": [
+    {
+      "slug": "iphone-17-air",
+      "imageKey": "iphones/iphone-17-air-space-black-front",
+      "expectedFile": "/images/products/iphone-17-air-space-black-front.webp",
+      "width": 1600,
+      "height": 2000,
+      "ratio": "4 / 5",
+      "alt": "iPhone 17 Air Space Black, фото"
+    },
+    {
+      "slug": "iphone-16-pro",
+      "imageKey": "iphones/iphone-16-pro-front",
+      "expectedFile": "/images/products/iphone-16-pro-front.webp",
+      "width": 1600,
+      "height": 2000,
+      "ratio": "4 / 5",
+      "alt": "iPhone 16 Pro, фото"
+    },
+    {
+      "slug": "macbook-neo-13-a16",
+      "imageKey": "other/macbook-neo-13-a16-front",
+      "expectedFile": "/images/products/macbook-neo-13-a16-front.webp",
+      "width": 1600,
+      "height": 2000,
+      "ratio": "4 / 5",
+      "alt": "MacBook Neo 13 A16, фото"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+---
+import siteData from '../data/site.json';
+import { buildWhatsAppUrl } from '../lib/catalog';
+
+const primaryPhone = siteData.contacts.phones[0];
+const whatsappHref = buildWhatsAppUrl();
+---
+
+<!-- Mobile-only slim bar: appears after scrolling past the hero; text links keep "one filled button per screen" true.
+     Uses `inert` (not aria-hidden) while hidden so its focusable links are never in the tab order. -->
+<div
+  id="mobile-action-bar"
+  class="md:hidden fixed bottom-0 inset-x-0 z-40 bg-bg pt-2.5 pb-[calc(10px+env(safe-area-inset-bottom))] px-5 opacity-0 translate-y-full transition-all duration-300"
+  role="region"
+  aria-label="Быстрая связь с магазином"
+  inert
+>
+  <div class="flex items-center justify-around">
+    <a
+      href={primaryPhone.href}
+      data-goal="click_phone"
+      class="type-small font-semibold tabular-nums whitespace-nowrap text-fg no-underline"
+    >
+      Позвонить
+    </a>
+    <span class="w-px h-4" style="background-color: var(--divider);" aria-hidden="true"></span>
+    <a
+      href={whatsappHref}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-goal="click_whatsapp"
+      class="type-small font-semibold whitespace-nowrap text-fg hover:text-brand transition-colors no-underline inline-flex items-center gap-1.5"
+    >
+      WhatsApp
+      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </a>
+  </div>
+</div>
+
+<script>
+  // Reveal the bar once the visitor scrolls past the hero section.
+  const bar = document.getElementById('mobile-action-bar');
+  const hero = document.getElementById('hero');
+  const setShown = (shown: boolean) => {
+    bar?.classList.toggle('opacity-0', !shown);
+    bar?.classList.toggle('translate-y-full', !shown);
+    if (shown) bar?.removeAttribute('inert');
+    else bar?.setAttribute('inert', '');
+  };
+
+  if (bar && hero && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      ([entry]) => setShown(!entry.isIntersecting),
+      { threshold: 0.05 }
+    );
+    io.observe(hero);
+  } else if (bar) {
+    setShown(true);
+  }
+</script>
