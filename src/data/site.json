@@ -41,10 +41,10 @@
       "mall": "ТРЦ «РИО»",
       "postalCode": "192102",
       "coordinates": {
-        "lat": 59.87495,
-        "lon": 30.38225
+        "lat": 59.877127,
+        "lon": 30.358888
       },
-      "yandexMapsLink": "https://yandex.ru/maps/?pt=30.38225,59.87495&z=16&l=map",
+      "yandexMapsLink": "https://yandex.ru/maps/org/apple_super_store/19253438497/?ll=30.358888%2C59.877127&z=16",
       "twoGisLink": "https://2gis.ru/spb/search/%D0%A4%D1%83%D1%87%D0%B8%D0%BA%D0%B0%202%20%D0%A2%D0%A0%D0%A6%20%D0%A0%D0%98%D0%9E"
     },
     "hours": {
@@ -68,8 +68,8 @@
     },
     "mallDirections": "",
     "yandexOrg": {
-      "_note": "Verified Yandex Maps organization card. Paste the real org URL to activate the rating line on the homepage and /contacts/ and to point both map links at the org card.",
-      "url": "[YANDEX_ORG_URL]",
+      "_note": "Verified Yandex Maps organization card.",
+      "url": "https://yandex.ru/maps/org/apple_super_store/19253438497/?ll=30.358888%2C59.877127&z=16",
       "rating": "5,0",
       "reviewCount": 55,
       "asOf": "2026-11"

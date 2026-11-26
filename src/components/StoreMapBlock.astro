@@ -3,13 +3,9 @@ import siteData from '../data/site.json';
 import { getYandexOrgLink } from '../lib/catalog';
 
 const addr = siteData.contacts.address;
-// When the verified org URL is configured, both map links land on the store card with reviews.
 const mapLink = getYandexOrgLink() ?? addr.yandexMapsLink;
 ---
 
-<!-- Minimal map block: static schematic pre-load state; the live Yandex map
-     auto-loads via IntersectionObserver when the block approaches the viewport.
-     The «Открыть в Яндекс Картах» link sits ABOVE the container so it never overlaps the map. -->
 <div class="space-y-4">
   <div class="flex flex-wrap items-center gap-x-8 gap-y-2">
     <a
@@ -25,72 +21,36 @@ const mapLink = getYandexOrgLink() ?? addr.yandexMapsLink;
     </a>
   </div>
 
-  <div
-    class="relative w-full aspect-[4/3] lg:aspect-[16/10] overflow-hidden"
+  <a
+    href={mapLink}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Открыть магазин SUPER STORE в ТРЦ РИО на Яндекс Картах"
+    class="block relative w-full aspect-[4/3] lg:aspect-[16/10] overflow-hidden group"
     style="background-color: var(--surface);"
-    data-map-container
   >
-    <div data-map-facade class="absolute inset-0">
-      <!-- Clean street schematic (static pre-load state, zero 3rd-party requests) -->
-      <svg
-        class="absolute inset-0 w-full h-full pointer-events-none"
-        viewBox="0 0 800 500"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-      >
-        <rect width="800" height="500" fill="#F7F7F9" />
-        <rect x="60" y="40" width="240" height="150" rx="14" fill="#FFFFFF" />
-        <rect x="360" y="40" width="380" height="150" rx="14" fill="#FFFFFF" />
-        <rect x="60" y="270" width="240" height="190" rx="14" fill="#FFFFFF" />
-        <!-- RIO Mall footprint -->
-        <rect x="365" y="270" width="300" height="175" rx="18" fill="#EFEFF3" stroke="#531C79" stroke-opacity="0.35" stroke-width="2" />
-        <!-- Roads -->
-        <path d="M0 235 H800" stroke="#E6E6EA" stroke-width="20" />
-        <path d="M330 0 V500" stroke="#E6E6EA" stroke-width="16" />
-        <text x="80" y="228" fill="#6B6B76" font-size="15" font-family="Manrope, sans-serif">улица Фучика</text>
-        <text x="515" y="350" text-anchor="middle" fill="#111111" font-size="17" font-weight="600" font-family="Manrope, sans-serif">ТРЦ «РИО»</text>
-        <text x="515" y="374" text-anchor="middle" fill="#6B6B76" font-size="13" font-family="Manrope, sans-serif">SUPER STORE · ул. Фучика, д.&nbsp;2</text>
-        <!-- Pin -->
-        <circle cx="515" cy="320" r="12" fill="#531C79" />
-        <circle cx="515" cy="320" r="4" fill="#FFFFFF" />
-      </svg>
-    </div>
-  </div>
+    <svg
+      class="absolute inset-0 w-full h-full transition-transform duration-300 group-hover:scale-[1.01]"
+      viewBox="0 0 800 500"
+      fill="none"
+      xmlns="http://w3.org"
+      aria-hidden="true"
+    >
+      <rect width="800" height="500" fill="#F7F7F9" />
+      <rect x="60" y="40" width="240" height="150" rx="14" fill="#FFFFFF" />
+      <rect x="360" y="40" width="380" height="150" rx="14" fill="#FFFFFF" />
+      <rect x="60" y="270" width="240" height="190" rx="14" fill="#FFFFFF" />
+      <!-- RIO Mall footprint -->
+      <rect x="365" y="270" width="300" height="175" rx="18" fill="#EFEFF3" stroke="#531C79" stroke-opacity="0.35" stroke-width="2" />
+      <!-- Roads -->
+      <path d="M0 235 H800" stroke="#E6E6EA" stroke-width="20" />
+      <path d="M330 0 V500" stroke="#E6E6EA" stroke-width="16" />
+      <text x="80" y="228" fill="#6B6B76" font-size="15" font-family="Manrope, sans-serif">улица Фучика</text>
+      <text x="515" y="350" text-anchor="middle" fill="#111111" font-size="17" font-weight="600" font-family="Manrope, sans-serif">ТРЦ «РИО»</text>
+      <text x="515" y="374" text-anchor="middle" fill="#6B6B76" font-size="13" font-family="Manrope, sans-serif">SUPER STORE · ул. Фучика, д.&nbsp;2</text>
+      <!-- Pin -->
+      <circle cx="515" cy="320" r="12" fill="#531C79" />
+      <circle cx="515" cy="320" r="4" fill="#FFFFFF" />
+    </svg>
+  </a>
 </div>
-
-<script>
-  // Lazy-load the live Yandex map when the block approaches the viewport (no button).
-  const containers = document.querySelectorAll<HTMLElement>('[data-map-container]');
-  const iframeSrc =
-    'https://yandex.ru/map-widget/v1/?ll=30.382250%2C59.874950&z=16&pt=30.382250,59.874950,pm2vvm';
-
-  const mountMap = (container: HTMLElement) => {
-    if (container.dataset.mapMounted === 'true') return;
-    container.dataset.mapMounted = 'true';
-    const iframe = document.createElement('iframe');
-    iframe.src = iframeSrc;
-    iframe.title = 'Карта проезда: SUPER STORE в ТРЦ РИО, ул. Фучика, д. 2';
-    iframe.className = 'absolute inset-0 w-full h-full border-0';
-    iframe.loading = 'lazy';
-    iframe.referrerPolicy = 'no-referrer-when-downgrade';
-    container.appendChild(iframe);
-  };
-
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            mountMap(entry.target as HTMLElement);
-            observer.unobserve(entry.target);
-          }
-        }
-      },
-      { rootMargin: '320px 0px' }
-    );
-    containers.forEach((c) => observer.observe(c));
-  } else {
-    containers.forEach(mountMap);
-  }
-</script>
