@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import siteData from '../data/site.json';
+
+export function getStaticPaths() {
+  const pages: Array<{
+    params: { infoPage: string };
+    props: { title: string; seoTitle: string; seoDesc: string; content: string };
+  }> = [];
+
+  const about = (siteData.about || '').trim();
+  if (about) {
+    pages.push({
+      params: { infoPage: 'about' },
+      props: {
+        title: 'О компании',
+        seoTitle: 'О магазине SUPER STORE в Санкт-Петербурге — ТРЦ «РИО»',
+        seoDesc: 'Информация об офлайн-магазине техники SUPER STORE в Санкт-Петербурге (ул. Фучика, д. 2, ТРЦ «РИО»).',
+        content: about,
+      },
+    });
+  }
+
+  const warranty = (siteData.warranty || '').trim();
+  if (warranty) {
+    pages.push({
+      params: { infoPage: 'warranty' },
+      props: {
+        title: 'Гарантия',
+        seoTitle: 'Гарантия на технику в магазине SUPER STORE — Санкт-Петербург',
+        seoDesc: 'Условия гарантийного обслуживания на технику в офлайн-магазине SUPER STORE в ТРЦ «РИО» (Санкт-Петербург).',
+        content: warranty,
+      },
+    });
+  }
+
+  return pages;
+}
+
+interface Props {
+  title: string;
+  seoTitle: string;
+  seoDesc: string;
+  content: string;
+}
+
+const { infoPage } = Astro.params;
+const { title, seoTitle, seoDesc, content } = Astro.props;
+const paragraphs = content.split(/\n{2,}/).map((p) => p.trim()).filter(Boolean);
+---
+
+<BaseLayout title={seoTitle} description={seoDesc} canonicalPath={`/${infoPage}/`}>
+  <section class="pt-10 lg:pt-16 pb-20 lg:pb-28">
+    <div class="shell max-w-[65ch] space-y-8">
+      <nav aria-label="Хлебные крошки" class="type-small text-fg-muted flex items-center gap-2">
+        <a href="/" class="hover:text-brand transition-colors no-underline">Главная</a>
+        <span aria-hidden="true">/</span>
+        <span class="text-fg">{title}</span>
+      </nav>
+
+      <h1 class="type-display !text-[2.25rem] lg:!text-[3rem] m-0">{title}</h1>
+
+      <div class="space-y-4 pt-6" style="border-top: 1px solid var(--divider);">
+        {paragraphs.map((p) => (
+          <p class="type-body text-fg m-0">{p}</p>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

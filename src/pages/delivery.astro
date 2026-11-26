@@ -1,0 +1,108 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import StoreMapBlock from '../components/StoreMapBlock.astro';
+import siteData from '../data/site.json';
+import { getDeliveryConditions, getDeliveryOptions } from '../lib/catalog';
+
+const options = getDeliveryOptions();
+const conditions = getDeliveryConditions();
+const addr = siteData.contacts.address;
+const primaryPhone = siteData.contacts.phones[0];
+---
+
+<BaseLayout
+  title="Доставка и самовывоз в Санкт-Петербурге и ЛО — SUPER STORE ТРЦ «РИО»"
+  description="Самовывоз из магазина SUPER STORE в ТРЦ «РИО» (ул. Фучика, д. 2) бесплатно, собственная курьерская доставка по Санкт-Петербургу (1 500 ₽) и Ленинградской области (1 000 ₽)."
+  canonicalPath="/delivery/"
+>
+  <section class="pt-10 lg:pt-16 pb-20 lg:pb-28">
+    <div class="shell space-y-14">
+      <nav aria-label="Хлебные крошки" class="type-small text-fg-muted flex items-center gap-2">
+        <a href="/" class="hover:text-brand transition-colors no-underline">Главная</a>
+        <span aria-hidden="true">/</span>
+        <span class="text-fg">Доставка и получение</span>
+      </nav>
+
+      <div class="max-w-[60ch] space-y-5">
+        <h1 class="type-display !text-[2.25rem] lg:!text-[3rem] m-0">Доставка и получение</h1>
+        <p class="type-body text-fg-muted m-0">
+          Вы можете забрать устройство самостоятельно в офлайн-магазине в ТРЦ «РИО» или оформить
+          собственную курьерскую доставку магазина по Санкт-Петербургу и Ленинградской области.
+        </p>
+      </div>
+
+      <!-- Delivery options from site.json -->
+      <section aria-labelledby="delivery-options-title" class="space-y-6">
+        <h2 id="delivery-options-title" class="type-display !text-[1.5rem] lg:!text-[2rem] m-0">
+          Способы получения
+        </h2>
+        <div style="border-top: 1px solid var(--divider);">
+          {options.map((opt) => (
+            <div
+              class="py-6 flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 sm:gap-8"
+              style="border-bottom: 1px solid var(--divider);"
+            >
+              <div class="space-y-1 max-w-[60ch]">
+                <div class="text-lg font-semibold text-fg">{opt.label}</div>
+                <div class="type-body text-fg-muted">{opt.detail}</div>
+              </div>
+              <div class="text-lg font-semibold text-fg tabular-nums whitespace-nowrap">
+                {opt.priceLabel}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Confirmed delivery conditions from site.json -->
+      {conditions.length > 0 && (
+        <section aria-labelledby="delivery-conditions-title" class="space-y-6">
+          <h2 id="delivery-conditions-title" class="type-display !text-[1.5rem] lg:!text-[2rem] m-0">
+            Порядок доставки и проверки
+          </h2>
+          <ul class="list-none m-0 p-0" style="border-top: 1px solid var(--divider);">
+            {conditions.map((cond) => (
+              <li
+                class="py-5 type-body text-fg max-w-[60ch]"
+                style="border-bottom: 1px solid var(--divider);"
+              >
+                {cond}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <!-- Store pickup address & hours -->
+      <section aria-labelledby="pickup-address-title" class="space-y-8 pt-4">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+          <div class="lg:col-span-5 space-y-4">
+            <h2 id="pickup-address-title" class="type-display !text-[1.5rem] lg:!text-[2rem] m-0">
+              Пункт самовывоза
+            </h2>
+            <p class="type-body m-0">{addr.full}</p>
+            <p class="type-body text-fg-muted m-0">{siteData.contacts.hours.display}</p>
+            <div class="pt-3 flex flex-wrap items-center gap-x-8 gap-y-4">
+              <a href="/catalog/" class="btn">
+                Выбрать устройство
+              </a>
+              <a
+                href={primaryPhone.href}
+                data-goal="click_phone"
+                class="arrow-link tabular-nums whitespace-nowrap"
+              >
+                {primaryPhone.display}
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div class="lg:col-span-7">
+            <StoreMapBlock />
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+</BaseLayout>

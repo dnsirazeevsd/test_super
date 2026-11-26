@@ -1,0 +1,645 @@
+---
+import siteData from '../data/site.json';
+import { getDeliveryOptions } from '../lib/catalog';
+
+const deliveryOptions = getDeliveryOptions();
+const primaryPhone = siteData.contacts.phones[0];
+const consentText = (siteData.leadForm?.consentText || 'Согласен на обработку персональных данных').trim();
+const consentUrl = (siteData.leadForm?.consentUrl || '/privacy/').trim();
+
+const leadEndpoint = (import.meta.env.PUBLIC_LEAD_ENDPOINT || '').trim();
+const isDemoMode = !leadEndpoint && import.meta.env.PUBLIC_DEMO_MODE === 'true';
+
+// Split consentText around "персональных данных" if present so the phrase links cleanly to /privacy/;
+// otherwise link the full editable text.
+const consentMatch = consentText.match(/^(.*?)(персональных данных)(.*)$/i);
+---
+
+<dialog
+  id="lead-modal"
+  class="modal-dialog fixed inset-0 z-[100] m-0 w-full h-full overflow-y-auto"
+  aria-labelledby="lead-modal-title"
+  data-endpoint={leadEndpoint}
+  data-demo={isDemoMode ? 'true' : 'false'}
+>
+  <div class="min-h-full flex items-center justify-center p-4 sm:p-6" data-lead-backdrop>
+    <div
+      class="modal-panel w-full max-w-[520px] bg-bg text-fg rounded-2xl p-6 sm:p-8 relative"
+      data-lead-panel
+    >
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <h2 id="lead-modal-title" class="text-2xl font-semibold leading-snug m-0" data-lead-heading>
+            Забронировать устройство
+          </h2>
+          {isDemoMode && (
+            <p
+              class="type-small text-fg-muted mt-1.5 mb-0"
+              data-lead-demo-badge
+            >
+              Демо: заявка не отправляется
+            </p>
+          )}
+        </div>
+        <button
+          type="button"
+          class="p-2 -mr-2 -mt-1 text-fg-muted hover:text-fg bg-transparent"
+          aria-label="Закрыть окно заявки"
+          data-lead-close
+        >
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+            <path d="M6 6l12 12M18 6 6 18" stroke-linecap="round" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Summary block (#F7F7F9 surface, zero borders/shadows, delivery shown on its own line) -->
+      <div
+        class="mt-5 rounded-xl p-4 sm:p-5 space-y-2"
+        style="background-color: var(--surface);"
+        data-lead-summary
+      >
+        <div class="space-y-1.5" data-lead-summary-rows></div>
+        <div
+          class="pt-2 mt-2 flex items-baseline justify-between gap-4 type-small"
+          style="border-top: 1px solid var(--divider);"
+          data-lead-delivery-summary
+        >
+          <span class="text-fg-muted">Получение</span>
+          <span class="font-semibold text-fg text-right" data-lead-delivery-summary-value>
+            {deliveryOptions[0] ? `${deliveryOptions[0].label} — ${deliveryOptions[0].priceLabel}` : ''}
+          </span>
+        </div>
+      </div>
+
+      <!-- Form state -->
+      <form class="mt-6 space-y-4" novalidate data-lead-form>
+        <!-- Honeypot (off-screen, excluded from tab order) -->
+        <div
+          aria-hidden="true"
+          style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;"
+        >
+          <label for="lead-website">Веб-сайт</label>
+          <input
+            type="text"
+            id="lead-website"
+            name="website"
+            tabindex="-1"
+            autocomplete="off"
+          />
+        </div>
+
+        <div>
+          <label for="lead-name" class="type-small font-semibold text-fg block mb-1.5">
+            Имя
+          </label>
+          <input
+            id="lead-name"
+            name="name"
+            type="text"
+            required
+            maxlength="80"
+            autocomplete="name"
+            placeholder="Как к вам обращаться"
+            class="lead-input"
+          />
+          <p class="type-small mt-1 mb-0 hidden" style="color: #B91C1C;" data-error-for="name"></p>
+        </div>
+
+        <div>
+          <label for="lead-phone" class="type-small font-semibold text-fg block mb-1.5">
+            Телефон
+          </label>
+          <input
+            id="lead-phone"
+            name="phone"
+            type="tel"
+            inputmode="numeric"
+            required
+            autocomplete="tel"
+            placeholder="+7 (___) ___-__-__"
+            class="lead-input tabular-nums"
+          />
+          <p class="type-small mt-1 mb-0 hidden" style="color: #B91C1C;" data-error-for="phone"></p>
+        </div>
+
+        <div>
+          <label for="lead-delivery" class="type-small font-semibold text-fg block mb-1.5">
+            Способ получения
+          </label>
+          <select id="lead-delivery" name="receiving" class="lead-input">
+            {deliveryOptions.map((opt) => (
+              <option
+                value={opt.id}
+                data-label={opt.label}
+                data-detail={opt.detail}
+                data-price-label={opt.priceLabel}
+              >
+                {opt.label} ({opt.detail}) — {opt.priceLabel}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div class="pt-1">
+          <label for="lead-consent" class="flex items-start gap-3 cursor-pointer type-small text-fg-muted">
+            <input
+              id="lead-consent"
+              name="consent"
+              type="checkbox"
+              required
+              class="mt-1 w-4 h-4 shrink-0 accent-brand"
+            />
+            <span>
+              {consentMatch ? (
+                <>
+                  {consentMatch[1]}
+                  <a href={consentUrl} class="text-fg underline underline-offset-2 hover:text-brand">
+                    {consentMatch[2]}
+                  </a>
+                  {consentMatch[3]}
+                </>
+              ) : (
+                <a href={consentUrl} class="text-fg underline underline-offset-2 hover:text-brand">
+                  {consentText}
+                </a>
+              )}
+            </span>
+          </label>
+          <p class="type-small mt-1 mb-0 hidden" style="color: #B91C1C;" data-error-for="consent"></p>
+        </div>
+
+        <div class="pt-2">
+          <button type="submit" class="btn w-full" data-lead-submit>
+            Забронировать
+          </button>
+        </div>
+      </form>
+
+      <!-- Success state -->
+      <div class="mt-6 space-y-5 hidden" data-lead-success role="status" aria-live="polite">
+        <p class="type-body font-semibold text-fg m-0">
+          Заявка принята. Менеджер свяжется с вами.
+        </p>
+        {isDemoMode && (
+          <p class="type-small text-fg-muted m-0">
+            Демо: заявка не отправляется
+          </p>
+        )}
+        <div class="pt-1">
+          <button
+            type="button"
+            class="arrow-link"
+            data-lead-close
+          >
+            Закрыть
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Error / Call-us fallback state -->
+      <div class="mt-6 space-y-4 hidden" data-lead-error role="alert">
+        <p class="type-body text-fg m-0">
+          Не удалось отправить. Позвоните нам:{' '}
+          <a
+            href={primaryPhone.href}
+            data-goal="click_phone"
+            class="font-semibold tabular-nums whitespace-nowrap text-fg underline underline-offset-4 hover:text-brand"
+          >
+            {primaryPhone.display}
+          </a>.
+        </p>
+        <div class="pt-1 flex flex-wrap items-center gap-6">
+          <a href={primaryPhone.href} data-goal="click_phone" class="btn">
+            Позвонить {primaryPhone.display}
+          </a>
+          <button
+            type="button"
+            class="type-small font-semibold text-fg-muted hover:text-fg bg-transparent p-0"
+            data-lead-retry
+          >
+            Попробовать снова
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  .lead-input {
+    display: block;
+    width: 100%;
+    background-color: var(--bg);
+    border: 1px solid var(--divider);
+    border-radius: 10px;
+    padding: 11px 14px;
+    font-size: 16px; /* >=16px prevents iOS zoom-on-focus */
+    line-height: 1.4;
+    color: var(--text);
+  }
+  .lead-input::placeholder {
+    color: var(--muted);
+  }
+  .lead-input:focus {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 1px;
+  }
+</style>
+
+<script>
+  import { trackGoal } from '../lib/analytics';
+  import { simpleMotion } from '../lib/motion';
+  import type { LeadModalPayload } from '../lib/lead';
+
+  function formatRub(price: number): string {
+    return `${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '\u00A0')}\u00A0₽`;
+  }
+
+  /** Extract up to 10 national subscriber digits after +7 / 8. */
+  function extractTenDigits(raw: string): string {
+    let digits = raw.replace(/\D/g, '');
+    if (!digits) return '';
+    if (digits.startsWith('7') || digits.startsWith('8')) {
+      digits = digits.slice(1);
+    }
+    return digits.slice(0, 10);
+  }
+
+  function formatRuPhone(digits10: string): string {
+    if (!digits10) return '';
+    const p1 = digits10.slice(0, 3);
+    const p2 = digits10.slice(3, 6);
+    const p3 = digits10.slice(6, 8);
+    const p4 = digits10.slice(8, 10);
+    let out = '+7';
+    if (p1) out += ` (${p1}`;
+    if (digits10.length >= 3) out += ')';
+    if (p2) out += ` ${p2}`;
+    if (p3) out += `-${p3}`;
+    if (p4) out += `-${p4}`;
+    return out;
+  }
+
+  function initLeadModal() {
+    const dialog = document.getElementById('lead-modal') as HTMLDialogElement | null;
+    if (!dialog || dialog.dataset.bound === 'true') return;
+    dialog.dataset.bound = 'true';
+
+    const endpoint = (dialog.dataset.endpoint || '').trim();
+    const isDemo = dialog.dataset.demo === 'true';
+
+    const heading = dialog.querySelector<HTMLElement>('[data-lead-heading]')!;
+    const summaryRows = dialog.querySelector<HTMLElement>('[data-lead-summary-rows]')!;
+    const deliverySummaryVal = dialog.querySelector<HTMLElement>('[data-lead-delivery-summary-value]')!;
+    const form = dialog.querySelector<HTMLFormElement>('[data-lead-form]')!;
+    const submitBtn = dialog.querySelector<HTMLButtonElement>('[data-lead-submit]')!;
+    const successBox = dialog.querySelector<HTMLElement>('[data-lead-success]')!;
+    const errorBox = dialog.querySelector<HTMLElement>('[data-lead-error]')!;
+    const retryBtn = dialog.querySelector<HTMLButtonElement>('[data-lead-retry]');
+    const nameInput = dialog.querySelector<HTMLInputElement>('#lead-name')!;
+    const phoneInput = dialog.querySelector<HTMLInputElement>('#lead-phone')!;
+    const deliverySelect = dialog.querySelector<HTMLSelectElement>('#lead-delivery')!;
+    const consentInput = dialog.querySelector<HTMLInputElement>('#lead-consent')!;
+    const honeypotInput = dialog.querySelector<HTMLInputElement>('#lead-website')!;
+
+    let currentPayload: LeadModalPayload = { type: 'reserve' };
+    let lastTrigger: HTMLElement | null = null;
+    let openedAt = 0;
+    let closing = false;
+    let submitting = false;
+
+    const setFieldError = (field: 'name' | 'phone' | 'consent', message: string) => {
+      const el = dialog.querySelector<HTMLElement>(`[data-error-for="${field}"]`);
+      const input =
+        field === 'name' ? nameInput : field === 'phone' ? phoneInput : consentInput;
+      if (!el) return;
+      if (message) {
+        el.textContent = message;
+        el.classList.remove('hidden');
+        input.setAttribute('aria-invalid', 'true');
+      } else {
+        el.textContent = '';
+        el.classList.add('hidden');
+        input.removeAttribute('aria-invalid');
+      }
+    };
+
+    const clearErrors = () => {
+      setFieldError('name', '');
+      setFieldError('phone', '');
+      setFieldError('consent', '');
+    };
+
+    const syncDeliverySummary = () => {
+      const opt = deliverySelect.selectedOptions[0];
+      if (!opt) return;
+      const label = opt.getAttribute('data-label') || opt.textContent || '';
+      const priceLabel = opt.getAttribute('data-price-label') || '';
+      deliverySummaryVal.textContent = priceLabel ? `${label} — ${priceLabel}` : label;
+    };
+
+    const addSummaryRow = (label: string, value: string) => {
+      const row = document.createElement('div');
+      row.className = 'flex items-baseline justify-between gap-4 type-small';
+      const l = document.createElement('span');
+      l.className = 'text-fg-muted shrink-0';
+      l.textContent = label;
+      const v = document.createElement('span');
+      v.className = 'font-semibold text-fg text-right';
+      v.textContent = value;
+      row.append(l, v);
+      summaryRows.appendChild(row);
+    };
+
+    const renderSummary = (payload: LeadModalPayload) => {
+      summaryRows.innerHTML = '';
+      if (payload.type === 'trade-in' || payload.type === 'buyback') {
+        heading.textContent =
+          payload.type === 'trade-in' ? 'Заявка на Trade-In' : 'Заявка на выкуп устройства';
+        submitBtn.textContent = 'Отправить заявку';
+        // Strict rule: Trade-In / buyback shows model, storage, condition and NO prices.
+        if (payload.model) addSummaryRow('Модель', payload.model);
+        if (payload.storage) addSummaryRow('Память', payload.storage);
+        if (payload.condition) addSummaryRow('Состояние', payload.condition);
+        if (!payload.model && !payload.storage && !payload.condition) {
+          addSummaryRow(
+            'Обращение',
+            payload.type === 'trade-in' ? 'Оценка по программе Trade-In' : 'Оценка и выкуп устройства'
+          );
+        }
+      } else {
+        heading.textContent = 'Забронировать устройство';
+        submitBtn.textContent = 'Забронировать';
+        if (payload.model) addSummaryRow('Модель', payload.model);
+        if (payload.color) addSummaryRow('Цвет', payload.color);
+        if (payload.storage) addSummaryRow('Память', payload.storage);
+        if (payload.sim) addSummaryRow('SIM', payload.sim);
+        if (typeof payload.price === 'number') addSummaryRow('Цена устройства', formatRub(payload.price));
+        if (!payload.model && typeof payload.price !== 'number') {
+          addSummaryRow('Запрос', 'Подбор и бронирование в магазине');
+        }
+      }
+      syncDeliverySummary();
+    };
+
+    const showView = (view: 'form' | 'success' | 'error') => {
+      form.classList.toggle('hidden', view !== 'form');
+      successBox.classList.toggle('hidden', view !== 'success');
+      errorBox.classList.toggle('hidden', view !== 'error');
+      if (view === 'success') {
+        successBox.classList.remove('lead-state-enter');
+        void successBox.offsetWidth;
+        successBox.classList.add('lead-state-enter');
+      } else if (view === 'error') {
+        errorBox.classList.remove('lead-state-enter');
+        void errorBox.offsetWidth;
+        errorBox.classList.add('lead-state-enter');
+      }
+    };
+
+    const closeModal = () => {
+      if (!dialog.open || closing) return;
+      if (simpleMotion()) {
+        dialog.close();
+        lastTrigger?.focus();
+        return;
+      }
+      closing = true;
+      dialog.classList.add('is-closing');
+      window.setTimeout(() => {
+        dialog.classList.remove('is-closing');
+        closing = false;
+        if (dialog.open) dialog.close();
+        lastTrigger?.focus();
+      }, 150);
+    };
+
+    const openModal = (rawPayload: LeadModalPayload, trigger?: HTMLElement | null) => {
+      let resolved: LeadModalPayload = { ...rawPayload };
+      // If opened from the mobile bottom bar on a product page, inherit the active configuration
+      if (
+        resolved.type === 'reserve' &&
+        !resolved.model &&
+        window.__SUPERSTORE_CURRENT_PRODUCT__
+      ) {
+        resolved = { ...window.__SUPERSTORE_CURRENT_PRODUCT__ };
+      }
+
+      currentPayload = resolved;
+      lastTrigger = trigger || (document.activeElement as HTMLElement | null);
+      openedAt = Date.now();
+      submitting = false;
+      submitBtn.disabled = false;
+      honeypotInput.value = '';
+      clearErrors();
+      renderSummary(resolved);
+      showView('form');
+
+      if (!dialog.open) {
+        dialog.classList.remove('is-closing');
+        dialog.showModal();
+      }
+      nameInput.focus();
+      trackGoal('lead_open', {
+        type: resolved.type,
+        model: resolved.model || undefined,
+      });
+    };
+
+    // Phone +7 mask (10 subscriber digits)
+    phoneInput.addEventListener('focus', () => {
+      if (!phoneInput.value) {
+        phoneInput.value = '+7 (';
+      }
+    });
+    phoneInput.addEventListener('blur', () => {
+      const digits = extractTenDigits(phoneInput.value);
+      if (!digits) phoneInput.value = '';
+    });
+    phoneInput.addEventListener('input', () => {
+      const digits = extractTenDigits(phoneInput.value);
+      phoneInput.value = digits ? formatRuPhone(digits) : '';
+      if (digits.length === 10) setFieldError('phone', '');
+    });
+    nameInput.addEventListener('input', () => {
+      if (nameInput.value.trim()) setFieldError('name', '');
+    });
+    consentInput.addEventListener('change', () => {
+      if (consentInput.checked) setFieldError('consent', '');
+    });
+    deliverySelect.addEventListener('change', syncDeliverySummary);
+
+    // Close controls, Escape, backdrop click, and strict focus trap
+    dialog.querySelectorAll<HTMLElement>('[data-lead-close]').forEach((btn) => {
+      btn.addEventListener('click', closeModal);
+    });
+    dialog.addEventListener('cancel', (ev) => {
+      ev.preventDefault();
+      closeModal();
+    });
+    dialog.addEventListener('click', (ev) => {
+      const target = ev.target as HTMLElement;
+      if (target === dialog || target.hasAttribute('data-lead-backdrop')) {
+        closeModal();
+      }
+    });
+    dialog.addEventListener('keydown', (ev) => {
+      if (ev.key !== 'Tab') return;
+      const focusable = Array.from(
+        dialog.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]):not([tabindex="-1"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      ).filter((el) => el.offsetParent !== null);
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (ev.shiftKey && document.activeElement === first) {
+        ev.preventDefault();
+        last.focus();
+      } else if (!ev.shiftKey && document.activeElement === last) {
+        ev.preventDefault();
+        first.focus();
+      }
+    });
+
+    retryBtn?.addEventListener('click', () => {
+      showView('form');
+      submitBtn.disabled = false;
+      submitting = false;
+      nameInput.focus();
+    });
+
+    form.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      if (submitting) return;
+      clearErrors();
+
+      const name = nameInput.value.trim();
+      const digits = extractTenDigits(phoneInput.value);
+      const consent = consentInput.checked;
+
+      let valid = true;
+      if (!name) {
+        setFieldError('name', 'Укажите ваше имя');
+        valid = false;
+      }
+      if (digits.length !== 10) {
+        setFieldError('phone', 'Введите 10 цифр номера после +7');
+        valid = false;
+      }
+      if (!consent) {
+        setFieldError('consent', 'Необходимо согласие на обработку персональных данных');
+        valid = false;
+      }
+      if (!valid) {
+        if (!name) nameInput.focus();
+        else if (digits.length !== 10) phoneInput.focus();
+        else consentInput.focus();
+        return;
+      }
+
+      const selectedOpt = deliverySelect.selectedOptions[0];
+      const receivingText = selectedOpt
+        ? `${selectedOpt.getAttribute('data-label') || ''} (${selectedOpt.getAttribute('data-detail') || ''}) — ${selectedOpt.getAttribute('data-price-label') || ''}`
+        : deliverySelect.value;
+
+      const specsParts =
+        currentPayload.type === 'trade-in' || currentPayload.type === 'buyback'
+          ? [
+              currentPayload.model,
+              currentPayload.storage ? `память: ${currentPayload.storage}` : null,
+              currentPayload.condition ? `состояние: ${currentPayload.condition}` : null,
+            ]
+          : [
+              currentPayload.title || currentPayload.model,
+              currentPayload.color ? `цвет: ${currentPayload.color}` : null,
+              currentPayload.storage ? `память: ${currentPayload.storage}` : null,
+              currentPayload.sim ? `SIM: ${currentPayload.sim}` : null,
+            ];
+
+      const body = {
+        type: currentPayload.type,
+        specs: specsParts.filter(Boolean).join(', ') || 'Уточнить с менеджером',
+        price:
+          currentPayload.type === 'reserve' && typeof currentPayload.price === 'number'
+            ? formatRub(currentPayload.price)
+            : '—',
+        receiving: receivingText,
+        name,
+        phone: `+7${digits}`,
+        phoneFormatted: formatRuPhone(digits),
+        pageUrl: window.location.href,
+        website: honeypotInput.value,
+        elapsedMs: Date.now() - openedAt,
+        consent: true,
+      };
+
+      // Demo mode vs Production without endpoint vs Live relay endpoint
+      if (!endpoint) {
+        if (isDemo) {
+          showView('success');
+          trackGoal('lead_submit_success', { type: currentPayload.type, demo: true });
+        } else {
+          showView('error');
+          trackGoal('lead_submit_error', { type: currentPayload.type, reason: 'no_endpoint' });
+        }
+        return;
+      }
+
+      submitting = true;
+      submitBtn.disabled = true;
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        showView('success');
+        trackGoal('lead_submit_success', { type: currentPayload.type });
+      } catch {
+        showView('error');
+        trackGoal('lead_submit_error', { type: currentPayload.type });
+      } finally {
+        submitting = false;
+        submitBtn.disabled = false;
+      }
+    });
+
+    window.openLeadModal = openModal;
+  }
+
+  // Global delegated click handler for declarative `[data-lead-open]` links (cards, mobile bar, services)
+  if (!(window as unknown as { __leadDelegated?: boolean }).__leadDelegated) {
+    (window as unknown as { __leadDelegated?: boolean }).__leadDelegated = true;
+    document.addEventListener('click', (ev) => {
+      const trigger = (ev.target as Element | null)?.closest<HTMLElement>('[data-lead-open]');
+      if (!trigger) return;
+      ev.preventDefault();
+      let payload: LeadModalPayload = { type: 'reserve' };
+      const raw = trigger.getAttribute('data-lead-open');
+      if (raw) {
+        try {
+          payload = JSON.parse(raw) as LeadModalPayload;
+        } catch {}
+      }
+      window.openLeadModal?.(payload, trigger);
+    });
+    window.addEventListener('superstore:lead-open', (ev) => {
+      const detail = (ev as CustomEvent<{ payload: LeadModalPayload; trigger?: HTMLElement | null }>).detail;
+      if (detail?.payload) window.openLeadModal?.(detail.payload, detail.trigger);
+    });
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    // Clear active product configuration when navigating away from a product page
+    if (!document.querySelector('[data-product-configurator]')) {
+      window.__SUPERSTORE_CURRENT_PRODUCT__ = null;
+    }
+    initLeadModal();
+  });
+</script>

@@ -1,7 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import siteData from '../data/site.json';
-import { buildWhatsAppUrl } from '../lib/catalog';
+import { getTelegramUrl, isTelegramEnabled } from '../lib/catalog';
+
+const primaryPhone = siteData.contacts.phones[0];
+const telegramHref = getTelegramUrl();
+const showTelegram = isTelegramEnabled() && Boolean(telegramHref);
 ---
 
 <BaseLayout
@@ -9,39 +13,46 @@ import { buildWhatsAppUrl } from '../lib/catalog';
   description="Запрашиваемая страница не найдена. Перейдите в каталог техники SUPER STORE или свяжитесь с менеджером магазина в ТРЦ «РИО»."
   canonicalPath="/404"
 >
-  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 text-center space-y-6">
-    <div class="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-brand-soft text-brand-link text-sm font-extrabold tabular-nums">
-      Ошибка 404
+  <section class="pt-16 lg:pt-24 pb-24 lg:pb-32">
+    <div class="shell max-w-[60ch] space-y-6">
+      <p class="type-small font-semibold text-fg-muted m-0">Ошибка 404</p>
+      <h1 class="type-display !text-[2.25rem] lg:!text-[3.25rem] m-0">
+        Такой страницы нет, но техника в наличии
+      </h1>
+      <p class="type-body text-fg-muted m-0">
+        Возможно, ссылка устарела после обновления сайта. Откройте каталог устройств или позвоните
+        нам — поможем найти нужную модель.
+      </p>
+      <div class="flex flex-wrap items-center gap-x-8 gap-y-4 pt-2">
+        <a href="/catalog/" class="btn">
+          Перейти в каталог
+        </a>
+        {showTelegram ? (
+          <a
+            href={telegramHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-goal="click_telegram"
+            class="arrow-link"
+          >
+            Написать в Telegram
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+        ) : (
+          <a
+            href={primaryPhone.href}
+            data-goal="click_phone"
+            class="arrow-link tabular-nums whitespace-nowrap"
+          >
+            {primaryPhone.display}
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+        )}
+      </div>
     </div>
-    <h1 class="text-3xl sm:text-5xl font-extrabold text-fg tracking-tight">
-      Такой страницы нет, но техника в наличии
-    </h1>
-    <p class="text-base sm:text-lg text-fg-muted max-w-xl mx-auto leading-relaxed">
-      Возможно, ссылка устарела после обновления сайта. Откройте каталог устройств или напишите нам в WhatsApp — мы поможем найти нужную модель.
-    </p>
-    <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
-      <a
-        href="/catalog/"
-        class="px-6 py-3.5 rounded-xl bg-brand hover:bg-brand-hover text-white text-sm sm:text-base font-bold transition-colors"
-      >
-        Перейти в каталог
-      </a>
-      <a
-        href={buildWhatsAppUrl()}
-        target="_blank"
-        rel="noopener noreferrer"
-        data-goal="click_whatsapp"
-        class="px-6 py-3.5 rounded-xl bg-bg-card hover:bg-bg-muted border border-line text-fg text-sm sm:text-base font-bold transition-colors"
-      >
-        Написать в WhatsApp
-      </a>
-      <a
-        href={siteData.contacts.phones[0].href}
-        data-goal="click_phone"
-        class="px-6 py-3.5 rounded-xl bg-bg-card hover:bg-bg-muted border border-line text-fg text-sm sm:text-base font-bold tabular-nums transition-colors"
-      >
-        {siteData.contacts.phones[0].display}
-      </a>
-    </div>
-  </div>
+  </section>
 </BaseLayout>

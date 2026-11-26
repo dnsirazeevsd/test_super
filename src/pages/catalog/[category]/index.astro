@@ -8,6 +8,8 @@ import {
   MANIFEST,
   type CategoryInfo,
   getGroupedModels,
+  getTelegramUrl,
+  isTelegramEnabled,
 } from '../../../lib/catalog';
 
 export function getStaticPaths() {
@@ -54,6 +56,9 @@ const itemListSchema = {
         categories={CATEGORIES}
         manifest={MANIFEST}
         initialCategory={categoryInfo.slug}
+        primaryPhoneHref={siteData.contacts.phones[0].href}
+        telegramEnabled={isTelegramEnabled()}
+        telegramHref={getTelegramUrl()}
       />
     </div>
   </section>

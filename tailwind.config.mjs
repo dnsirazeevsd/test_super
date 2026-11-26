@@ -34,9 +34,9 @@ export default {
         },
         brand: {
           DEFAULT: 'var(--accent)',
-          hover: 'var(--accent)',
+          hover: 'var(--accent-hover)',
           link: 'var(--accent)',
-          soft: 'rgba(109, 40, 217, 0.08)',
+          soft: 'rgba(83, 28, 121, 0.08)',
         },
         btn: {
           DEFAULT: 'var(--btn)',

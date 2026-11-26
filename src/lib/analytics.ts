@@ -2,10 +2,13 @@ import siteData from '../data/site.json';
 
 export type MetrikaGoal =
   | 'click_phone'
-  | 'click_whatsapp'
+  | 'click_telegram'
   | 'click_viber'
   | 'click_check_stock'
-  | 'trade_in_request';
+  | 'trade_in_request'
+  | 'lead_open'
+  | 'lead_submit_success'
+  | 'lead_submit_error';
 
 declare global {
   interface Window {
@@ -22,7 +25,6 @@ export function trackGoal(goal: MetrikaGoal, params?: Record<string, unknown>): 
   if (parsedId && typeof window.ym === 'function') {
     window.ym(parsedId, 'reachGoal', goal, params);
   } else if (import.meta.env?.DEV) {
-    // Helpful dev console trace until owner replaces [METRIKA_ID]
     console.debug(`[Metrika stub] reachGoal("${goal}")`, params || {});
   }
 }

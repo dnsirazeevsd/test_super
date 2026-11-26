@@ -125,7 +125,7 @@ Source images live in `assets/source/` and optimized AVIF/WebP derivatives are g
 
 - **One light theme.** Dark mode and the header theme toggle were removed entirely — there is no `dark:` styling and no toggle button anywhere.
 - **Neutrals:** page `#FFFFFF`, surface `#F7F7F9` (full-bleed alternating bands, product tiles, product photo area), text `#111111`, muted `#6B6B76`, dividers `#E6E6EA` (1px hairlines only).
-- **Accent:** violet `#6D28D9` is a small accent only — logo mark, link hover color, focus rings (`:focus-visible`), color-dot selection rings. Never used as a fill, banner or gradient. Buttons are solid `#111111` (hover `#333333`).
+- **Accent:** deep plum `#531C79` (hover `#3F1559`) is a small accent only — link hover color, focus rings (`:focus-visible`), color-dot selection rings. Semantic green `#1A7F4B` is reserved strictly for the «В наличии» dot and its text. Buttons are solid `#111111` (hover `#333333`).
 - **Type:** self-hosted Manrope (Cyrillic + Latin, weights 400 & 600 only, `public/fonts/*.woff2`, `font-display: swap`, cyrillic woff2 preloaded). Exactly three sizes: display `clamp(38px→66px)` with `line-height: 1.08; letter-spacing: -0.02em`, body `17px` mobile / `18px` desktop, small `14px`. Paragraphs are capped at `60ch` (`.measure`).
 - **Layout:** container max `1120px` (`.shell`); section padding `80/140px` (desktop) and `72/128px` for the slim Trade-In band; full-bleed sections alternate `#FFFFFF` / `#F7F7F9` and are separated by whitespace only.
 - **Buttons & links:** one filled style (`.btn`, max one per viewport — the homepage has two filled CTAs total, one in the hero and one in the Trade-In band, both prescribed) and one text-arrow link style (`.arrow-link`, hover violet).
@@ -133,16 +133,17 @@ Source images live in `assets/source/` and optimized AVIF/WebP derivatives are g
 - **Motion:** one system — fade + 20px translate on scroll (`[data-reveal]`, 550ms ease-out, IntersectionObserver), gentle staggered hero reveal; `prefers-reduced-motion` disables everything.
 - **Anchors:** `scroll-margin-top: 96px` on every `[id]` element so the sticky 64px header never overlaps anchored sections.
 - **Homepage is exactly 5 blocks:** header, hero, featured catalog, Trade-In slim band, contacts+map. Everything else (advantages, services grid, FAQ, news preview, review form, SEO paragraphs) lives on subpages.
-- **Logo & favicons:** `src/components/Logo.astro` is the single source of the mark (flat `#6D28D9` rounded square, white "S" monogram) — Header uses 28px, Footer 32px. Favicon set: `public/favicon.svg` (same SVG), `favicon-32.png`, `favicon.ico`, `icon-192.png`, `icon-512.png`, `apple-touch-icon.png` (180×180 solid square), declared in `<head>` + `public/site.webmanifest`. `npm run optimize-images` regenerates the flat OG banner (`og-default.jpg`); favicons are static files.
-- **Messengers:** icons live once in `src/lib/messenger-icons.ts` (monochrome paths) rendered by `src/components/MessengerIcon.astro` (Astro) / `MESSENGER_PATHS` (Preact). Telegram/WhatsApp/Viber links render in the footer (20px icons), homepage contacts, `/contacts/`, product pages and the Trade-In estimator (18px icons + text).
+- **Logo & favicons:** `src/components/Logo.astro` is the single source of the brand logo. Drop `src/assets/brand/logo-mark.svg` (or `.png`) and/or `src/assets/brand/logo-full.svg` to activate the real brand mark; until those files exist, `Logo.astro` renders only the text wordmark `SUPER STORE`.
+- **Messengers:** icons live once in `src/lib/messenger-icons.ts` (monochrome paths) rendered by `src/components/MessengerIcon.astro` (Astro) / `MESSENGER_PATHS` (Preact). Viber renders in the footer, homepage contacts, `/contacts/` and product pages; Telegram renders only when `site.json` `telegram.enabled` is `true` (`https://t.me/<username>` or `https://t.me/+<phone>` without `?text=`).
 
 ---
 
 ## Hidden UI Elements Pending Owner Data
 
-Elements that require owner-only data are **hidden, never shown as placeholders**. They live in `src/data/site.json` (`legalPlaceholders`, `ownerPending`, `integrations.formEndpoint`) and this checklist:
+Elements that require owner-only data are **hidden, never shown as placeholders**. They live in `src/data/site.json` (`legalPlaceholders`, `ownerPending`, `telegram`, `giftDescription`, `about`, `warranty`) and `src/data/products.json` (`description`, `specs`):
 
-1. **Telegram** — rendered with the default phone-chat link `https://t.me/+79312020078` (set in `src/data/site.json` → `contacts.messengers.telegram.url`). To swap to a `@username` link anytime, replace that URL with e. g. `https://t.me/superstore_spb` — every Telegram link (footer, homepage contacts, `/contacts/`, product pages, estimator) reads it from that single field. *(The apps helper bot `superstore.arfgift.ru` referenced by the news post is separate and already linked on `/services/data-transfer/`.)*
+1. **Telegram** — configured in `src/data/site.json` → `telegram: { enabled: false, username: "", phone: "79312020078" }`. Hidden while `enabled` is `false`. Set `enabled: true` (and optionally fill `username`) to render Telegram links across the site. *(The apps helper bot `superstore.arfgift.ru` referenced by the news post is separate and already linked on `/services/data-transfer/`.)*
+2. **Gift description, About & Warranty pages, Product specs** — `giftDescription`, `about`, and `warranty` in `site.json`, plus `description` and `specs[]` per item in `products.json`, stay hidden while empty; filling `about` or `warranty` automatically publishes `/about/` or `/warranty/` and enables the corresponding Footer link.
 2. **VK link** — the legacy `vk.com/Apple_SS_178` URL is kept in `site.json` (`contacts.messengers.vk`) but intentionally not rendered; restore the footer button only if the owner confirms that page.
 3. **Company legal details** (`[OWNER_COMPANY_NAME]`, `[OWNER_INN]`, `[OWNER_OGRN]`, `[OWNER_LEGAL_ADDRESS]`, `[OWNER_EMAIL]`) — the footer "Реквизиты продавца" line and the `/contacts/` "Реквизиты организации" block are hidden; `/privacy/` and `/terms/` use neutral wording ("реквизиты предоставляются по запросу"). Fill `legalPlaceholders` and re-add the blocks to publish.
 4. **Reviews / ratings** — the review form and all review UI were REMOVED entirely (owner decision, 2026-11-25): the `ReviewForm` component, its Metrika goal (`submit_review_form`) and the form-endpoint config no longer exist. Do not re-add reviews or ratings blocks; if the owner revisits this, a new decision is required.
@@ -165,14 +166,16 @@ Before pointing your production domain to the site, fill in these placeholders:
 3. **Yandex.Metrika Counter (`[METRIKA_ID]`):**
    - Create a **brand-new** Yandex.Metrika counter for your domain (do not reuse the old constructor counter).
    - Put the numeric counter ID into `src/data/site.json` → `integrations.metrikaId` (e.g. `"98765432"`).
-   - Create 6 JavaScript event goals in Yandex.Metrika matching these exact identifiers:
+   - Create 7 JavaScript event goals in Yandex.Metrika matching these exact identifiers:
      - `click_phone` — clicks on `+7 (931) 202-00-78` or `+7 (931) 202-00-88`
-     - `click_whatsapp` — clicks on general WhatsApp buttons
+     - `click_telegram` — clicks on Telegram links (when `telegram.enabled` is true)
      - `click_viber` — clicks on Viber buttons
-     - `click_check_stock` — clicks on product `"Узнать наличие"` buttons
-     - `trade_in_request` — clicks on the Trade-In estimator button «Узнать оценку в WhatsApp» on `/services/#trade-in`
-4. **Review Form Delivery (`[EMAIL_OR_TELEGRAM_BOT]`):**
-   - Open `src/components/ReviewForm.tsx` and connect your preferred webhook (e.g. a lightweight PHP/Node/Cloud Function endpoint on Timeweb/Yandex Cloud that forwards `{ name, contact, rating, message }` to your store's private Telegram channel via Bot API or email).
+     - `trade_in_request` — clicks on the Trade-In estimator CTA «Отправить заявку» on `/services/#trade-in`
+     - `lead_open` — opening the Lead Modal («Забронировать» / «Отправить заявку»)
+     - `lead_submit_success` — successful lead submission
+     - `lead_submit_error` — failed lead submission / phone fallback
+4. **Lead Relay (`/relay` Cloudflare Worker):**
+   - Deploy `relay/worker.js` following `relay/README.md` (`TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` stored strictly as Worker secrets) and pass `PUBLIC_LEAD_ENDPOINT` when running `npm run build`.
 
 ---
 

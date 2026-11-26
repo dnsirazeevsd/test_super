@@ -7,6 +7,8 @@ export const GET: APIRoute = async ({ site }) => {
   const origin = site ? site.origin : siteData.brand.domain;
   const news = await getCollection('news');
   const models = getGroupedModels();
+  const hasAbout = Boolean((siteData.about || '').trim());
+  const hasWarranty = Boolean((siteData.warranty || '').trim());
 
   const staticPaths = [
     '/',
@@ -15,6 +17,10 @@ export const GET: APIRoute = async ({ site }) => {
     ...models.map((m) => m.url),
     '/services/',
     ...siteData.services.map((s) => `/services/${s.slug}/`),
+    '/delivery/',
+    '/payment/',
+    ...(hasAbout ? ['/about/'] : []),
+    ...(hasWarranty ? ['/warranty/'] : []),
     '/news/',
     ...news.map((n) => `/news/${n.id}/`),
     '/contacts/',
@@ -22,7 +28,7 @@ export const GET: APIRoute = async ({ site }) => {
     '/terms/',
   ];
 
-  const today = '2026-11-25';
+  const today = '2026-11-26';
   const urlsXml = staticPaths
     .map(
       (p) => `  <url>

@@ -5,6 +5,7 @@ import siteData from '../data/site.json';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import MobileStickyBar from '../components/MobileStickyBar.astro';
+import LeadModal from '../components/LeadModal.astro';
 import CookieBanner from '../components/CookieBanner.astro';
 import type { ImageAsset } from '../lib/catalog';
 
@@ -147,7 +148,7 @@ const metrikaRaw = siteData.integrations.metrikaId;
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#6D28D9" />
+    <meta name="theme-color" content="#531C79" />
 
     <!-- Open Graph -->
     <meta property="og:locale" content="ru_RU" />
@@ -182,6 +183,7 @@ const metrikaRaw = siteData.integrations.metrikaId;
 
     <Footer />
     <MobileStickyBar />
+    <LeadModal />
     <CookieBanner />
 
     <!-- Yandex.Metrika Integration ([METRIKA_ID] placeholder — never reuses old constructor counter) -->
@@ -226,7 +228,7 @@ const metrikaRaw = siteData.integrations.metrikaId;
 
         window.addEventListener('superstore:analytics-consent', bootMetrika);
 
-        // Global goal tracking delegation for phone, WhatsApp, Viber, and stock inquiries
+        // Global goal tracking delegation for phone, messengers, and lead actions
         document.addEventListener('click', function (ev) {
           var el = ev.target && ev.target.closest ? ev.target.closest('[data-goal]') : null;
           if (!el) return;

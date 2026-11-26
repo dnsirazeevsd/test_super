@@ -2,32 +2,43 @@
 import siteData from '../data/site.json';
 import Logo from './Logo.astro';
 import MessengerIcon from './MessengerIcon.astro';
-import { buildWhatsAppUrl } from '../lib/catalog';
+import { getTelegramUrl, isTelegramEnabled } from '../lib/catalog';
+import type { MessengerName } from '../lib/messenger-icons';
 
 const messengers = siteData.contacts.messengers;
+const hasAbout = Boolean((siteData.about || '').trim());
+const hasWarranty = Boolean((siteData.warranty || '').trim());
+
 const navLinks = [
   { href: '/catalog/', label: 'Каталог' },
   { href: '/services/', label: 'Услуги' },
+  { href: '/delivery/', label: 'Доставка' },
+  { href: '/payment/', label: 'Оплата' },
   { href: '/news/', label: 'Новости' },
   { href: '/contacts/', label: 'Контакты' },
+  ...(hasAbout ? [{ href: '/about/', label: 'О компании' }] : []),
+  ...(hasWarranty ? [{ href: '/warranty/', label: 'Гарантия' }] : []),
 ];
 
-// Only channels with owner-confirmed links are rendered: Telegram (+79…), WhatsApp, Viber.
-const messengerLinks = [
-  {
-    name: 'telegram' as const,
-    label: 'Написать в Telegram',
-    href: messengers.telegram.url,
-    goal: 'click_telegram',
-    external: true,
-  },
-  {
-    name: 'whatsapp' as const,
-    label: 'Написать в WhatsApp',
-    href: buildWhatsAppUrl(),
-    goal: 'click_whatsapp',
-    external: true,
-  },
+const telegramHref = getTelegramUrl();
+const messengerLinks: Array<{
+  name: MessengerName;
+  label: string;
+  href: string;
+  goal: string;
+  external: boolean;
+}> = [
+  ...(isTelegramEnabled() && telegramHref
+    ? [
+        {
+          name: 'telegram' as const,
+          label: 'Написать в Telegram',
+          href: telegramHref,
+          goal: 'click_telegram',
+          external: true,
+        },
+      ]
+    : []),
   {
     name: 'viber' as const,
     label: 'Написать в Viber',

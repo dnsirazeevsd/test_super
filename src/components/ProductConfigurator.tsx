@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from 'preact/hooks';
-import type { ImageAsset, ProductItem } from '../lib/catalog';
+import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
+import type { DeliveryOption, ImageAsset, ProductItem, ProductSpec } from '../lib/catalog';
 import { MESSENGER_PATHS, type MessengerName } from '../lib/messenger-icons';
-import { trackGoal } from '../lib/analytics';
+import { openLeadModal, type LeadModalPayload } from '../lib/lead';
+import { simpleMotion } from '../lib/motion';
 import { useConfiguratorMotion } from '../lib/useConfiguratorMotion';
 
 /** Monochrome 18×18 messenger glyph, colored via currentColor. */
@@ -13,6 +14,14 @@ function MessengerGlyph({ name }: { name: MessengerName }) {
   );
 }
 
+interface GalleryEntry {
+  key: string;
+  asset: ImageAsset;
+  surfaceAsset: ImageAsset;
+  label: string;
+  color: string | null;
+}
+
 interface Props {
   modelTitle: string;
   items: ProductItem[];
@@ -20,8 +29,13 @@ interface Props {
   primaryPhoneDisplay: string;
   primaryPhoneHref: string;
   viberHref: string;
+  telegramEnabled: boolean;
   telegramHref: string;
-  giftNote: string;
+  giftDescription: string;
+  deliveryOptions: DeliveryOption[];
+  deliveryConditions: string[];
+  trustStrip: string[];
+  warrantyText?: string;
 }
 
 function fmtPrice(p: number) {
@@ -39,8 +53,13 @@ export default function ProductConfigurator({
   primaryPhoneDisplay,
   primaryPhoneHref,
   viberHref,
+  telegramEnabled,
   telegramHref,
-  giftNote,
+  giftDescription,
+  deliveryOptions,
+  deliveryConditions,
+  trustStrip,
+  warrantyText = '',
 }: Props) {
   // Default to the base (cheapest) configuration; prefer Glacier when tied,
   // so the flagship render leads on the 18 Pro.
@@ -52,7 +71,13 @@ export default function ProductConfigurator({
   }, [items]);
 
   const [selectedId, setSelectedId] = useState<string>(items[initialIndex].id);
-  const { imageRef, priceRef, prepareChange } = useConfiguratorMotion(selectedId);
+  const [customImageKey, setCustomImageKey] = useState<string | null>(null);
+  const [lightboxClosing, setLightboxClosing] = useState(false);
+  const lightboxRef = useRef<HTMLDialogElement>(null);
+  const lightboxTriggerRef = useRef<HTMLElement | null>(null);
+
+  const motionKey = `${selectedId}:${customImageKey || ''}`;
+  const { imageRef, priceRef, prepareChange } = useConfiguratorMotion(motionKey);
   const [copied, setCopied] = useState(false);
   const [simTipOpen, setSimTipOpen] = useState(false);
   const [openFacts, setOpenFacts] = useState<Record<string, boolean>>({});
@@ -92,6 +117,86 @@ export default function ProductConfigurator({
     window.history.replaceState(null, '', nextUrl);
   }, [current, items.length]);
 
+  const currentLeadPayload = useMemo<LeadModalPayload>(() => {
+    const colorDisplay = current.color
+      ? current.colorRu && current.colorRu !== current.color
+        ? `${current.color} (${current.colorRu})`
+        : current.color
+      : null;
+    return {
+      type: 'reserve',
+      model: modelTitle,
+      title: current.title,
+      color: colorDisplay,
+      storage: current.storage,
+      sim: current.sim,
+      price: current.price,
+    };
+  }, [current, modelTitle]);
+
+  // Share active configuration with MobileStickyBar "Забронировать"
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    window.__SUPERSTORE_CURRENT_PRODUCT__ = currentLeadPayload;
+    return () => {
+      window.__SUPERSTORE_CURRENT_PRODUCT__ = null;
+    };
+  }, [currentLeadPayload]);
+
+  // Gallery entries: per-SKU images[] if multiple exist, else unique product images across colors
+  const galleryEntries = useMemo<GalleryEntry[]>(() => {
+    if (current.images && current.images.length > 1) {
+      const list: GalleryEntry[] = [];
+      for (const key of current.images) {
+        const base = manifest[key];
+        const surf = manifest[`${key}-f7`] || base;
+        if (base && surf) {
+          list.push({
+            key,
+            asset: base,
+            surfaceAsset: surf,
+            label: current.title,
+            color: current.color,
+          });
+        }
+      }
+      if (list.length > 0) return list;
+    }
+
+    const map = new Map<string, GalleryEntry>();
+    // Seed with initial configuration first so Glacier leads on iPhone 18 Pro
+    const ordered = [items[initialIndex], ...items];
+    for (const it of ordered) {
+      if (!it.imageKey || map.has(it.imageKey)) continue;
+      const base = manifest[it.imageKey];
+      const surf = manifest[`${it.imageKey}-f7`] || base;
+      if (!base || !surf) continue;
+      map.set(it.imageKey, {
+        key: it.imageKey,
+        asset: base,
+        surfaceAsset: surf,
+        label: it.color ? `${modelTitle} — ${it.color}` : it.title,
+        color: it.color,
+      });
+    }
+    return Array.from(map.values());
+  }, [current.images, current.title, current.color, items, initialIndex, manifest, modelTitle]);
+
+  const activeImageKey = customImageKey || current.imageKey;
+  const activeGalleryIdx = useMemo(() => {
+    if (!activeImageKey) return 0;
+    const idx = galleryEntries.findIndex((g) => g.key === activeImageKey);
+    return idx >= 0 ? idx : 0;
+  }, [galleryEntries, activeImageKey]);
+
+  const activeEntry = galleryEntries[activeGalleryIdx] || null;
+  const fallbackAsset = current.imageKey ? manifest[current.imageKey] : null;
+  const displaySurfaceAsset =
+    activeEntry?.surfaceAsset ||
+    (current.imageKey ? manifest[`${current.imageKey}-f7`] || fallbackAsset : null);
+  const displayLightboxAsset = activeEntry?.asset || displaySurfaceAsset;
+  const hasMultipleImages = galleryEntries.length > 1;
+
   const storages = useMemo(() => {
     const order = ['128 GB', '256 GB', '512 GB', '1 TB', '2 TB', '8/128 GB', '8/256 GB', '16/1 TB'];
     const set = new Set(items.map((i) => i.storage).filter(Boolean) as string[]);
@@ -112,12 +217,22 @@ export default function ProductConfigurator({
     return Array.from(map.values());
   }, [items]);
 
+  // Build SIM options strictly from the product data ("SIM + eSIM" / "eSIM")
   const sims = useMemo(() => {
-    const set = new Set(items.map((i) => i.simSlug).filter(Boolean) as string[]);
-    const res: Array<{ slug: string; label: string }> = [];
-    if (set.has('sim-esim')) res.push({ slug: 'sim-esim', label: 'SIM + eSIM' });
-    if (set.has('esim')) res.push({ slug: 'esim', label: 'eSIM' });
-    return res;
+    const map = new Map<string, string>();
+    // First pass: canonical single-mode SIM values from data
+    for (const i of items) {
+      if (i.simSlug && i.sim && !i.sim.includes('/') && !map.has(i.simSlug)) {
+        map.set(i.simSlug, i.sim);
+      }
+    }
+    // Second pass: include any remaining data values without inventing labels
+    for (const i of items) {
+      if (i.simSlug && i.sim && !map.has(i.simSlug)) {
+        map.set(i.simSlug, i.sim);
+      }
+    }
+    return Array.from(map.entries()).map(([slug, label]) => ({ slug, label }));
   }, [items]);
 
   const selectStorage = (st: string) => {
@@ -127,7 +242,11 @@ export default function ProductConfigurator({
     const sameColor = items.find((i) => i.storage === st && i.color === current.color);
     const anyMatch = items.find((i) => i.storage === st);
     const target = exact || sameColor || anyMatch;
-    if (target && target.id !== selectedId) { prepareChange(); setSelectedId(target.id); }
+    if (target && target.id !== selectedId) {
+      prepareChange();
+      setCustomImageKey(null);
+      setSelectedId(target.id);
+    }
   };
 
   const selectColor = (col: string) => {
@@ -137,7 +256,11 @@ export default function ProductConfigurator({
     const sameStorage = items.find((i) => i.color === col && i.storage === current.storage);
     const anyMatch = items.find((i) => i.color === col);
     const target = exact || sameStorage || anyMatch;
-    if (target && target.id !== selectedId) { prepareChange(); setSelectedId(target.id); }
+    if (target && target.id !== selectedId) {
+      prepareChange();
+      setCustomImageKey(null);
+      setSelectedId(target.id);
+    }
   };
 
   const selectSim = (smSlug: string) => {
@@ -147,11 +270,49 @@ export default function ProductConfigurator({
     const sameStorage = items.find((i) => i.simSlug === smSlug && i.storage === current.storage);
     const anyMatch = items.find((i) => i.simSlug === smSlug);
     const target = exact || sameStorage || anyMatch;
-    if (target && target.id !== selectedId) { prepareChange(); setSelectedId(target.id); }
+    if (target && target.id !== selectedId) {
+      prepareChange();
+      setCustomImageKey(null);
+      setSelectedId(target.id);
+    }
   };
 
-  const asset = current.imageKey ? manifest[current.imageKey] : null;
-  const assetF7 = current.imageKey ? manifest[`${current.imageKey}-f7`] || asset : null;
+  const selectGalleryIndex = (nextIdx: number) => {
+    if (galleryEntries.length === 0) return;
+    const bounded = ((nextIdx % galleryEntries.length) + galleryEntries.length) % galleryEntries.length;
+    const targetEntry = galleryEntries[bounded];
+    if (!targetEntry) return;
+    if (targetEntry.color && targetEntry.color !== current.color) {
+      selectColor(targetEntry.color);
+    } else if (targetEntry.key !== activeImageKey) {
+      prepareChange();
+      setCustomImageKey(targetEntry.key);
+    }
+  };
+
+  const openLightbox = (triggerEl: HTMLElement) => {
+    const dlg = lightboxRef.current;
+    if (!dlg || !displayLightboxAsset) return;
+    lightboxTriggerRef.current = triggerEl;
+    setLightboxClosing(false);
+    if (!dlg.open) dlg.showModal();
+  };
+
+  const closeLightbox = () => {
+    const dlg = lightboxRef.current;
+    if (!dlg || !dlg.open || lightboxClosing) return;
+    if (simpleMotion()) {
+      dlg.close();
+      lightboxTriggerRef.current?.focus();
+      return;
+    }
+    setLightboxClosing(true);
+    window.setTimeout(() => {
+      setLightboxClosing(false);
+      if (dlg.open) dlg.close();
+      lightboxTriggerRef.current?.focus();
+    }, 150);
+  };
 
   const copyShareUrl = async () => {
     if (typeof window === 'undefined') return;
@@ -162,91 +323,228 @@ export default function ProductConfigurator({
     } catch {}
   };
 
-  const whatsappText = `Здравствуйте! Хочу уточнить наличие и актуальную цену в SUPER STORE (ТРЦ «РИО»): ${current.title} — ${fmtPrice(current.price)}.`;
-  const whatsappHref = `https://api.whatsapp.com/send?phone=79312020078&text=${encodeURIComponent(whatsappText)}`;
-
   const toggleFact = (key: string) => {
     setOpenFacts((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
-  // Accordion holds ONLY facts that exist in the source data
-  const facts = [
-    {
-      id: 'warranty',
-      question: 'Гарантия',
-      answer:
-        'Продаётся только оригинальная техника с гарантией магазина — как новые запечатанные устройства, так и проверенная Б/У техника. Проверка проводится прямо при вас.',
-    },
-    {
-      id: 'gift',
-      question: 'Подарок при покупке',
-      answer: giftNote,
-    },
-    {
-      id: 'payment',
-      question: 'Способы оплаты',
-      answer: 'Наличный расчёт, оплата по QR, оплата по банковской карте, кредитование.',
-    },
-    {
-      id: 'pickup',
-      question: 'Самовывоз из магазина',
-      answer:
-        'Приезжайте в ТРЦ «РИО» по адресу: Санкт-Петербург, улица Фучика, д. 2. Работаем ежедневно с 10:00 до 22:00 — осмотрите устройство до оплаты.',
-    },
-  ];
+  const trimmedDescription = (current.description || '').trim();
+  const filledSpecs: ProductSpec[] = Array.isArray(current.specs)
+    ? current.specs.filter((s) =>
+        typeof s === 'string' ? s.trim().length > 0 : Boolean(s && s.label && s.value)
+      )
+    : [];
+  const trimmedGiftDescription = (giftDescription || '').trim();
+  const trimmedWarranty = (warrantyText || '').trim();
+  const showTelegram = telegramEnabled && Boolean(telegramHref);
 
   return (
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
-      {/* Left — large image on uniform #F7F7F9, no inner rectangle, no magnifier */}
+    <div
+      class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start"
+      data-product-configurator
+    >
+      {/* Left — uniform #F7F7F9 gallery, no inner box; arrows & thumbnails ONLY when >1 image */}
       <div class="lg:col-span-6 lg:sticky lg:top-24">
         <div
           ref={imageRef}
           class="config-image aspect-[4/5] flex items-center justify-center overflow-hidden"
           style="background-color: var(--surface);"
         >
-          {assetF7 || asset ? (
-            <picture class="w-full h-full flex items-center justify-center">
-              <source
-                type="image/avif"
-                srcset={(assetF7 || asset)!.avifSrcset}
-                sizes="(max-width: 1024px) 92vw, 520px"
+          {displaySurfaceAsset ? (
+            <>
+              <picture class="w-full h-full flex items-center justify-center">
+                {displaySurfaceAsset.avifSrcset && (
+                  <source
+                    type="image/avif"
+                    srcset={displaySurfaceAsset.avifSrcset}
+                    sizes="(max-width: 1024px) 92vw, 520px"
+                  />
+                )}
+                {displaySurfaceAsset.webpSrcset && (
+                  <source
+                    type="image/webp"
+                    srcset={displaySurfaceAsset.webpSrcset}
+                    sizes="(max-width: 1024px) 92vw, 520px"
+                  />
+                )}
+                <img
+                  src={displaySurfaceAsset.src}
+                  alt={activeEntry?.label || current.title}
+                  width={displaySurfaceAsset.width}
+                  height={displaySurfaceAsset.height}
+                  loading="eager"
+                  fetchpriority="high"
+                  decoding="sync"
+                  class="max-h-[86%] w-auto object-contain"
+                />
+              </picture>
+              <button
+                type="button"
+                onClick={(e) => openLightbox(e.currentTarget)}
+                aria-label="Открыть изображение в полном размере"
+                class="absolute inset-0 z-[5] w-full h-full bg-transparent cursor-zoom-in p-0"
               />
-              <source
-                type="image/webp"
-                srcset={(assetF7 || asset)!.webpSrcset}
-                sizes="(max-width: 1024px) 92vw, 520px"
-              />
-              <img
-                src={(assetF7 || asset)!.src}
-                alt={current.title}
-                width={(assetF7 || asset)!.width}
-                height={(assetF7 || asset)!.height}
-                loading="eager"
-                fetchpriority="high"
-                decoding="sync"
-                class="max-h-[86%] w-auto object-contain"
-              />
-            </picture>
+              {hasMultipleImages && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => selectGalleryIndex(activeGalleryIdx - 1)}
+                    aria-label="Предыдущее фото"
+                    class="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center text-fg-muted hover:text-fg bg-transparent p-0"
+                  >
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                      <path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => selectGalleryIndex(activeGalleryIdx + 1)}
+                    aria-label="Следующее фото"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center text-fg-muted hover:text-fg bg-transparent p-0"
+                  >
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                      <path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </button>
+                </>
+              )}
+            </>
           ) : (
             <div class="flex flex-col items-center justify-center text-center p-8 text-fg-muted">
-              <svg class="w-14 h-14 mb-3 opacity-35" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
-                <rect x="13" y="5" width="22" height="38" rx="4.5" />
-                <circle cx="19" cy="11" r="1.5" fill="currentColor" />
-                <circle cx="19" cy="16" r="1.5" fill="currentColor" />
-              </svg>
-              <p class="type-small font-semibold text-fg m-0">Фотография данной модели обновляется</p>
-              <p class="type-small mt-1 mb-0 max-w-[30ch]">
-                Напишите нам в WhatsApp — менеджер пришлёт живое фото из магазина.
-              </p>
+              <p class="type-small text-fg-muted m-0">Фото уточняется у менеджера</p>
             </div>
           )}
         </div>
+
+        {/* Thumbnail strip ONLY when >1 image, uniform #F7F7F9 background, zero inner borders */}
+        {hasMultipleImages && (
+          <div
+            class="config-thumbs mt-3 grid grid-cols-4 sm:grid-cols-5 gap-2.5"
+            role="group"
+            aria-label="Миниатюры галереи"
+          >
+            {galleryEntries.map((entry, idx) => {
+              const active = idx === activeGalleryIdx;
+              return (
+                <button
+                  key={entry.key}
+                  type="button"
+                  onClick={() => selectGalleryIndex(idx)}
+                  aria-label={entry.label}
+                  aria-pressed={active}
+                  class={`aspect-square flex items-center justify-center overflow-hidden p-2 transition-opacity ${
+                    active ? 'opacity-100' : 'opacity-55 hover:opacity-90'
+                  }`}
+                  style={
+                    active
+                      ? 'background-color: var(--surface); border-bottom: 2px solid var(--text);'
+                      : 'background-color: var(--surface); border-bottom: 2px solid transparent;'
+                  }
+                >
+                  <img
+                    src={entry.surfaceAsset.src}
+                    alt=""
+                    width={entry.surfaceAsset.width}
+                    height={entry.surfaceAsset.height}
+                    loading="lazy"
+                    class="max-h-full w-auto object-contain"
+                  />
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Native <dialog> lightbox */}
+        <dialog
+          ref={lightboxRef}
+          class={`modal-dialog fixed inset-0 z-[110] m-0 w-full h-full ${lightboxClosing ? 'is-closing' : ''}`}
+          aria-label={`Просмотр фото: ${modelTitle}`}
+          onCancel={(e) => {
+            e.preventDefault();
+            closeLightbox();
+          }}
+          onClick={(e) => {
+            if (e.target === lightboxRef.current || (e.target as HTMLElement).hasAttribute('data-lightbox-backdrop')) {
+              closeLightbox();
+            }
+          }}
+          onKeyDown={(e) => {
+            if (hasMultipleImages && e.key === 'ArrowLeft') {
+              e.preventDefault();
+              selectGalleryIndex(activeGalleryIdx - 1);
+            } else if (hasMultipleImages && e.key === 'ArrowRight') {
+              e.preventDefault();
+              selectGalleryIndex(activeGalleryIdx + 1);
+            }
+          }}
+        >
+          <div
+            class="w-full h-full flex items-center justify-center p-4 sm:p-10"
+            data-lightbox-backdrop
+          >
+            <div
+              class="modal-panel relative w-full max-w-3xl aspect-[4/5] max-h-[88vh] flex items-center justify-center p-6 sm:p-10"
+              style="background-color: var(--surface);"
+            >
+              <button
+                type="button"
+                onClick={closeLightbox}
+                aria-label="Закрыть просмотр фото"
+                class="absolute top-4 right-4 z-10 p-2 text-fg-muted hover:text-fg bg-transparent"
+              >
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                  <path d="M6 6l12 12M18 6 6 18" stroke-linecap="round" />
+                </svg>
+              </button>
+              {displayLightboxAsset && (
+                <img
+                  src={displayLightboxAsset.src}
+                  alt={activeEntry?.label || current.title}
+                  width={displayLightboxAsset.width}
+                  height={displayLightboxAsset.height}
+                  class="max-h-full max-w-full w-auto h-auto object-contain"
+                />
+              )}
+              {hasMultipleImages && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => selectGalleryIndex(activeGalleryIdx - 1)}
+                    aria-label="Предыдущее фото"
+                    class="absolute left-3 top-1/2 -translate-y-1/2 p-2 text-fg-muted hover:text-fg bg-transparent"
+                  >
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                      <path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => selectGalleryIndex(activeGalleryIdx + 1)}
+                    aria-label="Следующее фото"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-fg-muted hover:text-fg bg-transparent"
+                  >
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                      <path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        </dialog>
       </div>
 
       {/* Right — configuration directly on the page background, thin 1px dividers */}
       <div class="lg:col-span-6">
-        {/* One status line */}
-        <p class="type-small text-fg-muted m-0">В наличии в СПб</p>
+        {/* Stock status: green dot #1A7F4B + "В наличии • ТРЦ «РИО»", or neutral "Под заказ" */}
+        {current.inStock ? (
+          <p class="status-badge status-badge--in m-0">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span>В наличии • ТРЦ «РИО»</span>
+          </p>
+        ) : (
+          <p class="type-small text-fg-muted m-0">Под заказ</p>
+        )}
 
         {/* Clean model name as H1; full configuration stays in title/meta/JSON-LD */}
         <h1 class="type-display !text-[2.25rem] lg:!text-[3rem] mt-2 mb-0">{modelTitle}</h1>
@@ -285,6 +583,14 @@ export default function ProductConfigurator({
                 </span>
               )}
             </button>
+          )}
+        </div>
+
+        {/* Plain gift line under price; giftDescription rendered ONLY when filled in site.json */}
+        <div class="mt-3">
+          <p class="type-small text-fg m-0">Подарок при покупке</p>
+          {trimmedGiftDescription && (
+            <p class="type-small text-fg-muted mt-1 mb-0">{trimmedGiftDescription}</p>
           )}
         </div>
 
@@ -357,7 +663,7 @@ export default function ProductConfigurator({
           </div>
         )}
 
-        {/* Pill selectors — SIM with (?) tooltip */}
+        {/* Pill selectors — SIM from product data with (?) tooltip */}
         {sims.length > 1 && (
           <div class="pt-6 mt-6" style="border-top: 1px solid var(--divider);">
             <div class="type-small font-semibold mb-3 flex items-center gap-1.5">
@@ -415,80 +721,116 @@ export default function ProductConfigurator({
           </div>
         )}
 
-        {/* One filled button + text links (phone never wraps) */}
-        <div class="pt-8 mt-8 space-y-4" style="border-top: 1px solid var(--divider);">
-          <a
-            href={whatsappHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-goal="click_check_stock"
-            onClick={() =>
-              trackGoal('click_check_stock', { item: current.title, price: current.price })
-            }
-            class="btn w-full sm:w-auto"
-          >
-            Узнать наличие в WhatsApp
-          </a>
-
-          {/* Messengers: icon + text links, wrap cleanly on narrow screens */}
-          <div class="flex flex-wrap items-center gap-x-7 gap-y-3 pt-2">
+        {/* Primary filled "Забронировать" + secondary text link ("Написать в Telegram" if enabled, else "Позвонить") */}
+        <div class="pt-8 mt-8 space-y-5" style="border-top: 1px solid var(--divider);">
+          <div class="flex flex-wrap items-center gap-x-8 gap-y-4">
             <a
-              href={`${telegramHref}?text=${encodeURIComponent(whatsappText)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-goal="click_telegram"
-              class="inline-flex items-center gap-2 font-semibold text-fg hover:text-brand transition-colors"
+              href={primaryPhoneHref}
+              onClick={(e) => {
+                e.preventDefault();
+                openLeadModal(currentLeadPayload, e.currentTarget);
+              }}
+              class="btn w-full sm:w-auto"
             >
-              <MessengerGlyph name="telegram" />
-              Telegram
+              Забронировать
             </a>
+
+            {showTelegram ? (
+              <a
+                href={telegramHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-goal="click_telegram"
+                class="arrow-link"
+              >
+                Написать в Telegram
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </a>
+            ) : (
+              <a
+                href={primaryPhoneHref}
+                data-goal="click_phone"
+                class="arrow-link"
+              >
+                Позвонить
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </a>
+            )}
+          </div>
+
+          <div class="flex flex-wrap items-center gap-x-7 gap-y-2 type-small">
             <a
-              href={whatsappHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-goal="click_whatsapp"
-              class="inline-flex items-center gap-2 font-semibold text-fg hover:text-brand transition-colors"
+              href={primaryPhoneHref}
+              data-goal="click_phone"
+              class="font-semibold tabular-nums whitespace-nowrap text-fg-muted hover:text-brand transition-colors no-underline"
             >
-              <MessengerGlyph name="whatsapp" />
-              WhatsApp
+              {primaryPhoneDisplay}
             </a>
             <a
               href={viberHref}
               data-goal="click_viber"
-              class="inline-flex items-center gap-2 font-semibold text-fg hover:text-brand transition-colors"
+              class="inline-flex items-center gap-1.5 font-semibold text-fg-muted hover:text-brand transition-colors no-underline"
             >
               <MessengerGlyph name="viber" />
               Viber
             </a>
           </div>
-
-          <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-8">
-            <a
-              href={primaryPhoneHref}
-              data-goal="click_phone"
-              class="arrow-link tabular-nums whitespace-nowrap self-start"
-            >
-              Позвонить · {primaryPhoneDisplay}
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-            </a>
-          </div>
         </div>
 
-        {/* One accordion with source facts only */}
-        <div class="mt-12" style="border-top: 1px solid var(--divider);">
-          {facts.map((fact) => (
+        {/* Optional "Описание" — rendered ONLY when filled */}
+        {trimmedDescription && (
+          <div class="pt-8 mt-8 space-y-3" style="border-top: 1px solid var(--divider);">
+            <h2 class="text-lg font-semibold text-fg m-0">Описание</h2>
+            <p class="type-body text-fg-muted m-0">{trimmedDescription}</p>
+          </div>
+        )}
+
+        {/* Optional "Характеристики" — rendered ONLY when filled */}
+        {filledSpecs.length > 0 && (
+          <div class="pt-8 mt-8 space-y-3" style="border-top: 1px solid var(--divider);">
+            <h2 class="text-lg font-semibold text-fg m-0">Характеристики</h2>
+            <dl class="m-0" style="border-top: 1px solid var(--divider);">
+              {filledSpecs.map((spec, idx) =>
+                typeof spec === 'string' ? (
+                  <div
+                    key={idx}
+                    class="py-3 type-small text-fg"
+                    style="border-bottom: 1px solid var(--divider);"
+                  >
+                    {spec}
+                  </div>
+                ) : (
+                  <div
+                    key={idx}
+                    class="py-3 flex items-baseline justify-between gap-4 type-small"
+                    style="border-bottom: 1px solid var(--divider);"
+                  >
+                    <dt class="text-fg-muted">{spec.label}</dt>
+                    <dd class="m-0 font-semibold text-fg text-right">{spec.value}</dd>
+                  </div>
+                )
+              )}
+            </dl>
+          </div>
+        )}
+
+        {/* Accordion: "Доставка и получение" + optional "Гарантия" + data-driven Trust strip */}
+        <div class="mt-10" style="border-top: 1px solid var(--divider);">
+          {deliveryOptions.length > 0 && (
             <div style="border-bottom: 1px solid var(--divider);">
               <button
                 type="button"
-                onClick={() => toggleFact(fact.id)}
-                aria-expanded={Boolean(openFacts[fact.id])}
+                onClick={() => toggleFact('delivery')}
+                aria-expanded={Boolean(openFacts.delivery)}
                 class="w-full flex items-center justify-between gap-4 py-5 text-left font-semibold text-fg bg-transparent p-0"
               >
-                <span>{fact.question}</span>
+                <span>Доставка и получение</span>
                 <svg
-                  class={`w-4 h-4 shrink-0 text-fg-muted transition-transform ${openFacts[fact.id] ? 'rotate-45' : ''}`}
+                  class={`w-4 h-4 shrink-0 text-fg-muted transition-transform ${openFacts.delivery ? 'rotate-45' : ''}`}
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -498,11 +840,100 @@ export default function ProductConfigurator({
                   <path d="M12 5v14M5 12h14" stroke-linecap="round" />
                 </svg>
               </button>
-              {openFacts[fact.id] && (
-                <p class="type-body text-fg-muted pb-6 mt-0 mb-0">{fact.answer}</p>
+              {openFacts.delivery && (
+                <div class="pb-6 space-y-5">
+                  <div class="space-y-3">
+                    {deliveryOptions.map((opt) => (
+                      <div
+                        key={opt.id}
+                        class="flex items-baseline justify-between gap-4 type-small pb-3"
+                        style="border-bottom: 1px solid var(--divider);"
+                      >
+                        <div>
+                          <div class="font-semibold text-fg">{opt.label}</div>
+                          <div class="text-fg-muted">{opt.detail}</div>
+                        </div>
+                        <span class="font-semibold text-fg tabular-nums whitespace-nowrap">
+                          {opt.priceLabel}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                  {deliveryConditions.length > 0 && (
+                    <ul class="space-y-1.5 list-none m-0 p-0">
+                      {deliveryConditions.map((cond, idx) => (
+                        <li key={idx} class="type-small text-fg-muted">
+                          — {cond}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
               )}
             </div>
-          ))}
+          )}
+
+          {trimmedWarranty && (
+            <div style="border-bottom: 1px solid var(--divider);">
+              <button
+                type="button"
+                onClick={() => toggleFact('warranty')}
+                aria-expanded={Boolean(openFacts.warranty)}
+                class="w-full flex items-center justify-between gap-4 py-5 text-left font-semibold text-fg bg-transparent p-0"
+              >
+                <span>Гарантия</span>
+                <svg
+                  class={`w-4 h-4 shrink-0 text-fg-muted transition-transform ${openFacts.warranty ? 'rotate-45' : ''}`}
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <path d="M12 5v14M5 12h14" stroke-linecap="round" />
+                </svg>
+              </button>
+              {openFacts.warranty && (
+                <p class="type-body text-fg-muted pb-6 mt-0 mb-0">{trimmedWarranty}</p>
+              )}
+            </div>
+          )}
+
+          {trustStrip.length > 0 && (
+            <div style="border-bottom: 1px solid var(--divider);">
+              <button
+                type="button"
+                onClick={() => toggleFact('trust')}
+                aria-expanded={openFacts.trust ?? true}
+                class="w-full flex items-center justify-between gap-4 py-5 text-left font-semibold text-fg bg-transparent p-0"
+              >
+                <span>Условия покупки</span>
+                <svg
+                  class={`w-4 h-4 shrink-0 text-fg-muted transition-transform ${(openFacts.trust ?? true) ? 'rotate-45' : ''}`}
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <path d="M12 5v14M5 12h14" stroke-linecap="round" />
+                </svg>
+              </button>
+              {(openFacts.trust ?? true) && (
+                <ul class="list-none m-0 p-0 pb-2">
+                  {trustStrip.map((item, idx) => (
+                    <li
+                      key={idx}
+                      class="py-2.5 type-small text-fg-muted"
+                      style={idx > 0 ? 'border-top: 1px solid var(--divider);' : undefined}
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>

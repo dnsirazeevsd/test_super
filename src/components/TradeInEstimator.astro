@@ -1,24 +1,18 @@
 ---
 /**
- * Trade-In / buyback estimator — /services/#trade-in only.
- * Compact borderless #F7F7F9 surface block (radius 12, zero borders/shadows) with a tight
- * 3-column select grid (desktop, gap 16px) and two side-by-side actions:
- *   1. filled WhatsApp button (prefilled deep link)
- *   2. text-arrow Telegram link (same prefill text)
- * Native selects with visible labels; the only line is a 1px #E6E6EA bottom divider.
- * No prices, timings or percentages anywhere. Works without JS (plain links as fallback).
+ * Trade-In estimator — /services/#trade-in.
+ * Compact borderless #F7F7F9 surface block (radius 12, zero borders/shadows) with a
+ * 3-column select grid (desktop, gap 16px) and primary CTA «Отправить заявку»
+ * opening the accessible Lead Modal (passing model, storage, condition — zero prices).
+ * Without JS, falls back to the primary store phone `tel:` link.
  */
 import MessengerIcon from './MessengerIcon.astro';
 import siteData from '../data/site.json';
-import { buildWhatsAppUrl } from '../lib/catalog';
+import { getTelegramUrl, isTelegramEnabled } from '../lib/catalog';
 
-const telegramUrl = siteData.contacts.messengers.telegram.url;
-const fallbackWaHref = buildWhatsAppUrl(
-  'Здравствуйте! Хочу оценить устройство для Trade-In или выкупа.'
-);
-const fallbackTgHref = `${telegramUrl}?text=${encodeURIComponent(
-  'Здравствуйте! Хочу оценить устройство для Trade-In или выкупа.'
-)}`;
+const primaryPhoneHref = siteData.contacts.phones[0].href;
+const telegramHref = getTelegramUrl();
+const showTelegram = isTelegramEnabled() && Boolean(telegramHref);
 
 const models = [
   'iPhone 18 Pro Max',
@@ -52,7 +46,6 @@ const conditions = [
   class="rounded-xl p-6 lg:p-7 mt-2"
   style="background-color: var(--surface);"
   data-trade-in-estimator
-  data-telegram-url={telegramUrl}
 >
   <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-4 gap-y-5">
     <div>
@@ -81,32 +74,30 @@ const conditions = [
     </div>
   </div>
 
-  <!-- Two side-by-side actions -->
   <div class="flex flex-wrap items-center gap-x-8 gap-y-4 mt-6">
     <a
-      href={fallbackWaHref}
-      target="_blank"
-      rel="noopener noreferrer"
+      href={primaryPhoneHref}
       data-goal="trade_in_request"
       data-estimator-cta
       class="btn"
     >
-      Узнать оценку в WhatsApp
+      Отправить заявку
     </a>
-    <a
-      href={fallbackTgHref}
-      target="_blank"
-      rel="noopener noreferrer"
-      data-goal="click_telegram"
-      data-estimator-cta-telegram
-      class="inline-flex items-center gap-2 font-semibold text-fg hover:text-brand transition-colors"
-    >
-      <MessengerIcon name="telegram" size={18} />
-      Узнать оценку в Telegram
-      <svg class="w-4 h-4 tg-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path>
-      </svg>
-    </a>
+    {showTelegram && (
+      <a
+        href={telegramHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-goal="click_telegram"
+        class="inline-flex items-center gap-2 font-semibold text-fg hover:text-brand transition-colors"
+      >
+        <MessengerIcon name="telegram" size={18} />
+        Написать в Telegram
+        <svg class="w-4 h-4 tg-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </a>
+    )}
   </div>
 
   <p class="type-small text-fg-muted mt-5 mb-0">
@@ -126,7 +117,7 @@ const conditions = [
     padding: 10px 0;
     font-size: 16px; /* >=16px prevents mobile zoom-on-focus */
     color: var(--text);
-    appearance: auto; /* keep the native picker arrow */
+    appearance: auto;
   }
   .tg-arrow {
     transition: transform var(--dur-fast) var(--ease-out);
@@ -137,35 +128,29 @@ const conditions = [
 </style>
 
 <script>
- document.addEventListener('astro:page-load', () => {
-  // Upgrade both deep links with the selected values (plain links work without JS).
-  const root = document.querySelector('[data-trade-in-estimator]');
-  if (root) {
-    const wa = root.querySelector<HTMLAnchorElement>('[data-estimator-cta]');
-    const tg = root.querySelector<HTMLAnchorElement>('[data-estimator-cta-telegram]');
-    const fields = root.querySelectorAll<HTMLSelectElement>('[data-estimator-field]');
-    const baseMessage = 'Здравствуйте! Хочу оценить устройство для Trade-In или выкупа.';
-    const telegramUrl = root.getAttribute('data-telegram-url') || '';
+  import { openLeadModal } from '../lib/lead';
 
-    const buildText = () => {
-      const [model, storage, condition] = Array.from(fields).map((f) => f.value);
-      return `${baseMessage} Модель: ${model}, память: ${storage}, состояние: ${condition}.`;
-    };
-    const buildHref = (kind: 'wa' | 'tg') => {
-      const text = buildText();
-      return kind === 'wa'
-        ? `https://api.whatsapp.com/send?phone=79312020078&text=${encodeURIComponent(text)}`
-        : `${telegramUrl}?text=${encodeURIComponent(text)}`;
-    };
-    const refresh = () => {
-      if (wa) wa.href = buildHref('wa');
-      if (tg) tg.href = buildHref('tg');
-    };
+  document.addEventListener('astro:page-load', () => {
+    const root = document.querySelector<HTMLElement>('[data-trade-in-estimator]');
+    if (!root || root.dataset.bound === 'true') return;
+    root.dataset.bound = 'true';
 
-    fields.forEach((f) => f.addEventListener('change', refresh));
-    wa?.addEventListener('click', refresh);
-    tg?.addEventListener('click', refresh);
-  }
+    const cta = root.querySelector<HTMLAnchorElement>('[data-estimator-cta]');
+    const modelSel = root.querySelector<HTMLSelectElement>('[data-estimator-field="model"]');
+    const storageSel = root.querySelector<HTMLSelectElement>('[data-estimator-field="storage"]');
+    const conditionSel = root.querySelector<HTMLSelectElement>('[data-estimator-field="condition"]');
 
- });
+    cta?.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      openLeadModal(
+        {
+          type: 'trade-in',
+          model: modelSel?.value || null,
+          storage: storageSel?.value || null,
+          condition: conditionSel?.value || null,
+        },
+        cta
+      );
+    });
+  });
 </script>
