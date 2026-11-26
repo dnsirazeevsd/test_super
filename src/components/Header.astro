@@ -33,7 +33,7 @@ const navLinks = [
             </a>
             <!-- Full-width white panel with category thumbnails -->
             <div
-              class="nav-drop-panel invisible opacity-0 transition-opacity duration-200 absolute left-0 right-0 top-full bg-bg border-t border-line"
+              class="nav-drop-panel invisible opacity-0 catalog-motion absolute left-0 right-0 top-full bg-bg border-t border-line"
             >
               <div class="shell py-8 grid grid-cols-5 gap-8">
                 {CATEGORIES.map((cat) => {
@@ -175,6 +175,10 @@ const navLinks = [
     visibility: visible;
     opacity: 1;
   }
+  .nav-drop[data-dismissed] .nav-drop-panel {
+    visibility: hidden;
+    opacity: 0;
+  }
   /* Trigger alignment fix: make the «Каталог» item structurally identical to the three
      sibling links — the wrapper generates no box (display: contents) so all four items
      are direct flex items, and the trigger itself drops its own box metrics. */
@@ -201,6 +205,13 @@ const navLinks = [
 </style>
 
 <script>
+ document.addEventListener('astro:page-load', () => {
+  const drop = document.querySelector('[data-nav-drop]');
+  drop?.addEventListener('keydown', (event) => {
+    if ((event as KeyboardEvent).key === 'Escape') drop.setAttribute('data-dismissed', '');
+  });
+  drop?.addEventListener('focusout', () => drop.removeAttribute('data-dismissed'));
+  drop?.addEventListener('mouseleave', () => drop.removeAttribute('data-dismissed'));
   const menu = document.getElementById('mobile-menu') as HTMLDialogElement | null;
   const openBtn = document.getElementById('menu-open');
   const closeBtn = document.getElementById('menu-close');
@@ -216,4 +227,6 @@ const navLinks = [
   menu?.addEventListener('close', () => {
     openBtn?.setAttribute('aria-expanded', 'false');
   });
+
+ });
 </script>

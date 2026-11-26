@@ -56,7 +56,7 @@ export default function NewsGallery({ images, title }: Props) {
               width={img.width}
               height={img.height}
               loading={idx === 0 ? 'eager' : 'lazy'}
-              class="w-full h-auto object-cover group-hover:scale-[1.02] transition-transform duration-300"
+              class="w-full h-auto object-cover group-hover:scale-[1.02] transition-transform"
             />
           </picture>
         </button>

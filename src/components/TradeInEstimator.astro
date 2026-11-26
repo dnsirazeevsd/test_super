@@ -129,7 +129,7 @@ const conditions = [
     appearance: auto; /* keep the native picker arrow */
   }
   .tg-arrow {
-    transition: transform 0.2s ease-out;
+    transition: transform var(--dur-fast) var(--ease-out);
   }
   a:hover .tg-arrow {
     transform: translateX(3px);
@@ -137,6 +137,7 @@ const conditions = [
 </style>
 
 <script>
+ document.addEventListener('astro:page-load', () => {
   // Upgrade both deep links with the selected values (plain links work without JS).
   const root = document.querySelector('[data-trade-in-estimator]');
   if (root) {
@@ -165,4 +166,6 @@ const conditions = [
     wa?.addEventListener('click', refresh);
     tg?.addEventListener('click', refresh);
   }
+
+ });
 </script>

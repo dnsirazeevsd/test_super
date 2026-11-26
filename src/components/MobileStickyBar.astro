@@ -10,7 +10,7 @@ const whatsappHref = buildWhatsAppUrl();
      Uses `inert` (not aria-hidden) while hidden so its focusable links are never in the tab order. -->
 <div
   id="mobile-action-bar"
-  class="md:hidden fixed bottom-0 inset-x-0 z-40 bg-bg pt-2.5 pb-[calc(10px+env(safe-area-inset-bottom))] px-5 opacity-0 translate-y-full transition-all duration-300"
+  class="md:hidden fixed bottom-0 inset-x-0 z-40 bg-bg pt-2.5 pb-[calc(10px+env(safe-area-inset-bottom))] px-5 opacity-0 translate-y-full motion-transition"
   role="region"
   aria-label="Быстрая связь с магазином"
   inert
@@ -40,6 +40,7 @@ const whatsappHref = buildWhatsAppUrl();
 </div>
 
 <script>
+ document.addEventListener('astro:page-load', () => {
   // Reveal the bar once the visitor scrolls past the hero section.
   const bar = document.getElementById('mobile-action-bar');
   const hero = document.getElementById('hero');
@@ -56,7 +57,10 @@ const whatsappHref = buildWhatsAppUrl();
       { threshold: 0.05 }
     );
     io.observe(hero);
+    document.addEventListener('astro:before-swap', () => io.disconnect(), { once: true });
   } else if (bar) {
     setShown(true);
   }
+
+ });
 </script>

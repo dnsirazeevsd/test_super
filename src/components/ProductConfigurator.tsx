@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'preact/hooks';
 import type { ImageAsset, ProductItem } from '../lib/catalog';
 import { MESSENGER_PATHS, type MessengerName } from '../lib/messenger-icons';
 import { trackGoal } from '../lib/analytics';
+import { useConfiguratorMotion } from '../lib/useConfiguratorMotion';
 
 /** Monochrome 18×18 messenger glyph, colored via currentColor. */
 function MessengerGlyph({ name }: { name: MessengerName }) {
@@ -51,6 +52,7 @@ export default function ProductConfigurator({
   }, [items]);
 
   const [selectedId, setSelectedId] = useState<string>(items[initialIndex].id);
+  const { imageRef, priceRef, prepareChange } = useConfiguratorMotion(selectedId);
   const [copied, setCopied] = useState(false);
   const [simTipOpen, setSimTipOpen] = useState(false);
   const [openFacts, setOpenFacts] = useState<Record<string, boolean>>({});
@@ -125,7 +127,7 @@ export default function ProductConfigurator({
     const sameColor = items.find((i) => i.storage === st && i.color === current.color);
     const anyMatch = items.find((i) => i.storage === st);
     const target = exact || sameColor || anyMatch;
-    if (target) setSelectedId(target.id);
+    if (target && target.id !== selectedId) { prepareChange(); setSelectedId(target.id); }
   };
 
   const selectColor = (col: string) => {
@@ -135,7 +137,7 @@ export default function ProductConfigurator({
     const sameStorage = items.find((i) => i.color === col && i.storage === current.storage);
     const anyMatch = items.find((i) => i.color === col);
     const target = exact || sameStorage || anyMatch;
-    if (target) setSelectedId(target.id);
+    if (target && target.id !== selectedId) { prepareChange(); setSelectedId(target.id); }
   };
 
   const selectSim = (smSlug: string) => {
@@ -145,7 +147,7 @@ export default function ProductConfigurator({
     const sameStorage = items.find((i) => i.simSlug === smSlug && i.storage === current.storage);
     const anyMatch = items.find((i) => i.simSlug === smSlug);
     const target = exact || sameStorage || anyMatch;
-    if (target) setSelectedId(target.id);
+    if (target && target.id !== selectedId) { prepareChange(); setSelectedId(target.id); }
   };
 
   const asset = current.imageKey ? manifest[current.imageKey] : null;
@@ -198,7 +200,8 @@ export default function ProductConfigurator({
       {/* Left — large image on uniform #F7F7F9, no inner rectangle, no magnifier */}
       <div class="lg:col-span-6 lg:sticky lg:top-24">
         <div
-          class="aspect-[4/5] flex items-center justify-center overflow-hidden"
+          ref={imageRef}
+          class="config-image aspect-[4/5] flex items-center justify-center overflow-hidden"
           style="background-color: var(--surface);"
         >
           {assetF7 || asset ? (
@@ -250,8 +253,8 @@ export default function ProductConfigurator({
 
         {/* Large price + compact share icon */}
         <div class="flex items-center justify-between gap-4 mt-6">
-          <p class="text-4xl lg:text-5xl font-semibold tracking-tight tabular-nums m-0">
-            {fmtPrice(current.price)}
+          <p ref={priceRef} class="config-price text-4xl lg:text-5xl font-semibold tracking-tight tabular-nums m-0" aria-live="polite" aria-atomic="true">
+            <span>{fmtPrice(current.price)}</span>
           </p>
           {items.length > 1 && (
             <button
@@ -485,7 +488,7 @@ export default function ProductConfigurator({
               >
                 <span>{fact.question}</span>
                 <svg
-                  class={`w-4 h-4 shrink-0 text-fg-muted transition-transform duration-200 ${openFacts[fact.id] ? 'rotate-45' : ''}`}
+                  class={`w-4 h-4 shrink-0 text-fg-muted transition-transform ${openFacts[fact.id] ? 'rotate-45' : ''}`}
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"

@@ -50,14 +50,14 @@ const catalogItemListSchema = {
   <!-- ================= 1/5 · HERO ================= -->
   <section id="hero" class="band" aria-label="О магазине">
     <div class="shell grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
-      <div class="lg:col-span-6 hero-fade">
-        <h1 class="type-display m-0">
+      <div class="lg:col-span-6">
+        <h1 class="type-display m-0 hero-headline">
           Техника Apple в наличии в СПб
         </h1>
-        <p class="type-body text-fg-muted mt-6 mb-0 measure">
+        <p class="type-body text-fg-muted mt-6 mb-0 measure hero-subline">
           Новая, запечатанная, с гарантией. ТРЦ «РИО», ежедневно с 10:00 до 22:00.
         </p>
-        <div class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+        <div class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4 hero-actions">
           <a href="/catalog/" class="btn">Смотреть каталог</a>
           <a
             href="/services/trade-in/"
@@ -71,7 +71,7 @@ const catalogItemListSchema = {
         </div>
       </div>
 
-      <div class="lg:col-span-6 hero-fade hero-fade--late">
+      <div class="lg:col-span-6 hero-image">
         {heroImage ? (
           <picture class="block w-full">
             <source type="image/avif" srcset={heroImage.avifSrcset} sizes="(max-width: 1024px) 92vw, 520px" />
@@ -98,7 +98,7 @@ const catalogItemListSchema = {
   <!-- ================= 2/5 · FEATURED CATALOG (on #F7F7F9) ================= -->
   <section class="band band--surface" aria-label="Устройства в наличии">
     <div class="shell space-y-12">
-      <h2 class="type-display !text-[2rem] lg:!text-[2.75rem] m-0" data-reveal>
+      <h2 class="type-display !text-[2rem] lg:!text-[2.75rem] m-0">
         В наличии в магазине
       </h2>
 
@@ -108,7 +108,7 @@ const catalogItemListSchema = {
         ))}
       </div>
 
-      <div class="text-center pt-4" data-reveal>
+      <div class="text-center pt-4">
         <a href="/catalog/" class="arrow-link">
           Весь каталог ({ALL_PRODUCTS.length} устройств)
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -123,13 +123,13 @@ const catalogItemListSchema = {
   <section class="band band--slim" aria-label="Trade-In и выкуп">
     <div class="shell">
       <div class="max-w-[60ch]">
-        <h2 class="type-display !text-[1.75rem] lg:!text-[2.5rem] m-0" data-reveal>
+        <h2 class="type-display !text-[1.75rem] lg:!text-[2.5rem] m-0">
           Обменяем старое на новое
         </h2>
-        <p class="type-body text-fg-muted mt-5 mb-0" data-reveal>
+        <p class="type-body text-fg-muted mt-5 mb-0">
           Приносите старое устройство — оценим его и сразу зачтём стоимость в покупку нового.
         </p>
-        <div class="mt-8" data-reveal>
+        <div class="mt-8">
           <a href="/services/#trade-in" class="btn">
             Оценить устройство
           </a>
@@ -141,12 +141,12 @@ const catalogItemListSchema = {
   <!-- ================= 4/5 · CONTACTS (on #F7F7F9) ================= -->
   <section id="contacts" class="band band--surface" aria-label="Контакты магазина">
     <div class="shell space-y-12">
-      <h2 class="type-display !text-[2rem] lg:!text-[2.75rem] m-0" data-reveal>
+      <h2 class="type-display !text-[2rem] lg:!text-[2.75rem] m-0">
         Приезжайте в ТРЦ «РИО»
       </h2>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
-        <div class="lg:col-span-5 space-y-6" data-reveal>
+        <div class="lg:col-span-5 space-y-6">
           <p class="type-body m-0">
             {siteData.contacts.address.full}
           </p>
@@ -212,7 +212,7 @@ const catalogItemListSchema = {
           </div>
         </div>
 
-        <div class="lg:col-span-7" data-reveal>
+        <div class="lg:col-span-7">
           <StoreMapBlock />
         </div>
       </div>
