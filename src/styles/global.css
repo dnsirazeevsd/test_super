@@ -75,6 +75,11 @@
 }
 
 :root {
+  --dur-fast: 180ms;
+  --dur-base: 240ms;
+  --dur-reveal: 500ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-page: 180ms;
   --bg: #FFFFFF;
   --surface: #F7F7F9;
   --text: #111111;
@@ -205,7 +210,7 @@
     font-size: 1rem; /* 16px at 16px root */
     padding: 15px 30px;
     border-radius: 12px;
-    transition: background-color 0.2s ease-out;
+    transition: opacity var(--dur-fast) var(--ease-out);
   }
   .btn:hover {
     background-color: var(--btn-hover);
@@ -220,10 +225,10 @@
     font-size: 1rem; /* 16px at 16px root */
     color: var(--text);
     text-decoration: none;
-    transition: color 0.2s ease-out;
+    transition: none;
   }
   .arrow-link svg {
-    transition: transform 0.2s ease-out;
+    transition: transform var(--dur-fast) var(--ease-out);
   }
   .arrow-link:hover {
     color: var(--accent);
@@ -245,47 +250,88 @@
   }
 }
 
-/* One motion system: fade + 20px translate, 550ms ease-out (gated on JS) */
-html.js [data-reveal] {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.55s ease-out, transform 0.55s ease-out;
-}
-html.js [data-reveal].is-visible {
-  opacity: 1;
-  transform: none;
+/* Motion is deliberately compositor-only. Color/background state changes stay instant. */
+.transition-colors { transition-property: none !important; }
+.transition-transform, .transition-opacity, .motion-transition {
+  transition-property: transform, opacity;
+  transition-duration: var(--dur-base);
+  transition-timing-function: var(--ease-out);
 }
 
-/* Gentle one-time hero reveal */
-html.js .hero-fade {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: hero-in 0.6s ease-out forwards;
+/* CSS starts with the HTML, never an after-paint JS hide. A faint initial state keeps
+   LCP visible throughout the stagger; it is never fully transparent. */
+.hero-headline, .hero-subline, .hero-actions, .hero-image {
+  animation: hero-enter var(--dur-reveal) var(--ease-out) both;
 }
-html.js .hero-fade--late {
-  animation-delay: 0.15s;
-}
-@keyframes hero-in {
-  to {
-    opacity: 1;
-    transform: none;
-  }
+.hero-subline { animation-delay: 100ms; }
+.hero-actions { animation-delay: 200ms; }
+.hero-image { animation-delay: 300ms; }
+@keyframes hero-enter {
+  from { opacity: 0.1; transform: translateY(20px); }
+  to { opacity: 1; transform: none; }
 }
 
+/* Only armed below the viewport; visible SSR content is not hidden on hydration. */
+.reveal-pending {
+  opacity: 0;
+  transform: translateY(20px);
+}
+.reveal-ready {
+  transition: opacity var(--dur-reveal) var(--ease-out), transform var(--dur-reveal) var(--ease-out);
+}
+.reveal-pending:focus-visible { opacity: 1; transform: none; }
+.product-tile { transition: transform var(--dur-fast) var(--ease-out); }
+.product-tile img { transition: transform var(--dur-base) var(--ease-out); }
+@media (hover: hover) and (pointer: fine) {
+  .product-tile:hover { transform: translateY(-4px); }
+  .product-tile:hover img { transform: scale(1.02); }
+}
+@media (pointer: coarse) {
+  .product-tile:active, .product-tile.is-pressed { transform: scale(0.99); opacity: 0.85; }
+  .product-tile { transition: transform var(--dur-fast) var(--ease-out), opacity var(--dur-fast) var(--ease-out); }
+}
+[data-header].is-scrolled {
+  background: var(--bg);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+.catalog-motion { transition: opacity var(--dur-fast) var(--ease-out); }
+
+/* Overlay snapshots do not participate in layout or the accessibility tree. */
+.config-image { position: relative; }
+.config-snapshot { position: absolute; inset: 0; pointer-events: none; }
+.config-price { position: relative; }
+.config-price > span { display: inline-block; }
+.config-price .config-snapshot { white-space: nowrap; }
+
+@keyframes page-fade-out { to { opacity: 0; } }
+@keyframes page-fade-in { from { opacity: 0; } }
+::view-transition-old(root) { animation: page-fade-out var(--dur-page) var(--ease-out) both; }
+::view-transition-new(root) { animation: page-fade-in var(--dur-page) var(--ease-out) both; }
+::view-transition-group(root) { animation: none; }
+
+/* Constrained devices use the same instant states as reduced motion. */
+html.motion-simple *, html.motion-simple *::before, html.motion-simple *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+html.motion-simple :is(.hero-headline, .hero-subline, .hero-actions, .hero-image, .reveal-pending, .product-tile:hover, .product-tile:active, .product-tile.is-pressed, .product-tile:hover img, .hover\:scale-105:hover, .arrow-link:hover svg, a:hover .tg-arrow) {
+  opacity: 1 !important; transform: none !important;
+}
+html.motion-simple .group:hover .group-hover\:scale-\[1\.03\],
+html.motion-simple .group:hover .group-hover\:scale-\[1\.02\] { transform: none !important; }
+html.motion-simple::view-transition-old(root), html.motion-simple::view-transition-new(root) { animation: none; }
 @media (prefers-reduced-motion: reduce) {
-  html.js [data-reveal],
-  html.js .hero-fade {
-    opacity: 1 !important;
-    transform: none !important;
-    animation: none !important;
-    transition: none !important;
-  }
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .hero-headline, .hero-subline, .hero-actions, .hero-image, .reveal-pending { opacity: 1 !important; transform: none !important; }
+  /* Preserve functional transforms (e.g. the hidden action bar), not decorative ones. */
+  .product-tile:hover, .product-tile:active, .product-tile.is-pressed, .product-tile:hover img,
+  .hover\:scale-105:hover, .group:hover .group-hover\:scale-\[1\.03\],
+  .group:hover .group-hover\:scale-\[1\.02\], .arrow-link:hover svg, a:hover .tg-arrow { transform: none !important; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none !important; }
 }
+/* Lenis owns only eligible desktop wheel input; native anchor/focus scrolling remains intact. */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }

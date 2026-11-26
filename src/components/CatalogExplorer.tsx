@@ -516,7 +516,7 @@ export default function CatalogExplorer({
           {groupedCards.map((card) => {
             const img = card.imageKey ? manifest[`${card.imageKey}-f7`] || manifest[card.imageKey] : null;
             return (
-              <a href={card.url} class="group block" data-reveal>
+              <a href={card.url} class="group block product-tile">
                 <div
                   class="aspect-square flex items-center justify-center overflow-hidden"
                   style="background-color: var(--surface);"
@@ -563,7 +563,7 @@ export default function CatalogExplorer({
             const displayName = item.title.replace(' с дисководом', '');
 
             return (
-              <a href={href} class="group block" data-reveal>
+              <a href={href} class="group block product-tile">
                 <div
                   class="aspect-square flex items-center justify-center overflow-hidden"
                   style="background-color: var(--surface);"

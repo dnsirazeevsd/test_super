@@ -32,6 +32,7 @@
 </div>
 
 <script>
+ document.addEventListener('astro:page-load', () => {
   const STORAGE_KEY = 'superstore_cookie_consent';
   const banner = document.getElementById('cookie-consent-banner');
   try {
@@ -55,4 +56,6 @@
     } catch {}
     banner?.classList.add('hidden');
   });
+
+ });
 </script>

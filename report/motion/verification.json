@@ -1,0 +1,97 @@
+{
+  "date": "2026-11-26T10:09:53.975Z",
+  "checks": [
+    "Homepage JS including deferred desktop Lenis is <=150KB gzip",
+    "Hero content is server rendered",
+    "Desktop Lenis enabled",
+    "Body copy is not a scroll reveal target",
+    "Skip link receives keyboard focus",
+    "Tile hover lifts exactly 4px",
+    "Tile image scales to 1.02",
+    "Scrolled heading revealed",
+    "Heading reveals only once",
+    "Catalog menu opens for keyboard focus",
+    "Catalog Escape keeps focus but dismisses panel",
+    "Header is solid after 24px",
+    "Configurator snapshots are decorative",
+    "Storage keeps keyboard focus",
+    "Configurator snapshots clean up",
+    "Image and price geometry stable across storage/color changes",
+    "Rapid changes leave no stale overlays",
+    "Reduced motion removes Lenis",
+    "Reduced motion skips configurator animations",
+    "Reduced motion hero is instantly visible",
+    "Reduced motion leaves no hidden reveals",
+    "Client navigation and back reinitialize motion",
+    "Touch stays on native scrolling",
+    "Mobile dialog traps focus",
+    "Dialog restores keyboard focus",
+    "Touch tile has short press feedback",
+    "Touch feedback does not stick",
+    "save-data uses instant native states",
+    "low-end uses instant native states",
+    "Baseline text and geometry unchanged on home/product at mobile/desktop widths",
+    "Unsupported View Transitions still navigate without a page animation",
+    "No browser errors"
+  ],
+  "errors": [],
+  "metrics": {
+    "homepageJS": {
+      "gzipBytesIncludingDeferredDesktopLenis": 15221,
+      "files": [
+        "/_astro/ClientRouter.astro_astro_type_script_index_0_lang.B1s6EZz0.js",
+        "/_astro/BaseLayout.astro_astro_type_script_index_0_lang.Clzucapi.js",
+        "/_astro/preload-helper.BlTxHScW.js",
+        "/_astro/motion.BDQLdsmi.js",
+        "/_astro/lenis.Bd7gxleh.js"
+      ]
+    },
+    "desktopCLS": 0,
+    "scrollFrames": {
+      "count": 116,
+      "medianMs": 16.699999999999818,
+      "p95Ms": 33.40000000000009,
+      "maxMs": 66.69999999999982,
+      "over50Ms": 2
+    },
+    "mobileCLS": 0,
+    "trace": {
+      "profile": "390x844 touch; 4× CPU; 1.6Mbps down / 750Kbps up; 150ms RTT",
+      "taskCount": 13689,
+      "longTasks": 5,
+      "scrollLongTasks": 1,
+      "longestTaskMs": 98.885
+    },
+    "layoutComparison": [
+      {
+        "width": 390,
+        "route": "/",
+        "identical": true
+      },
+      {
+        "width": 390,
+        "route": "/catalog/iphone/iphone-18-pro/",
+        "identical": true
+      },
+      {
+        "width": 1440,
+        "route": "/",
+        "identical": true
+      },
+      {
+        "width": 1440,
+        "route": "/catalog/iphone/iphone-18-pro/",
+        "identical": true
+      }
+    ],
+    "lighthouse": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lighthouseCLS": 0,
+    "lighthouseLCP": 1579.6019999999999,
+    "lighthouseTBT": 8.999999999999773
+  }
+}
