@@ -1,5 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
-import type { DeliveryOption, ImageAsset, ProductItem, ProductSpec } from '../lib/catalog';
+import type {
+  DeliveryOption,
+  ImageAsset,
+  ProductItem,
+  ProductSpecGroup,
+} from '../lib/catalog';
+import { buildSummary } from '../lib/specs.mjs';
 import { MESSENGER_PATHS, type MessengerName } from '../lib/messenger-icons';
 import { openLeadModal, type LeadModalPayload } from '../lib/lead';
 import { simpleMotion } from '../lib/motion';
@@ -26,6 +32,8 @@ interface Props {
   modelTitle: string;
   favId: string;
   items: ProductItem[];
+  category: string;
+  specGroups: ProductSpecGroup[];
   manifest: Record<string, ImageAsset>;
   primaryPhoneDisplay: string;
   primaryPhoneHref: string;
@@ -53,6 +61,8 @@ export default function ProductConfigurator({
   modelTitle,
   favId,
   items,
+  category,
+  specGroups,
   manifest,
   primaryPhoneDisplay,
   primaryPhoneHref,
@@ -88,6 +98,9 @@ export default function ProductConfigurator({
   const [simTipOpen, setSimTipOpen] = useState(false);
   const [openFacts, setOpenFacts] = useState<Record<string, boolean>>({});
 
+  // Expandable full-specifications panel (compact summary is always visible).
+  const [specsOpen, setSpecsOpen] = useState(false);
+
   // Read URL params on mount
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -109,6 +122,13 @@ export default function ProductConfigurator({
   const current = useMemo(
     () => items.find((i) => i.id === selectedId) || items[0],
     [items, selectedId]
+  );
+
+  // Compact summary reflects the *currently selected* configuration, so it
+  // updates instantly when the user switches storage / colour / SIM — no reload.
+  const summary = useMemo(
+    () => buildSummary(category, current, specGroups),
+    [category, current, specGroups]
   );
 
   // Sync URL query params whenever configuration changes
@@ -334,11 +354,6 @@ export default function ProductConfigurator({
   };
 
   const trimmedDescription = (current.description || '').trim();
-  const filledSpecs: ProductSpec[] = Array.isArray(current.specs)
-    ? current.specs.filter((s) =>
-        typeof s === 'string' ? s.trim().length > 0 : Boolean(s && s.label && s.value)
-      )
-    : [];
   const trimmedGiftDescription = (giftDescription || '').trim();
   const trimmedWarranty = (warrantyText || '').trim();
   const showTelegram = telegramEnabled && Boolean(telegramHref);
@@ -852,34 +867,79 @@ export default function ProductConfigurator({
           </div>
         )}
 
-        {/* Optional "Характеристики" — rendered ONLY when filled */}
-        {filledSpecs.length > 0 && (
-          <div class="pt-8 mt-8 space-y-3" style="border-top: 1px solid var(--divider);">
-            <h2 class="text-lg font-semibold text-fg m-0">Характеристики</h2>
-            <dl class="m-0" style="border-top: 1px solid var(--divider);">
-              {filledSpecs.map((spec, idx) =>
-                typeof spec === 'string' ? (
-                  <div
-                    key={idx}
-                    class="py-3 type-small text-fg"
-                    style="border-bottom: 1px solid var(--divider);"
-                  >
-                    {spec}
-                  </div>
-                ) : (
-                  <div
-                    key={idx}
-                    class="py-3 flex items-baseline justify-between gap-4 type-small"
-                    style="border-bottom: 1px solid var(--divider);"
-                  >
-                    <dt class="text-fg-muted">{spec.label}</dt>
-                    <dd class="m-0 font-semibold text-fg text-right">{spec.value}</dd>
-                  </div>
-                )
-              )}
-            </dl>
-          </div>
-        )}
+        {/* Specifications — always rendered: compact summary + expandable full specs.
+            The full groups stay in the initial DOM (CSS-hidden when collapsed) so the
+            content is crawlable and never removed on variant changes. */}
+        <section
+          class="pt-8 mt-8"
+          style="border-top: 1px solid var(--divider);"
+          aria-labelledby="specs-heading"
+        >
+          <h2 id="specs-heading" class="text-lg font-semibold text-fg m-0">
+            Характеристики
+          </h2>
+
+          {/* Compact summary — the four key characteristics, category-adapted */}
+          <dl class="m-0 mt-4" style="border-top: 1px solid var(--divider);">
+            {summary.map((row) => (
+              <div
+                key={row.label}
+                class="py-3 flex items-baseline justify-between gap-4 type-small"
+                style="border-bottom: 1px solid var(--divider);"
+              >
+                <dt class="text-fg-muted">{row.label}</dt>
+                <dd class="m-0 font-semibold text-brand text-right">{row.value}</dd>
+              </div>
+            ))}
+          </dl>
+
+          {/* Expandable full specifications — present in DOM, hidden via CSS when collapsed */}
+          {specGroups.length > 0 && (
+            <div
+              id="specs-details"
+              class={`specs-details mt-2 ${specsOpen ? 'is-open' : 'is-collapsed'}`}
+            >
+              {specGroups.map((g) => (
+                <div
+                  key={g.group}
+                  class="specs-group pt-6 mt-6"
+                  style="border-top: 1px solid var(--divider);"
+                >
+                  <h3 class="specs-group__title text-base font-semibold text-fg m-0">
+                    {g.group}
+                  </h3>
+                  <dl class="specs-group__body m-0">
+                    {g.items.map((it) => (
+                      <div
+                        key={it.label}
+                        class="py-3 flex items-baseline justify-between gap-4 type-small"
+                        style="border-bottom: 1px solid var(--divider);"
+                      >
+                        <dt class="text-fg-muted">{it.label}</dt>
+                        <dd class="m-0 font-semibold text-brand text-right">{it.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Centered pill toggle — semantic, accessible expand/collapse */}
+          {specGroups.length > 0 && (
+            <div class="flex justify-center mt-6">
+              <button
+                type="button"
+                class="specs-toggle"
+                aria-expanded={specsOpen}
+                aria-controls="specs-details"
+                onClick={() => setSpecsOpen((v) => !v)}
+              >
+                {specsOpen ? 'Свернуть характеристики' : 'Показать все характеристики'}
+              </button>
+            </div>
+          )}
+        </section>
 
         {/* Accordion: "Доставка и получение" + optional "Гарантия" + data-driven Trust strip */}
         <div class="mt-10" style="border-top: 1px solid var(--divider);">

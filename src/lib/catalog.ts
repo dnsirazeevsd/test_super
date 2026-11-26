@@ -4,8 +4,21 @@ import productsData from '../data/products.json';
 import siteData from '../data/site.json';
 import imageManifest from '../data/image-manifest.json';
 import imageRegistry from '../data/images.json';
+import specsData from '../data/specs.json';
 
 export type ProductSpec = string | { label: string; value: string };
+
+/** A single specification group (e.g. «Экран») with its label/value rows. */
+export interface ProductSpecGroup {
+  group: string;
+  items: Array<{ label: string; value: string }>;
+}
+
+/** Per-model structured specifications, keyed by modelSlug. */
+export interface ModelSpecs {
+  category: string;
+  groups: ProductSpecGroup[];
+}
 
 export interface ProductItem {
   id: string;
@@ -96,6 +109,22 @@ export const ALL_PRODUCTS: ProductItem[] = (productsData.items as ProductItem[])
 }));
 export const CATEGORIES: CategoryInfo[] = productsData.categories as CategoryInfo[];
 export const MANIFEST: Record<string, ImageAsset> = imageManifest as Record<string, ImageAsset>;
+
+/**
+ * Series-level specifications, keyed by modelSlug. Shared across every variant of
+ * a model (storage / colour / SIM differ per SKU and are shown separately in the
+ * compact summary). Returns an empty array when a model has no spec entry, so the
+ * caller can decide how to handle it.
+ */
+const SPECS_BY_MODEL = (specsData as { models?: Record<string, ModelSpecs> }).models ?? {};
+
+export function getModelSpecs(modelSlug: string): ProductSpecGroup[] {
+  return SPECS_BY_MODEL[modelSlug]?.groups ?? [];
+}
+
+export function getModelSpecCategory(modelSlug: string): string | undefined {
+  return SPECS_BY_MODEL[modelSlug]?.category;
+}
 
 /**
  * Build-time resolution of owner-supplied product photos. Each entry in
