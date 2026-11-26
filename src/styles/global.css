@@ -405,3 +405,80 @@ html.motion-simple::view-transition-old(root), html.motion-simple::view-transiti
 html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 .lenis.lenis-stopped { overflow: hidden; }
+
+/* Favorites (Избранное): outline heart toggle, header count, burger dot, toast and
+   fly-to-header dot. All motion is transform/opacity only; every decorative element is
+   absolutely/fixed positioned so toggling never shifts layout (CLS stays 0). */
+.fav-heart {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--text);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.fav-heart svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  transition: fill 150ms ease-out, stroke 150ms ease-out, color 150ms ease-out;
+}
+.fav-heart[aria-pressed='true'] {
+  color: var(--accent);
+}
+.fav-heart[aria-pressed='true'] svg {
+  fill: var(--accent);
+  stroke: var(--accent);
+}
+/* Header count badge + burger dot: display is owned by .is-on so the badge can never
+   widen the header when the count appears (absolute positioning, zero layout shift). */
+.fav-count { display: none; }
+.fav-count.is-on { display: inline-flex; }
+.fav-dot {
+  display: none;
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: var(--accent);
+}
+.fav-dot.is-on { display: block; }
+/* Fly-to-header dot: created and removed per add-click, never blocks pointer input. */
+.fav-fly-dot {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  background: var(--accent);
+  pointer-events: none;
+  z-index: 200;
+  will-change: transform;
+}
+/* Mobile toast: fixed above the sticky action bar, non-blocking, announced politely. */
+.fav-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 84px;
+  transform: translateX(-50%);
+  background: var(--text);
+  color: #FFFFFF;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  padding: 10px 18px;
+  border-radius: 9999px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 200;
+}

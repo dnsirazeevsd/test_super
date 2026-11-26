@@ -18,6 +18,7 @@ interface Props {
   ogType?: 'website' | 'article' | 'product';
   lcpAsset?: ImageAsset | null;
   jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
+  noindex?: boolean;
 }
 
 const {
@@ -28,6 +29,7 @@ const {
   ogType = 'website',
   lcpAsset = null,
   jsonLd,
+  noindex = false,
 } = Astro.props;
 
 // Enforce zero-emoji rule on meta title & description
@@ -114,6 +116,7 @@ const metrikaRaw = siteData.integrations.metrikaId;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{cleanTitle}</title>
     <meta name="description" content={cleanDesc} />
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonicalUrl} />
 
     <!-- Self-hosted Manrope Cyrillic + Latin (400/600) font preloads -->
@@ -289,6 +292,16 @@ const metrikaRaw = siteData.integrations.metrikaId;
 
     <script>
       import '../scripts/motion';
+    </script>
+
+    <!-- Favorites (Избранное): code-split chunk loaded only after first paint.
+         Two RAFs guarantee the paint happened; the feature is inert until then. -->
+    <script>
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          import('../scripts/favorites').catch(() => {});
+        });
+      });
     </script>
   </body>
 </html>

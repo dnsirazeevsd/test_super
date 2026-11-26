@@ -285,6 +285,7 @@ export default function CatalogExplorer({
 
       return {
         key: modelSlug,
+        favId: `${items[0].category}/${modelSlug}`,
         title: items.length === 1 ? items[0].title : items[0].modelTitle,
         displayTitle: items[0].modelTitle.replace(' с дисководом', ''),
         url: `/catalog/${items[0].category}/${modelSlug}/${qs ? `?${qs}` : ''}`,
@@ -707,7 +708,19 @@ export default function CatalogExplorer({
           {groupedCards.map((card) => {
             const img = card.imageKey ? manifest[`${card.imageKey}-f7`] || manifest[card.imageKey] : null;
             return (
-              <article key={card.key} class="flex flex-col items-start">
+              <article key={card.key} class="relative flex flex-col items-start">
+                <button
+                  type="button"
+                  data-fav-btn
+                  data-fav-id={card.favId}
+                  aria-pressed="false"
+                  aria-label="Добавить в избранное"
+                  class="fav-heart absolute top-2 right-2 z-10"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </button>
                 <a href={card.url} class="group block w-full product-tile">
                   <div
                     class="aspect-square flex items-center justify-center overflow-hidden"
@@ -784,7 +797,19 @@ export default function CatalogExplorer({
             const skuPayload = buildSkuLeadPayload(item);
 
             return (
-              <article key={item.id} class="flex flex-col items-start">
+              <article key={item.id} class="relative flex flex-col items-start">
+                <button
+                  type="button"
+                  data-fav-btn
+                  data-fav-id={`${item.category}/${item.modelSlug}`}
+                  aria-pressed="false"
+                  aria-label="Добавить в избранное"
+                  class="fav-heart absolute top-2 right-2 z-10"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </button>
                 <a href={href} class="group block w-full product-tile">
                   <div
                     class="aspect-square flex items-center justify-center overflow-hidden"
