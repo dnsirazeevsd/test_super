@@ -159,6 +159,36 @@
     "webpSrcset": "/images/products/iphones/iphone-18-pro-silver-400w.webp 400w, /images/products/iphones/iphone-18-pro-silver-800w.webp 800w",
     "src": "/images/products/iphones/iphone-18-pro-silver-800w.webp"
   },
+  "iphones/iphone_16_pro_black": {
+    "key": "iphones/iphone_16_pro_black",
+    "original": "/assets/source/iphones/iphone_16_pro_black.png",
+    "width": 1200,
+    "height": 1500,
+    "aspectRatio": 0.8,
+    "avifSrcset": "/images/products/iphones/iphone_16_pro_black-400w.avif 400w, /images/products/iphones/iphone_16_pro_black-800w.avif 800w, /images/products/iphones/iphone_16_pro_black-1200w.avif 1200w",
+    "webpSrcset": "/images/products/iphones/iphone_16_pro_black-400w.webp 400w, /images/products/iphones/iphone_16_pro_black-800w.webp 800w, /images/products/iphones/iphone_16_pro_black-1200w.webp 1200w",
+    "src": "/images/products/iphones/iphone_16_pro_black-1200w.webp"
+  },
+  "iphones/iphone_air_black": {
+    "key": "iphones/iphone_air_black",
+    "original": "/assets/source/iphones/iphone_air_black.png",
+    "width": 1200,
+    "height": 1500,
+    "aspectRatio": 0.8,
+    "avifSrcset": "/images/products/iphones/iphone_air_black-400w.avif 400w, /images/products/iphones/iphone_air_black-800w.avif 800w, /images/products/iphones/iphone_air_black-1200w.avif 1200w",
+    "webpSrcset": "/images/products/iphones/iphone_air_black-400w.webp 400w, /images/products/iphones/iphone_air_black-800w.webp 800w, /images/products/iphones/iphone_air_black-1200w.webp 1200w",
+    "src": "/images/products/iphones/iphone_air_black-1200w.webp"
+  },
+  "iphones/macbook_neo_citrus": {
+    "key": "iphones/macbook_neo_citrus",
+    "original": "/assets/source/iphones/macbook_neo_citrus.png",
+    "width": 1200,
+    "height": 1500,
+    "aspectRatio": 0.8,
+    "avifSrcset": "/images/products/iphones/macbook_neo_citrus-400w.avif 400w, /images/products/iphones/macbook_neo_citrus-800w.avif 800w, /images/products/iphones/macbook_neo_citrus-1200w.avif 1200w",
+    "webpSrcset": "/images/products/iphones/macbook_neo_citrus-400w.webp 400w, /images/products/iphones/macbook_neo_citrus-800w.webp 800w, /images/products/iphones/macbook_neo_citrus-1200w.webp 1200w",
+    "src": "/images/products/iphones/macbook_neo_citrus-1200w.webp"
+  },
   "other-products/macbook-air-13-m5": {
     "key": "other-products/macbook-air-13-m5",
     "original": "/assets/source/other-products/macbook-air-13-m5.jpg",
