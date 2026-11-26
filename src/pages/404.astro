@@ -1,11 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import siteData from '../data/site.json';
-import { getTelegramUrl, isTelegramEnabled } from '../lib/catalog';
+import { getTelegramUrl, getWhatsAppUrl, isTelegramEnabled, isWhatsAppEnabled } from '../lib/catalog';
 
 const primaryPhone = siteData.contacts.phones[0];
 const telegramHref = getTelegramUrl();
 const showTelegram = isTelegramEnabled() && Boolean(telegramHref);
+const whatsappHref = getWhatsAppUrl();
+const showWhatsApp = isWhatsAppEnabled() && Boolean(whatsappHref);
 ---
 
 <BaseLayout
@@ -41,6 +43,31 @@ const showTelegram = isTelegramEnabled() && Boolean(telegramHref);
             </svg>
           </a>
         ) : (
+          <a
+            href={primaryPhone.href}
+            data-goal="click_phone"
+            class="arrow-link tabular-nums whitespace-nowrap"
+          >
+            {primaryPhone.display}
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+        )}
+        {showWhatsApp && (
+          <a
+            href={whatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-goal="click_whatsapp"
+            class="arrow-link"
+          >
+            Написать в WhatsApp
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+        )}
           <a
             href={primaryPhone.href}
             data-goal="click_phone"

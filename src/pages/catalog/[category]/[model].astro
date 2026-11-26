@@ -11,8 +11,10 @@ import {
   getGroupedModels,
   getImageAsset,
   getTelegramUrl,
+  getWhatsAppUrl,
   getTrustStrip,
   isTelegramEnabled,
+  isWhatsAppEnabled,
 } from '../../../lib/catalog';
 
 export function getStaticPaths() {
@@ -127,9 +129,11 @@ const productSchema = {
         manifest={MANIFEST}
         primaryPhoneDisplay={siteData.contacts.phones[0].display}
         primaryPhoneHref={siteData.contacts.phones[0].href}
-        viberHref={siteData.contacts.messengers.viber.url}
+        whatsappEnabled={isWhatsAppEnabled()}
+        whatsappHref={getWhatsAppUrl()}
         telegramEnabled={isTelegramEnabled()}
         telegramHref={getTelegramUrl()}
+        telegramUsername={(siteData.telegram.username || '').trim().replace(/^@/, '')}
         giftDescription={siteData.giftDescription || ''}
         deliveryOptions={getDeliveryOptions()}
         deliveryConditions={getDeliveryConditions()}

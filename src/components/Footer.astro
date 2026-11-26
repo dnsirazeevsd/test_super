@@ -2,10 +2,9 @@
 import siteData from '../data/site.json';
 import Logo from './Logo.astro';
 import MessengerIcon from './MessengerIcon.astro';
-import { getTelegramUrl, isTelegramEnabled } from '../lib/catalog';
+import { getTelegramUrl, isTelegramEnabled, getWhatsAppUrl, isWhatsAppEnabled } from '../lib/catalog';
 import type { MessengerName } from '../lib/messenger-icons';
 
-const messengers = siteData.contacts.messengers;
 const hasAbout = Boolean((siteData.about || '').trim());
 const hasWarranty = Boolean((siteData.warranty || '').trim());
 
@@ -21,6 +20,7 @@ const navLinks = [
 ];
 
 const telegramHref = getTelegramUrl();
+const whatsappHref = getWhatsAppUrl();
 const messengerLinks: Array<{
   name: MessengerName;
   label: string;
@@ -39,13 +39,17 @@ const messengerLinks: Array<{
         },
       ]
     : []),
-  {
-    name: 'viber' as const,
-    label: 'Написать в Viber',
-    href: messengers.viber.url,
-    goal: 'click_viber',
-    external: false,
-  },
+  ...(isWhatsAppEnabled() && whatsappHref
+    ? [
+        {
+          name: 'whatsapp' as const,
+          label: 'Написать в WhatsApp',
+          href: whatsappHref,
+          goal: 'click_whatsapp',
+          external: true,
+        },
+      ]
+    : []),
 ];
 ---
 
@@ -116,7 +120,7 @@ const messengerLinks: Array<{
               target={m.external ? '_blank' : undefined}
               rel={m.external ? 'noopener noreferrer' : undefined}
               data-goal={m.goal}
-              class="text-fg hover:text-brand transition-colors"
+              class="inline-flex items-center min-h-[44px] text-fg hover:text-brand transition-colors"
               aria-label={m.label}
             >
               <MessengerIcon name={m.name} size={20} />

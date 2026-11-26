@@ -3,7 +3,14 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import NewsGallery from '../../components/NewsGallery';
 import siteData from '../../data/site.json';
-import { getImageAsset, getTelegramUrl, isTelegramEnabled, type ImageAsset } from '../../lib/catalog';
+import {
+  getImageAsset,
+  getTelegramUrl,
+  getWhatsAppUrl,
+  isTelegramEnabled,
+  isWhatsAppEnabled,
+  type ImageAsset,
+} from '../../lib/catalog';
 
 export async function getStaticPaths() {
   const posts = await getCollection('news');
@@ -19,6 +26,8 @@ const siteOrigin = Astro.site?.origin || siteData.brand.domain;
 const primaryPhone = siteData.contacts.phones[0];
 const telegramHref = getTelegramUrl();
 const showTelegram = isTelegramEnabled() && Boolean(telegramHref);
+const whatsappHref = getWhatsAppUrl();
+const showWhatsApp = isWhatsAppEnabled() && Boolean(whatsappHref);
 
 const galleryAssets = post.data.images
   .map((key: string) => getImageAsset(key))
@@ -128,6 +137,20 @@ const articleSchema = {
         ) : (
           <a href="/news/" class="arrow-link">
             Ко всем новостям
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+        )}
+        {showWhatsApp && (
+          <a
+            href={whatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-goal="click_whatsapp"
+            class="arrow-link"
+          >
+            Написать в WhatsApp
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
             </svg>

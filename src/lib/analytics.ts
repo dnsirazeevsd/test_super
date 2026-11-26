@@ -3,7 +3,7 @@ import siteData from '../data/site.json';
 export type MetrikaGoal =
   | 'click_phone'
   | 'click_telegram'
-  | 'click_viber'
+  | 'click_whatsapp'
   | 'click_check_stock'
   | 'trade_in_request'
   | 'lead_open'

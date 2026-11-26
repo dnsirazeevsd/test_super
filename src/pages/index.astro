@@ -9,14 +9,18 @@ import {
   getGroupedModels,
   getImageAsset,
   getTelegramUrl,
+  getWhatsAppUrl,
   getYandexOrgLink,
   isTelegramEnabled,
+  isWhatsAppEnabled,
   pluralReviews,
 } from '../lib/catalog';
 
 const yandexOrgLink = getYandexOrgLink();
 const telegramHref = getTelegramUrl();
 const showTelegram = isTelegramEnabled() && Boolean(telegramHref);
+const whatsappHref = getWhatsAppUrl();
+const showWhatsApp = isWhatsAppEnabled() && Boolean(whatsappHref);
 
 const allGroups = getGroupedModels();
 const featuredGroups = allGroups.slice(0, 8);
@@ -190,20 +194,24 @@ const catalogItemListSchema = {
                 target="_blank"
                 rel="noopener noreferrer"
                 data-goal="click_telegram"
-                class="inline-flex items-center gap-2 font-semibold text-fg hover:text-brand transition-colors no-underline"
+                class="inline-flex items-center gap-2 min-h-[44px] font-semibold text-fg hover:text-brand transition-colors no-underline"
               >
                 <MessengerIcon name="telegram" />
                 Telegram
               </a>
             )}
-            <a
-              href={siteData.contacts.messengers.viber.url}
-              data-goal="click_viber"
-              class="inline-flex items-center gap-2 font-semibold text-fg hover:text-brand transition-colors no-underline"
-            >
-              <MessengerIcon name="viber" />
-              Viber
-            </a>
+            {showWhatsApp && (
+              <a
+                href={whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-goal="click_whatsapp"
+                class="inline-flex items-center gap-2 min-h-[44px] font-semibold text-fg hover:text-brand transition-colors no-underline"
+              >
+                <MessengerIcon name="whatsapp" />
+                WhatsApp
+              </a>
+            )}
           </div>
         </div>
 
