@@ -67,8 +67,8 @@ const consentMatch = consentText.match(/^(.*?)(персональных данн
         >
           <span class="text-fg-muted">Получение</span>
           <span class="font-semibold text-fg text-right" data-lead-delivery-summary-value>
-            {deliveryOptions[0] ? `${deliveryOptions[0].label} — ${deliveryOptions[0].priceLabel}` : ''}
-          </span>
+         {deliveryOptions[0] ? `${deliveryOptions[0].label} — ${deliveryOptions[0].priceLabel.replace(/ /g, '\u00A0')}` : ''}
+       </span>
         </div>
       </div>
 
@@ -334,12 +334,12 @@ const consentMatch = consentText.match(/^(.*?)(персональных данн
       setFieldError('consent', '');
     };
 
-    const syncDeliverySummary = () => {
+     const syncDeliverySummary = () => {
       const opt = deliverySelect.selectedOptions[0];
       if (!opt) return;
       const label = opt.getAttribute('data-label') || opt.textContent || '';
-      const priceLabel = opt.getAttribute('data-price-label') || '';
-      deliverySummaryVal.textContent = priceLabel ? `${label} — ${priceLabel}` : label;
+      const priceLabel = (opt.getAttribute('data-price-label') || '').replace(/ /g, '\u00A0');
+      deliverySummaryVal.textContent = priceLabel ? `${label} —\u00A0${priceLabel}` : label;
     };
 
     const addSummaryRow = (label: string, value: string) => {
