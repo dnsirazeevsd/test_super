@@ -1,5 +1,10 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import {
+  validateModelSpecs,
+  buildSummary,
+  REQUIRED_SUMMARY_FIELDS,
+} from '../src/lib/specs.mjs';
 
 const ROOT = process.cwd();
 
@@ -30,6 +35,51 @@ async function main() {
     throw new Error(`Expected 30 products, found ${productsJson.items.length}`);
   }
   console.log(`✓ Product count verified: ${productsJson.items.length} items`);
+
+  // 1b. Verify structured specifications cover EVERY product.
+  const specsJson = JSON.parse(
+    await fs.readFile(path.join(ROOT, 'src/data/specs.json'), 'utf-8')
+  );
+  const modelSlugs = Array.from(new Set(productsJson.items.map((p) => p.modelSlug)));
+  for (const slug of modelSlugs) {
+    const entry = specsJson.models?.[slug];
+    if (!entry || !entry.category) {
+      throw new Error(`Missing specifications entry for model "${slug}"`);
+    }
+    const errors = validateModelSpecs(slug, entry);
+    if (errors.length) {
+      throw new Error(
+        `Invalid specifications for "${slug}":\n - ${errors.join('\n - ')}`
+      );
+    }
+  }
+  console.log(
+    `✓ Specifications present and structurally valid for all ${modelSlugs.length} models`
+  );
+
+  // 1c. Every product must resolve its required (category-specific) summary fields,
+  //     and no summary row may have an empty label or value.
+  for (const item of productsJson.items) {
+    const entry = specsJson.models[item.modelSlug];
+    const category = entry.category;
+    const summary = buildSummary(category, item, entry.groups);
+    const labels = new Set(summary.map((s) => s.label));
+    for (const req of REQUIRED_SUMMARY_FIELDS[category] || []) {
+      if (!labels.has(req)) {
+        throw new Error(
+          `Product ${item.id} (${item.title}): required summary field "${req}" missing`
+        );
+      }
+    }
+    for (const row of summary) {
+      if (!row.label || !row.value) {
+        throw new Error(`Product ${item.id} (${item.title}): empty summary label/value`);
+      }
+    }
+  }
+  console.log(
+    `✓ All ${productsJson.items.length} products resolve required summary fields with non-empty values`
+  );
 
   // 2. Compare against scraped old site if /tmp/old_site_dump/products_enriched.json exists
   try {

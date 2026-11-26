@@ -482,3 +482,53 @@ html.lenis, html.lenis body { height: auto; }
   pointer-events: none;
   z-index: 200;
 }
+
+/* ===== Expandable product specifications (Характеристики) ===== */
+/* Collapsed content is hidden via CSS only — it stays in the initial DOM for
+   SEO and zero-CLS; it is never removed from the tree on expand/collapse. */
+.specs-details.is-collapsed {
+  display: none;
+}
+
+/* Each group: title on the left, label/value rows on the right (desktop).
+   On mobile the title stacks above its rows. No horizontal overflow. */
+.specs-group {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+@media (min-width: 768px) {
+  .specs-group {
+    grid-template-columns: 220px 1fr;
+    column-gap: 36px;
+    align-items: start;
+  }
+  .specs-group__title {
+    padding-top: 12px;
+  }
+}
+
+/* Centered pill-shaped toggle, matching the design system's restrained accent. */
+.specs-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 26px;
+  border-radius: 999px;
+  border: 1px solid var(--divider);
+  background: transparent;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  line-height: 1.2;
+  cursor: pointer;
+}
+.specs-toggle:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.specs-toggle:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+}

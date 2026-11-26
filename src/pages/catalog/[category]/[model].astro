@@ -10,6 +10,7 @@ import {
   getDeliveryOptions,
   getGroupedModels,
   getImageAsset,
+  getModelSpecs,
   getTelegramUrl,
   getWhatsAppUrl,
   getTrustStrip,
@@ -45,6 +46,8 @@ const defaultConfig =
 const pricePhrase = group.hasMultipleConfigs
   ? `от ${formatPrice(group.minPrice)}`
   : formatPrice(group.minPrice);
+
+const specGroups = getModelSpecs(group.modelSlug);
 
 const availabilityUrl = group.inStock
   ? 'https://schema.org/InStock'
@@ -127,6 +130,8 @@ const productSchema = {
         modelTitle={group.modelTitle}
         favId={`${group.category}/${group.modelSlug}`}
         items={group.items}
+        category={group.category}
+        specGroups={specGroups}
         manifest={MANIFEST}
         primaryPhoneDisplay={siteData.contacts.phones[0].display}
         primaryPhoneHref={siteData.contacts.phones[0].href}
