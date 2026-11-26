@@ -10,6 +10,15 @@ dist/
 .DS_Store
 Thumbs.db
 
+# Archives (build/export zips must never be committed)
+*.zip
+
+# Temporary screenshots and traces (from local verify/audit runs)
+*.trace
+*.trace.json
+*.trace.json.gz
+report/screenshots/
+
 # Logs & caches
 npm-debug.log*
 .cache/
