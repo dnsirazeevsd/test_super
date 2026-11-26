@@ -36,25 +36,25 @@
       "slug": "macbook",
       "title": "MacBook",
       "description": "Ноутбуки MacBook Air и MacBook Neo — оригинальная запечатанная техника с гарантией и проверкой при вас.",
-      "heroImageKey": "renders/macbook-air-13-m5"
+      "heroImageKey": "macbook/macbook-air-13-m5"
     },
     {
       "slug": "samsung",
       "title": "Samsung",
       "description": "Оригинальные смартфоны Samsung в наличии в ТРЦ «РИО» с подарком при покупке.",
-      "heroImageKey": "renders/samsung-a57-5g"
+      "heroImageKey": "samsung/samsung-a57-5g"
     },
     {
       "slug": "watch",
       "title": "Часы",
       "description": "Умные часы в наличии в Санкт-Петербурге с гарантией магазина.",
-      "heroImageKey": "renders/samsung-galaxy-watch-8-ultra"
+      "heroImageKey": "samsung/samsung-galaxy-watch-8-ultra"
     },
     {
       "slug": "consoles",
       "title": "Консоли",
       "description": "Игровые приставки Sony PlayStation в заводской упаковке в наличии в ТРЦ «РИО».",
-      "heroImageKey": "renders/sony-ps5-slim-disc"
+      "heroImageKey": "other-products/sony-ps5-slim-disc"
     }
   ],
   "items": [
@@ -700,7 +700,7 @@
       "colorHex": null,
       "sim": null,
       "simSlug": null,
-      "imageKey": "renders/macbook-air-13-m5",
+      "imageKey": "macbook/macbook-air-13-m5",
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
@@ -750,7 +750,7 @@
       "colorHex": null,
       "sim": null,
       "simSlug": null,
-      "imageKey": "renders/samsung-a57-5g",
+      "imageKey": "samsung/samsung-a57-5g",
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
@@ -775,7 +775,7 @@
       "colorHex": null,
       "sim": null,
       "simSlug": null,
-      "imageKey": "renders/samsung-galaxy-watch-8-ultra",
+      "imageKey": "samsung/samsung-galaxy-watch-8-ultra",
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
@@ -800,7 +800,7 @@
       "colorHex": null,
       "sim": null,
       "simSlug": null,
-      "imageKey": "renders/sony-ps5-slim-disc",
+      "imageKey": "other-products/sony-ps5-slim-disc",
       "isTemporaryPhoto": false,
       "inStock": true,
       "status": "Новый, запечатанный",
