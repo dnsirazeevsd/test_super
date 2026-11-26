@@ -1,0 +1,67 @@
+{
+  "date": "2026-11-26T13:27:18.065Z",
+  "checks": [
+    "Favorites chunk <= 3 KB gzip (lazy, after first paint)",
+    "Favorites chunk is not preloaded on the homepage",
+    "Homepage keeps its 5 blocks (4 sections + trust strip, no favorites block)",
+    "Homepage tiles have heart buttons",
+    "Heart has add label + not pressed",
+    "Header count hidden at zero",
+    "Heart is reachable by keyboard",
+    "Keyboard toggle stores the favorite",
+    "Pressed state + remove label after toggle",
+    "Header count shows 1",
+    "Fly dot travels (fixed, non-blocking, 10px)",
+    "Fly dot is removed after arrival",
+    "Header count shows 2 after arrival",
+    "Metrika goal favorite_add fired on add",
+    "Product page heart next to title is pressed (synced)",
+    "Catalog tiles have hearts",
+    "Favorites tiles reveal with stagger animations",
+    "Favorites page shows the two chosen tiles",
+    "Empty state hidden when favorites exist",
+    "Per-item reserve + remove actions exist",
+    "Favorites page is noindex",
+    "Removal animates the tile collapse",
+    "One tile remains after removal",
+    "Empty state returns after removing all",
+    "Empty state catalog link works",
+    "Mobile toast announces the add",
+    "No fly dot on mobile",
+    "Burger dot appears on mobile",
+    "Toast auto-hides",
+    "Favorites page shows the mobile favorite",
+    "No long tasks during throttled favorite-add",
+    "Reduced motion: toggle still works, no fly dot",
+    "Works without localStorage (in-memory fallback)",
+    "No browser errors"
+  ],
+  "errors": [],
+  "metrics": {
+    "favoritesChunk": {
+      "file": "favorites.B90h6dMx.js",
+      "gzipBytes": 2048
+    },
+    "desktopHomepageCLS": 0,
+    "desktopCLS": 0.11421912525318287,
+    "desktopRecordingFrames": 59,
+    "mobileCLS": 0,
+    "mobileRecordingFrames": 29,
+    "trace": {
+      "profile": "390x844 touch; 4x CPU; 1.6Mbps down / 750Kbps up; 150ms RTT",
+      "interactionTasks": 3035,
+      "longestTaskMs": 32.326,
+      "over50Ms": 0
+    },
+    "traceCLS": 0,
+    "lighthouse": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lighthouseCLS": 0,
+    "lighthouseLCP": 1509.1419999999998,
+    "lighthouseTBT": 38
+  }
+}

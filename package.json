@@ -13,7 +13,8 @@
     "verify-data": "node scripts/verify-data.mjs",
     "images:check": "node scripts/images-check.mjs",
     "images:prepare": "node scripts/images-prepare.mjs",
-    "verify:motion": "npm run build && node scripts/verify-motion.mjs"
+    "verify:motion": "npm run build && node scripts/verify-motion.mjs",
+    "verify:favorites": "node scripts/verify-favorites.mjs"
   },
   "dependencies": {
     "@astrojs/preact": "^4.0.4",

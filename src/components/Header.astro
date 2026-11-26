@@ -78,6 +78,22 @@ const navLinks = [
     </nav>
 
     <div class="flex items-center gap-4">
+      <!-- Favorites (desktop): heart link, count badge only when > 0 -->
+      <a
+        href="/favorites/"
+        data-fav-link
+        class="relative hidden md:inline-flex items-center justify-center w-10 h-10 text-fg hover:text-brand transition-colors"
+        aria-label="Избранное"
+      >
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span
+          data-fav-count
+          class="fav-count absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 items-center justify-center rounded-full text-[11px] font-semibold text-white tabular-nums"
+          style="background-color: var(--accent);"
+        >0</span>
+      </a>
       <!-- Phone: number on desktop, icon on mobile -->
       <a
         href={primaryPhone.href}
@@ -102,7 +118,7 @@ const navLinks = [
       <button
         type="button"
         id="menu-open"
-        class="md:hidden p-2 -mr-2 text-fg"
+        class="relative md:hidden p-2 -mr-2 text-fg"
         aria-label="Открыть меню"
         aria-expanded="false"
         aria-controls="mobile-menu"
@@ -110,6 +126,7 @@ const navLinks = [
         <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
           <path d="M4 8h16M4 16h16" stroke-linecap="round" />
         </svg>
+        <span data-fav-dot class="fav-dot" aria-hidden="true"></span>
       </button>
     </div>
   </div>
@@ -144,6 +161,14 @@ const navLinks = [
           {link.label}
         </a>
       ))}
+      <a href="/favorites/" class="type-display !text-[2rem] text-fg no-underline inline-flex items-center gap-3">
+        Избранное
+        <span
+          data-fav-count
+          class="fav-count min-w-[26px] h-[26px] px-1.5 items-center justify-center rounded-full text-sm font-semibold text-white tabular-nums"
+          style="background-color: var(--accent);"
+        >0</span>
+      </a>
     </nav>
 
     <div class="mt-auto pt-14 flex flex-col gap-3">

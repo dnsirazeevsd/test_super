@@ -6,9 +6,11 @@ import OptimizedImage from './OptimizedImage.astro';
 
 interface Props {
   group: ProductModelGroup;
+  /** On /favorites/ each tile also gets an explicit remove action. */
+  showRemove?: boolean;
 }
 
-const { group } = Astro.props;
+const { group, showRemove = false } = Astro.props;
 const primaryPhoneHref = siteData.contacts.phones[0].href;
 
 // Display-only: clean model name on the tile; the full configuration stays on the product page.
@@ -42,7 +44,19 @@ const leadPayload = JSON.stringify({
 });
 ---
 
-<article class="flex flex-col items-start">
+<article class="relative flex flex-col items-start">
+  <button
+    type="button"
+    data-fav-btn
+    data-fav-id={`${group.category}/${group.modelSlug}`}
+    aria-pressed="false"
+    aria-label="Добавить в избранное"
+    class="fav-heart absolute top-2 right-2 z-10"
+  >
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  </button>
   <a
     href={group.url}
     class="group block w-full product-tile"
@@ -87,4 +101,14 @@ const leadPayload = JSON.stringify({
       <path d="M5 12h14m-6-6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
   </a>
+  {showRemove && (
+    <button
+      type="button"
+      data-fav-remove
+      aria-label={`Убрать ${displayName} из избранного`}
+      class="type-small text-fg-muted mt-1 p-0 bg-transparent border-0 cursor-pointer"
+    >
+      Убрать
+    </button>
+  )}
 </article>

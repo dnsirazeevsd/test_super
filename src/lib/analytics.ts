@@ -8,7 +8,8 @@ export type MetrikaGoal =
   | 'trade_in_request'
   | 'lead_open'
   | 'lead_submit_success'
-  | 'lead_submit_error';
+  | 'lead_submit_error'
+  | 'favorite_add';
 
 declare global {
   interface Window {

@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { getGroupedModels } from '../lib/catalog';
+
+// Personal favorites live only in the visitor's browser (localStorage).
+// This page is static, noindex, and lists every model tile; the lazily loaded
+// favorites script reveals only the chosen ones (empty state otherwise).
+const groups = getGroupedModels();
+---
+
+<BaseLayout
+  title="Избранное | SUPER STORE ТРЦ «РИО»"
+  description="Избранные устройства в офлайн-магазине SUPER STORE (ТРЦ «РИО», Санкт-Петербург). Новые запечатанные устройства с гарантией, Trade-In и подарком при покупке."
+  canonicalPath="/favorites/"
+  noindex
+>
+  <section class="pt-10 lg:pt-16 pb-20 lg:pb-32">
+    <div class="shell space-y-10">
+      <h1 class="type-display !text-[2.25rem] lg:!text-[3rem] m-0">Избранное</h1>
+
+      <div data-fav-empty tabindex="-1">
+        <p class="type-body text-fg-muted m-0">
+          Пока ничего не выбрано.
+          <a href="/catalog/" class="text-fg font-semibold no-underline hover:text-brand transition-colors">
+            Откройте каталог →
+          </a>
+        </p>
+      </div>
+
+      <div data-fav-grid class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
+        {groups.map((group) => (
+          <div data-fav-tile data-fav-id={`${group.category}/${group.modelSlug}`} hidden>
+            <ProductCard group={group} showRemove />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

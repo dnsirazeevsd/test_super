@@ -125,6 +125,7 @@ const productSchema = {
       <ProductConfigurator
         client:load
         modelTitle={group.modelTitle}
+        favId={`${group.category}/${group.modelSlug}`}
         items={group.items}
         manifest={MANIFEST}
         primaryPhoneDisplay={siteData.contacts.phones[0].display}
