@@ -72,22 +72,24 @@ npm run preview
 
 Source images live in `assets/source/` and optimized AVIF/WebP derivatives are generated into `public/images/`:
 - `assets/source/iphones/` — unified same-angle iPhone renders (pure `#FFFFFF` background; recolors are edited from the verified Glacier master render)
-- `assets/source/renders/` — clean renders for non-iPhone categories (MacBook, Samsung, Watch, PlayStation) with the same seamless white background
-- `assets/source/other-products/` — original legacy source photos (retired from the site; kept for reference)
+- `assets/source/samsung/` — Samsung smartphones and Galaxy Watch source files & clean renders
+- `assets/source/macbook/` — MacBook source files & clean renders
+- `assets/source/headphones/` — headphones source photos
+- `assets/source/accessories/` — cases, chargers, and accessories source photos
+- `assets/source/other-products/` — remaining non-Apple/Samsung product renders & source files (e.g. PlayStation)
 - `assets/source/news/` — article photos (kept verbatim, shown inside article bodies)
 - `assets/source/news-covers/` — clean cropped card covers without baked-in ad text
-- `assets/source/brand/` — store logo
 
 **Rules:** every render must show exactly the device being sold, at the same angle/scale/padding as the rest of the catalog. Never reuse a render from another model. If no accurate render exists, set `"imageKey": null` so a clean neutral placeholder is shown instead.
 
 **Steps:**
-1. Place the new `.png` or `.jpg` file into the appropriate subfolder (for example, `assets/source/renders/macbook-neo-13-a16.png` for a new photo).
+1. Place the new `.png` or `.jpg` file into the appropriate subfolder (for example, `assets/source/macbook/macbook-neo-13-a16.png` for a new photo).
 2. Run:
    ```bash
    npm run optimize-images
    ```
    This generates responsive `.avif` and `.webp` files in `public/images/` and updates `src/data/image-manifest.json` with exact `width` and `height` dimensions.
-3. If it is a new filename, reference its key (e.g. `"renders/macbook-neo-13-a16"`) in `src/data/products.json` (or set it as the `cover` of a news post).
+3. If it is a new filename, reference its key (e.g. `"macbook/macbook-neo-13-a16"`) in `src/data/products.json` (or set it as the `cover` of a news post).
 4. Run `npm run build`.
 
 **Owner-supplied photos (no code changes):** for products waiting on real photos (iPhone 17 Air, iPhone 16 Pro, MacBook Neo 13 A16), the owner can drop a WebP file directly into `public/images/products/` with the exact expected file name — the site picks it up automatically on the next build, and the «Фото уточняется у менеджера» placeholder stays while the file is missing. Check with `npm run images:check`; prep a dropped file locally with `npm run images:prepare -- <input-file> <slug>`. Full step-by-step guide: **[docs/ADDING-PRODUCT-PHOTOS.md](docs/ADDING-PRODUCT-PHOTOS.md)** (English) and **[docs/ДОБАВЛЕНИЕ-ФОТО.md](docs/ДОБАВЛЕНИЕ-ФОТО.md)** (Russian). Expected file names and the waiting list are in `report/images-needed.md`.

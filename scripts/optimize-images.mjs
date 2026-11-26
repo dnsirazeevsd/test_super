@@ -9,31 +9,65 @@ const MANIFEST_PATH = path.join(ROOT, 'src', 'data', 'image-manifest.json');
 
 const GROUPS = [
   { sub: 'iphones', outSub: 'products/iphones', widths: [400, 800, 1200] },
-  { sub: 'other-products', outSub: 'products/other', widths: [333, 666] },
-  { sub: 'renders', outSub: 'products/other', widths: [400, 800, 1200] },
+  { sub: 'samsung', outSub: 'products/samsung', widths: [400, 800, 1200] },
+  { sub: 'macbook', outSub: 'products/macbook', widths: [400, 800, 1200] },
+  { sub: 'headphones', outSub: 'products/headphones', widths: [400, 800, 1200] },
+  { sub: 'accessories', outSub: 'products/accessories', widths: [400, 800, 1200] },
+  { sub: 'other-products', outSub: 'products/other', widths: [400, 800, 1200] },
   { sub: 'news', outSub: 'news', widths: [480, 800, 1080] },
   { sub: 'news-covers', outSub: 'news', widths: [480, 800] },
 ];
+
+const EXT_PRIORITY = { '.png': 3, '.webp': 2, '.jpg': 1, '.jpeg': 1 };
 
 async function ensureDir(dir) {
   await fs.mkdir(dir, { recursive: true });
 }
 
-async function processGroup({ sub, outSub, widths }) {
+/**
+ * When legacy photos (.jpg) and clean studio renders (.png/.webp) share a basename
+ * inside the same category folder, prefer the lossless/higher-priority source file
+ * deterministically regardless of filesystem directory order.
+ */
+function selectPreferredSourceFiles(files) {
+  const byBase = new Map();
+  for (const file of files) {
+    const parsed = path.parse(file);
+    const base = parsed.name;
+    const ext = parsed.ext.toLowerCase();
+    const prio = EXT_PRIORITY[ext] ?? 0;
+    const existing = byBase.get(base);
+    if (!existing || prio > existing.prio) {
+      byBase.set(base, { file, prio });
+    }
+  }
+  return Array.from(byBase.values(), (v) => v.file);
+}
+
+async function processGroup({ sub, outSub, widths }, generatedByOutSub) {
   const srcFolder = path.join(SOURCE_DIR, sub);
   const destFolder = path.join(OUT_DIR, outSub);
-  await ensureDir(destFolder);
 
   let files = [];
   try {
-    files = await fs.readdir(srcFolder);
+    files = (await fs.readdir(srcFolder)).sort();
   } catch {
     return {};
   }
 
+  const imageFiles = selectPreferredSourceFiles(
+    files.filter((file) => /\.(png|jpe?g|webp)$/i.test(file))
+  );
+  if (imageFiles.length === 0) {
+    return {};
+  }
+
+  await ensureDir(destFolder);
+  const keptSet = generatedByOutSub.get(outSub) ?? new Set();
+  generatedByOutSub.set(outSub, keptSet);
+
   const entries = {};
-  for (const file of files) {
-    if (!/\.(png|jpe?g|webp)$/i.test(file)) continue;
+  for (const file of imageFiles) {
     const base = path.parse(file).name;
     const fullPath = path.join(srcFolder, file);
     const meta = await sharp(fullPath).metadata();
@@ -64,6 +98,9 @@ async function processGroup({ sub, outSub, widths }) {
         .webp({ quality: 80 })
         .toFile(path.join(destFolder, webpName));
 
+      keptSet.add(avifName);
+      keptSet.add(webpName);
+
       const urlPrefix = `/images/${outSub}`;
       avifParts.push(`${urlPrefix}/${avifName} ${w}w`);
       webpParts.push(`${urlPrefix}/${webpName} ${w}w`);
@@ -86,6 +123,33 @@ async function processGroup({ sub, outSub, widths }) {
   }
 
   return entries;
+}
+
+async function pruneStaleOutputs(generatedByOutSub) {
+  const uniqueOutSubs = [...new Set(GROUPS.map((g) => g.outSub))];
+  for (const outSub of uniqueOutSubs) {
+    const destFolder = path.join(OUT_DIR, outSub);
+    let dirEntries = [];
+    try {
+      dirEntries = await fs.readdir(destFolder, { withFileTypes: true });
+    } catch {
+      continue;
+    }
+
+    const kept = generatedByOutSub.get(outSub) ?? new Set();
+    for (const entry of dirEntries) {
+      if (!entry.isFile()) continue;
+      if (!kept.has(entry.name)) {
+        await fs.unlink(path.join(destFolder, entry.name));
+        console.log(`Removed stale derivative public/images/${outSub}/${entry.name}`);
+      }
+    }
+
+    const remaining = await fs.readdir(destFolder);
+    if (remaining.length === 0) {
+      await fs.rmdir(destFolder);
+    }
+  }
 }
 
 async function generateFaviconAndOg() {
@@ -122,10 +186,12 @@ async function generateFaviconAndOg() {
 async function main() {
   await ensureDir(path.dirname(MANIFEST_PATH));
   const manifest = {};
+  const generatedByOutSub = new Map();
   for (const group of GROUPS) {
-    const res = await processGroup(group);
+    const res = await processGroup(group, generatedByOutSub);
     Object.assign(manifest, res);
   }
+  await pruneStaleOutputs(generatedByOutSub);
   await fs.writeFile(MANIFEST_PATH, JSON.stringify(manifest, null, 2) + '\n', 'utf-8');
   await generateFaviconAndOg();
   console.log(`Saved manifest with ${Object.keys(manifest).length} assets to src/data/image-manifest.json`);

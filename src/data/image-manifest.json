@@ -179,119 +179,79 @@
     "webpSrcset": "/images/products/iphones/iphone_air_black-400w.webp 400w, /images/products/iphones/iphone_air_black-800w.webp 800w, /images/products/iphones/iphone_air_black-1200w.webp 1200w",
     "src": "/images/products/iphones/iphone_air_black-1200w.webp"
   },
-  "iphones/macbook_neo_citrus": {
-    "key": "iphones/macbook_neo_citrus",
-    "original": "/assets/source/iphones/macbook_neo_citrus.png",
+  "samsung/samsung-a57-5g-f7": {
+    "key": "samsung/samsung-a57-5g-f7",
+    "original": "/assets/source/samsung/samsung-a57-5g-f7.png",
+    "width": 800,
+    "height": 961,
+    "aspectRatio": 0.8325,
+    "avifSrcset": "/images/products/samsung/samsung-a57-5g-f7-400w.avif 400w, /images/products/samsung/samsung-a57-5g-f7-800w.avif 800w",
+    "webpSrcset": "/images/products/samsung/samsung-a57-5g-f7-400w.webp 400w, /images/products/samsung/samsung-a57-5g-f7-800w.webp 800w",
+    "src": "/images/products/samsung/samsung-a57-5g-f7-800w.webp"
+  },
+  "samsung/samsung-a57-5g": {
+    "key": "samsung/samsung-a57-5g",
+    "original": "/assets/source/samsung/samsung-a57-5g.png",
+    "width": 800,
+    "height": 961,
+    "aspectRatio": 0.8325,
+    "avifSrcset": "/images/products/samsung/samsung-a57-5g-400w.avif 400w, /images/products/samsung/samsung-a57-5g-800w.avif 800w",
+    "webpSrcset": "/images/products/samsung/samsung-a57-5g-400w.webp 400w, /images/products/samsung/samsung-a57-5g-800w.webp 800w",
+    "src": "/images/products/samsung/samsung-a57-5g-800w.webp"
+  },
+  "samsung/samsung-galaxy-watch-8-ultra-f7": {
+    "key": "samsung/samsung-galaxy-watch-8-ultra-f7",
+    "original": "/assets/source/samsung/samsung-galaxy-watch-8-ultra-f7.png",
+    "width": 800,
+    "height": 961,
+    "aspectRatio": 0.8325,
+    "avifSrcset": "/images/products/samsung/samsung-galaxy-watch-8-ultra-f7-400w.avif 400w, /images/products/samsung/samsung-galaxy-watch-8-ultra-f7-800w.avif 800w",
+    "webpSrcset": "/images/products/samsung/samsung-galaxy-watch-8-ultra-f7-400w.webp 400w, /images/products/samsung/samsung-galaxy-watch-8-ultra-f7-800w.webp 800w",
+    "src": "/images/products/samsung/samsung-galaxy-watch-8-ultra-f7-800w.webp"
+  },
+  "samsung/samsung-galaxy-watch-8-ultra": {
+    "key": "samsung/samsung-galaxy-watch-8-ultra",
+    "original": "/assets/source/samsung/samsung-galaxy-watch-8-ultra.png",
+    "width": 800,
+    "height": 961,
+    "aspectRatio": 0.8325,
+    "avifSrcset": "/images/products/samsung/samsung-galaxy-watch-8-ultra-400w.avif 400w, /images/products/samsung/samsung-galaxy-watch-8-ultra-800w.avif 800w",
+    "webpSrcset": "/images/products/samsung/samsung-galaxy-watch-8-ultra-400w.webp 400w, /images/products/samsung/samsung-galaxy-watch-8-ultra-800w.webp 800w",
+    "src": "/images/products/samsung/samsung-galaxy-watch-8-ultra-800w.webp"
+  },
+  "macbook/macbook-air-13-m5-f7": {
+    "key": "macbook/macbook-air-13-m5-f7",
+    "original": "/assets/source/macbook/macbook-air-13-m5-f7.png",
+    "width": 1200,
+    "height": 655,
+    "aspectRatio": 1.8333,
+    "avifSrcset": "/images/products/macbook/macbook-air-13-m5-f7-400w.avif 400w, /images/products/macbook/macbook-air-13-m5-f7-800w.avif 800w, /images/products/macbook/macbook-air-13-m5-f7-1200w.avif 1200w",
+    "webpSrcset": "/images/products/macbook/macbook-air-13-m5-f7-400w.webp 400w, /images/products/macbook/macbook-air-13-m5-f7-800w.webp 800w, /images/products/macbook/macbook-air-13-m5-f7-1200w.webp 1200w",
+    "src": "/images/products/macbook/macbook-air-13-m5-f7-1200w.webp"
+  },
+  "macbook/macbook-air-13-m5": {
+    "key": "macbook/macbook-air-13-m5",
+    "original": "/assets/source/macbook/macbook-air-13-m5.png",
+    "width": 1200,
+    "height": 655,
+    "aspectRatio": 1.8333,
+    "avifSrcset": "/images/products/macbook/macbook-air-13-m5-400w.avif 400w, /images/products/macbook/macbook-air-13-m5-800w.avif 800w, /images/products/macbook/macbook-air-13-m5-1200w.avif 1200w",
+    "webpSrcset": "/images/products/macbook/macbook-air-13-m5-400w.webp 400w, /images/products/macbook/macbook-air-13-m5-800w.webp 800w, /images/products/macbook/macbook-air-13-m5-1200w.webp 1200w",
+    "src": "/images/products/macbook/macbook-air-13-m5-1200w.webp"
+  },
+  "macbook/macbook_neo_citrus": {
+    "key": "macbook/macbook_neo_citrus",
+    "original": "/assets/source/macbook/macbook_neo_citrus.png",
     "width": 1200,
     "height": 1500,
     "aspectRatio": 0.8,
-    "avifSrcset": "/images/products/iphones/macbook_neo_citrus-400w.avif 400w, /images/products/iphones/macbook_neo_citrus-800w.avif 800w, /images/products/iphones/macbook_neo_citrus-1200w.avif 1200w",
-    "webpSrcset": "/images/products/iphones/macbook_neo_citrus-400w.webp 400w, /images/products/iphones/macbook_neo_citrus-800w.webp 800w, /images/products/iphones/macbook_neo_citrus-1200w.webp 1200w",
-    "src": "/images/products/iphones/macbook_neo_citrus-1200w.webp"
+    "avifSrcset": "/images/products/macbook/macbook_neo_citrus-400w.avif 400w, /images/products/macbook/macbook_neo_citrus-800w.avif 800w, /images/products/macbook/macbook_neo_citrus-1200w.avif 1200w",
+    "webpSrcset": "/images/products/macbook/macbook_neo_citrus-400w.webp 400w, /images/products/macbook/macbook_neo_citrus-800w.webp 800w, /images/products/macbook/macbook_neo_citrus-1200w.webp 1200w",
+    "src": "/images/products/macbook/macbook_neo_citrus-1200w.webp"
   },
-  "other-products/macbook-air-13-m5": {
-    "key": "other-products/macbook-air-13-m5",
-    "original": "/assets/source/other-products/macbook-air-13-m5.jpg",
-    "width": 333,
-    "height": 400,
-    "aspectRatio": 0.8325,
-    "avifSrcset": "/images/products/other/macbook-air-13-m5-333w.avif 333w",
-    "webpSrcset": "/images/products/other/macbook-air-13-m5-333w.webp 333w",
-    "src": "/images/products/other/macbook-air-13-m5-333w.webp"
-  },
-  "other-products/samsung-a57-5g": {
-    "key": "other-products/samsung-a57-5g",
-    "original": "/assets/source/other-products/samsung-a57-5g.jpg",
-    "width": 333,
-    "height": 400,
-    "aspectRatio": 0.8325,
-    "avifSrcset": "/images/products/other/samsung-a57-5g-333w.avif 333w",
-    "webpSrcset": "/images/products/other/samsung-a57-5g-333w.webp 333w",
-    "src": "/images/products/other/samsung-a57-5g-333w.webp"
-  },
-  "other-products/samsung-galaxy-watch-8-ultra": {
-    "key": "other-products/samsung-galaxy-watch-8-ultra",
-    "original": "/assets/source/other-products/samsung-galaxy-watch-8-ultra.jpg",
-    "width": 333,
-    "height": 400,
-    "aspectRatio": 0.8325,
-    "avifSrcset": "/images/products/other/samsung-galaxy-watch-8-ultra-333w.avif 333w",
-    "webpSrcset": "/images/products/other/samsung-galaxy-watch-8-ultra-333w.webp 333w",
-    "src": "/images/products/other/samsung-galaxy-watch-8-ultra-333w.webp"
-  },
-  "other-products/sony-ps5-slim-disc": {
-    "key": "other-products/sony-ps5-slim-disc",
-    "original": "/assets/source/other-products/sony-ps5-slim-disc.jpg",
-    "width": 333,
-    "height": 400,
-    "aspectRatio": 0.8325,
-    "avifSrcset": "/images/products/other/sony-ps5-slim-disc-333w.avif 333w",
-    "webpSrcset": "/images/products/other/sony-ps5-slim-disc-333w.webp 333w",
-    "src": "/images/products/other/sony-ps5-slim-disc-333w.webp"
-  },
-  "renders/macbook-air-13-m5-f7": {
-    "key": "renders/macbook-air-13-m5-f7",
-    "original": "/assets/source/renders/macbook-air-13-m5-f7.png",
-    "width": 1200,
-    "height": 655,
-    "aspectRatio": 1.8333,
-    "avifSrcset": "/images/products/other/macbook-air-13-m5-f7-400w.avif 400w, /images/products/other/macbook-air-13-m5-f7-800w.avif 800w, /images/products/other/macbook-air-13-m5-f7-1200w.avif 1200w",
-    "webpSrcset": "/images/products/other/macbook-air-13-m5-f7-400w.webp 400w, /images/products/other/macbook-air-13-m5-f7-800w.webp 800w, /images/products/other/macbook-air-13-m5-f7-1200w.webp 1200w",
-    "src": "/images/products/other/macbook-air-13-m5-f7-1200w.webp"
-  },
-  "renders/macbook-air-13-m5": {
-    "key": "renders/macbook-air-13-m5",
-    "original": "/assets/source/renders/macbook-air-13-m5.png",
-    "width": 1200,
-    "height": 655,
-    "aspectRatio": 1.8333,
-    "avifSrcset": "/images/products/other/macbook-air-13-m5-400w.avif 400w, /images/products/other/macbook-air-13-m5-800w.avif 800w, /images/products/other/macbook-air-13-m5-1200w.avif 1200w",
-    "webpSrcset": "/images/products/other/macbook-air-13-m5-400w.webp 400w, /images/products/other/macbook-air-13-m5-800w.webp 800w, /images/products/other/macbook-air-13-m5-1200w.webp 1200w",
-    "src": "/images/products/other/macbook-air-13-m5-1200w.webp"
-  },
-  "renders/samsung-a57-5g-f7": {
-    "key": "renders/samsung-a57-5g-f7",
-    "original": "/assets/source/renders/samsung-a57-5g-f7.png",
-    "width": 800,
-    "height": 961,
-    "aspectRatio": 0.8325,
-    "avifSrcset": "/images/products/other/samsung-a57-5g-f7-400w.avif 400w, /images/products/other/samsung-a57-5g-f7-800w.avif 800w",
-    "webpSrcset": "/images/products/other/samsung-a57-5g-f7-400w.webp 400w, /images/products/other/samsung-a57-5g-f7-800w.webp 800w",
-    "src": "/images/products/other/samsung-a57-5g-f7-800w.webp"
-  },
-  "renders/samsung-a57-5g": {
-    "key": "renders/samsung-a57-5g",
-    "original": "/assets/source/renders/samsung-a57-5g.png",
-    "width": 800,
-    "height": 961,
-    "aspectRatio": 0.8325,
-    "avifSrcset": "/images/products/other/samsung-a57-5g-400w.avif 400w, /images/products/other/samsung-a57-5g-800w.avif 800w",
-    "webpSrcset": "/images/products/other/samsung-a57-5g-400w.webp 400w, /images/products/other/samsung-a57-5g-800w.webp 800w",
-    "src": "/images/products/other/samsung-a57-5g-800w.webp"
-  },
-  "renders/samsung-galaxy-watch-8-ultra-f7": {
-    "key": "renders/samsung-galaxy-watch-8-ultra-f7",
-    "original": "/assets/source/renders/samsung-galaxy-watch-8-ultra-f7.png",
-    "width": 800,
-    "height": 961,
-    "aspectRatio": 0.8325,
-    "avifSrcset": "/images/products/other/samsung-galaxy-watch-8-ultra-f7-400w.avif 400w, /images/products/other/samsung-galaxy-watch-8-ultra-f7-800w.avif 800w",
-    "webpSrcset": "/images/products/other/samsung-galaxy-watch-8-ultra-f7-400w.webp 400w, /images/products/other/samsung-galaxy-watch-8-ultra-f7-800w.webp 800w",
-    "src": "/images/products/other/samsung-galaxy-watch-8-ultra-f7-800w.webp"
-  },
-  "renders/samsung-galaxy-watch-8-ultra": {
-    "key": "renders/samsung-galaxy-watch-8-ultra",
-    "original": "/assets/source/renders/samsung-galaxy-watch-8-ultra.png",
-    "width": 800,
-    "height": 961,
-    "aspectRatio": 0.8325,
-    "avifSrcset": "/images/products/other/samsung-galaxy-watch-8-ultra-400w.avif 400w, /images/products/other/samsung-galaxy-watch-8-ultra-800w.avif 800w",
-    "webpSrcset": "/images/products/other/samsung-galaxy-watch-8-ultra-400w.webp 400w, /images/products/other/samsung-galaxy-watch-8-ultra-800w.webp 800w",
-    "src": "/images/products/other/samsung-galaxy-watch-8-ultra-800w.webp"
-  },
-  "renders/sony-ps5-slim-disc-f7": {
-    "key": "renders/sony-ps5-slim-disc-f7",
-    "original": "/assets/source/renders/sony-ps5-slim-disc-f7.png",
+  "other-products/sony-ps5-slim-disc-f7": {
+    "key": "other-products/sony-ps5-slim-disc-f7",
+    "original": "/assets/source/other-products/sony-ps5-slim-disc-f7.png",
     "width": 800,
     "height": 961,
     "aspectRatio": 0.8325,
@@ -299,9 +259,9 @@
     "webpSrcset": "/images/products/other/sony-ps5-slim-disc-f7-400w.webp 400w, /images/products/other/sony-ps5-slim-disc-f7-800w.webp 800w",
     "src": "/images/products/other/sony-ps5-slim-disc-f7-800w.webp"
   },
-  "renders/sony-ps5-slim-disc": {
-    "key": "renders/sony-ps5-slim-disc",
-    "original": "/assets/source/renders/sony-ps5-slim-disc.png",
+  "other-products/sony-ps5-slim-disc": {
+    "key": "other-products/sony-ps5-slim-disc",
+    "original": "/assets/source/other-products/sony-ps5-slim-disc.png",
     "width": 800,
     "height": 961,
     "aspectRatio": 0.8325,

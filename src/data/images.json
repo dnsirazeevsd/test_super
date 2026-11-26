@@ -28,7 +28,7 @@
     },
     {
       "slug": "macbook-neo-13-a16",
-      "imageKey": "other/macbook-neo-13-a16-front",
+      "imageKey": "macbook/macbook-neo-13-a16-front",
       "expectedFile": "/images/products/macbook-neo-13-a16-front.webp",
       "width": 1600,
       "height": 2000,
