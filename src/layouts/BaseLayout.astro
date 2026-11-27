@@ -129,6 +129,13 @@ const metrikaRaw = siteData.integrations.metrikaId;
     />
     <link
       rel="preload"
+      href="/fonts/manrope-latin-400-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
       href="/fonts/manrope-cyrillic-600-normal.woff2"
       as="font"
       type="font/woff2"
@@ -149,6 +156,7 @@ const metrikaRaw = siteData.integrations.metrikaId;
         type="image/avif"
         imagesrcset={lcpAsset.avifSrcset}
         imagesizes="(max-width: 640px) 92vw, 520px"
+        fetchpriority="high"
       />
     )}
 
@@ -290,18 +298,15 @@ const metrikaRaw = siteData.integrations.metrikaId;
       })();
     </script>
 
+    <!-- Motion + Favorites in one deferred module (two <script> tags would be
+         two requests queued ahead of first paint). Favorites is code-split and
+         loaded as soon as this module runs — it used to wait for two RAFs after
+         `load`, but an in-flight module request delays the browser's first
+         committed frame (Lighthouse counts that as a late LCP), so the gate
+         made first paint wait for the chunk it was trying to protect. -->
     <script>
       import '../scripts/motion';
-    </script>
-
-    <!-- Favorites (Избранное): code-split chunk loaded only after first paint.
-         Two RAFs guarantee the paint happened; the feature is inert until then. -->
-    <script>
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          import('../scripts/favorites').catch(() => {});
-        });
-      });
+      import('../scripts/favorites').catch(() => {});
     </script>
   </body>
 </html>

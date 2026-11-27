@@ -57,10 +57,43 @@ function colorSlug(c: string | null) {
   return c ? c.toLowerCase().replace(/\s+/g, '-') : '';
 }
 
+/**
+ * Expand `colorVariants` — several colors stored on ONE product record (no
+ * extra SKUs) — into per-color entries with the exact shape separate color
+ * variants already use (color / colorRu / colorHex / imageKey). Everything
+ * downstream (color pills, gallery, spec summary, booking payload, URL params)
+ * then behaves identically to existing multi-SKU color models.
+ * Items without colorVariants are returned as-is (same array reference), so
+ * hooks and memos stay stable for every other product.
+ */
+function expandColorVariants(list: ProductItem[]): ProductItem[] {
+  if (!list.some((i) => (i.colorVariants?.length ?? 0) > 1)) return list;
+  const out: ProductItem[] = [];
+  for (const item of list) {
+    const variants = item.colorVariants;
+    if (!variants || variants.length <= 1) {
+      out.push(item);
+      continue;
+    }
+    for (const v of variants) {
+      out.push({
+        ...item,
+        // Runtime-only handle for state tracking; never persisted anywhere.
+        id: `${item.id}::${v.color.toLowerCase().replace(/\s+/g, '-')}`,
+        color: v.color,
+        colorRu: v.colorRu,
+        colorHex: v.colorHex,
+        imageKey: v.imageKey ?? item.imageKey,
+      });
+    }
+  }
+  return out;
+}
+
 export default function ProductConfigurator({
   modelTitle,
   favId,
-  items,
+  items: rawItems,
   category,
   specGroups,
   manifest,
@@ -77,6 +110,9 @@ export default function ProductConfigurator({
   trustStrip,
   warrantyText = '',
 }: Props) {
+  // One-record color variants (e.g. AirPods Max 2) expand to per-color entries;
+  // every other product keeps the exact same items array (same reference).
+  const items = useMemo(() => expandColorVariants(rawItems), [rawItems]);
   // Default to the base (cheapest) configuration; prefer Glacier when tied,
   // so the flagship render leads on the 18 Pro.
   const initialIndex = useMemo(() => {
@@ -419,7 +455,7 @@ export default function ProductConfigurator({
                   height={displaySurfaceAsset.height}
                   loading="eager"
                   fetchpriority="high"
-                  decoding="sync"
+                  decoding="async"
                   class="max-h-[86%] w-auto object-contain"
                 />
               </picture>
@@ -486,14 +522,26 @@ export default function ProductConfigurator({
                       : 'background-color: var(--surface); border-bottom: 2px solid transparent;'
                   }
                 >
-                  <img
-                    src={entry.surfaceAsset.src}
-                    alt=""
-                    width={entry.surfaceAsset.width}
-                    height={entry.surfaceAsset.height}
-                    loading="lazy"
-                    class="max-h-full w-auto object-contain"
-                  />
+                  <picture>
+                    <source
+                      type="image/avif"
+                      srcSet={entry.surfaceAsset.avifSrcset}
+                      sizes="(max-width: 1024px) 22vw, 120px"
+                    />
+                    <source
+                      type="image/webp"
+                      srcSet={entry.surfaceAsset.webpSrcset}
+                      sizes="(max-width: 1024px) 22vw, 120px"
+                    />
+                    <img
+                      src={entry.surfaceAsset.src}
+                      alt=""
+                      width={entry.surfaceAsset.width}
+                      height={entry.surfaceAsset.height}
+                      loading="lazy"
+                      class="max-h-full w-auto object-contain"
+                    />
+                  </picture>
                 </button>
               );
             })}
@@ -548,6 +596,7 @@ export default function ProductConfigurator({
                   alt={activeEntry?.label || current.title}
                   width={displayLightboxAsset.width}
                   height={displayLightboxAsset.height}
+                  loading="lazy"
                   class="max-h-full max-w-full w-auto h-auto object-contain"
                 />
               )}

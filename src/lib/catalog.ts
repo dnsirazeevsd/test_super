@@ -36,6 +36,18 @@ export interface ProductItem {
   color: string | null;
   colorRu: string | null;
   colorHex: string | null;
+  /**
+   * Extra colors of the SAME product record (no separate SKU / stock rows).
+   * Each entry mirrors the per-SKU color fields above; the configurator
+   * expands them into the usual per-color options at render time.
+   * Example: Apple AirPods Max 2 — Black / Orange / Purple.
+   */
+  colorVariants?: Array<{
+    color: string;
+    colorRu: string | null;
+    colorHex: string | null;
+    imageKey: string | null;
+  }> | null;
   sim: string | null;
   simSlug: string | null;
   imageKey: string | null;

@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-26T13:27:18.065Z",
+  "date": "2026-11-27T16:09:07.904Z",
   "checks": [
     "Favorites chunk <= 3 KB gzip (lazy, after first paint)",
     "Favorites chunk is not preloaded on the homepage",
@@ -39,29 +39,29 @@
   "errors": [],
   "metrics": {
     "favoritesChunk": {
-      "file": "favorites.B90h6dMx.js",
-      "gzipBytes": 2048
+      "file": "favorites.Cc-T6Zlp.js",
+      "gzipBytes": 2056
     },
     "desktopHomepageCLS": 0,
-    "desktopCLS": 0.11421912525318287,
-    "desktopRecordingFrames": 59,
+    "desktopCLS": 0.11402076099537037,
+    "desktopRecordingFrames": 66,
     "mobileCLS": 0,
-    "mobileRecordingFrames": 29,
+    "mobileRecordingFrames": 28,
     "trace": {
       "profile": "390x844 touch; 4x CPU; 1.6Mbps down / 750Kbps up; 150ms RTT",
-      "interactionTasks": 3035,
-      "longestTaskMs": 32.326,
+      "interactionTasks": 3134,
+      "longestTaskMs": 40.546,
       "over50Ms": 0
     },
     "traceCLS": 0,
     "lighthouse": {
-      "performance": 100,
+      "performance": 99,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
     "lighthouseCLS": 0,
-    "lighthouseLCP": 1509.1419999999998,
-    "lighthouseTBT": 38
+    "lighthouseLCP": 1753.4299999999998,
+    "lighthouseTBT": 73.11400000000003
   }
 }

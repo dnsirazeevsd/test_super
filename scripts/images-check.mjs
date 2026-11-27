@@ -107,6 +107,11 @@ for (const item of productsData.items || []) {
   if (item.imageKey && !hasKey(item.imageKey)) {
     errors.push(`Битый imageKey у товара «${item.id}»: ${item.imageKey}`);
   }
+  for (const v of item.colorVariants || []) {
+    if (v && v.imageKey && !hasKey(v.imageKey)) {
+      errors.push(`Битый imageKey в colorVariants у товара «${item.id}»: ${v.imageKey}`);
+    }
+  }
   for (const extraKey of item.images || []) {
     if (extraKey && !hasKey(extraKey)) {
       errors.push(`Битый ключ в images[] у товара «${item.id}»: ${extraKey}`);
