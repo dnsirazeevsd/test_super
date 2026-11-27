@@ -1,11 +1,13 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ProductConfigurator from '../../../components/ProductConfigurator';
+import ProductCard from '../../../components/ProductCard.astro';
 import siteData from '../../../data/site.json';
 import {
   MANIFEST,
   type ProductModelGroup,
   formatPrice,
+  getCrossSell,
   getDeliveryConditions,
   getDeliveryOptions,
   getGroupedModels,
@@ -17,6 +19,7 @@ import {
   isTelegramEnabled,
   isWhatsAppEnabled,
 } from '../../../lib/catalog';
+import { brandForCategory } from '../../../lib/specs.mjs';
 
 export function getStaticPaths() {
   const allGroups = getGroupedModels();
@@ -37,6 +40,9 @@ const { group } = Astro.props;
 const siteOrigin = Astro.site?.origin || siteData.brand.domain;
 const primaryAsset = getImageAsset(group.defaultImageKey);
 const ogImage = primaryAsset ? primaryAsset.src : '/og-default.jpg';
+
+// Cross-sell («С этим также покупают») — deterministic, data-driven, static HTML.
+const crossSellGroups = getCrossSell(group, getGroupedModels());
 
 const minPrice = group.minPrice;
 const cheapest = group.items.filter((i) => i.price === minPrice);
@@ -61,12 +67,7 @@ const productSchema = {
   image: primaryAsset ? `${siteOrigin}${primaryAsset.src}` : `${siteOrigin}/og-default.jpg`,
   brand: {
     '@type': 'Brand',
-    name:
-      group.category === 'samsung' || group.category === 'watch'
-        ? 'Samsung'
-        : group.category === 'consoles'
-        ? 'Sony'
-        : 'Apple',
+    name: brandForCategory(group.category, group.items[0]),
   },
   offers:
     group.items.length > 1
@@ -148,4 +149,24 @@ const productSchema = {
       />
     </div>
   </section>
+
+  {
+    crossSellGroups.length > 0 && (
+      <section class="pb-20 lg:pb-32" aria-labelledby="cross-sell-heading">
+        <div class="shell space-y-8">
+          <h2 id="cross-sell-heading" class="type-display !text-[1.75rem] lg:!text-[2.25rem] m-0">
+            С этим также покупают
+          </h2>
+          <div
+            class="cross-sell-grid grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10"
+            data-cross-sell
+          >
+            {crossSellGroups.map((csGroup) => (
+              <ProductCard group={csGroup} />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
 </BaseLayout>

@@ -5,6 +5,7 @@ import siteData from '../data/site.json';
 import imageManifest from '../data/image-manifest.json';
 import imageRegistry from '../data/images.json';
 import specsData from '../data/specs.json';
+export { brandForCategory, getCrossSell } from '../lib/specs.mjs';
 
 export type ProductSpec = string | { label: string; value: string };
 
@@ -45,6 +46,13 @@ export interface ProductItem {
   note: string | null;
   description?: string | null;
   specs?: ProductSpec[];
+  // Task 2B accessory / Dyson attributes (optional, schema-tolerant)
+  subcategory?: string | null;
+  brand?: string | null;
+  compatibility?: string[];
+  connector?: string | null;
+  model?: string | null;
+  wattage?: number | null;
 }
 
 export interface CategoryInfo {
@@ -343,3 +351,4 @@ export function pluralReviews(n: number): string {
   if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return 'отзыва';
   return 'отзывов';
 }
+

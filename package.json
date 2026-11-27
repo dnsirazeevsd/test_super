@@ -11,6 +11,7 @@
     "preview": "astro preview --host 0.0.0.0 --port 4321",
     "optimize-images": "node scripts/optimize-images.mjs",
     "verify-data": "node scripts/verify-data.mjs",
+    "verify:cross-sell": "node scripts/verify-cross-sell.mjs",
     "images:check": "node scripts/images-check.mjs",
     "images:prepare": "node scripts/images-prepare.mjs",
     "verify:motion": "npm run build && node scripts/verify-motion.mjs",

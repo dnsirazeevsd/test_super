@@ -1,12 +1,14 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import CatalogExplorer from '../../../components/CatalogExplorer';
+import ProductCard from '../../../components/ProductCard.astro';
 import siteData from '../../../data/site.json';
 import {
   ALL_PRODUCTS,
   CATEGORIES,
   MANIFEST,
   type CategoryInfo,
+  type ProductModelGroup,
   getGroupedModels,
   getTelegramUrl,
   getWhatsAppUrl,
@@ -40,6 +42,27 @@ const itemListSchema = {
     name: g.modelTitle,
   })),
 };
+
+// Task 2B — accessories get tabbed filtering; Dyson is a plain grid.
+const isAccessories = categoryInfo.slug === 'accessories';
+const isDyson = categoryInfo.slug === 'dyson';
+
+const accessoryGroups: ProductModelGroup[] = isAccessories ? getGroupedModels('accessories') : [];
+const dysonGroups: ProductModelGroup[] = isDyson ? getGroupedModels('dyson') : [];
+
+const accCounts = {
+  all: accessoryGroups.length,
+  headphones: accessoryGroups.filter((g) => g.items[0].subcategory === 'headphones').length,
+  cases: accessoryGroups.filter((g) => g.items[0].subcategory === 'cases').length,
+  chargers: accessoryGroups.filter((g) => g.items[0].subcategory === 'chargers').length,
+};
+
+const accTabs = [
+  { id: 'all', label: 'Все', sub: null, count: accCounts.all },
+  { id: 'headphones', label: 'Наушники', sub: 'headphones', count: accCounts.headphones },
+  { id: 'cases', label: 'Чехлы', sub: 'cases', count: accCounts.cases },
+  { id: 'chargers', label: 'Зарядки и кабели', sub: 'chargers', count: accCounts.chargers },
+];
 ---
 
 <BaseLayout
@@ -52,18 +75,72 @@ const itemListSchema = {
     <div class="shell space-y-10">
       <h1 class="type-display !text-[2.25rem] lg:!text-[3rem] m-0">{categoryInfo.title}</h1>
 
-      <CatalogExplorer
-        client:load
-        products={ALL_PRODUCTS}
-        categories={CATEGORIES}
-        manifest={MANIFEST}
-        initialCategory={categoryInfo.slug}
-        primaryPhoneHref={siteData.contacts.phones[0].href}
-        telegramEnabled={isTelegramEnabled()}
-        telegramHref={getTelegramUrl()}
-        whatsappEnabled={isWhatsAppEnabled()}
-        whatsappHref={getWhatsAppUrl()}
-      />
+      <h2 class="sr-only">Модели в наличии в Санкт-Петербурге</h2>
+
+      {
+        isAccessories ? (
+          <div class="space-y-8">
+            <div
+              role="tablist"
+              aria-label="Категории аксессуаров"
+              class="flex flex-wrap gap-2"
+              data-acc-tabs
+            >
+              {accTabs.map((tab, i) => (
+                <button
+                  type="button"
+                  role="tab"
+                  id={`acc-tab-${tab.id}`}
+                  aria-selected={i === 0 ? 'true' : 'false'}
+                  aria-controls="acc-grid"
+                  tabindex={i === 0 ? '0' : '-1'}
+                  data-tab={tab.sub ?? 'all'}
+                  class:list={[
+                    'acc-tab inline-flex items-center gap-2 rounded-full px-4 py-2 text-[0.95rem] font-semibold transition-colors',
+                    i === 0 ? 'is-selected' : '',
+                  ]}
+                >
+                  <span>{tab.label}</span>
+                  <span class="acc-tab__count tabular-nums">{tab.count}</span>
+                </button>
+              ))}
+            </div>
+
+            <div
+              id="acc-grid"
+              role="tabpanel"
+              aria-labelledby="acc-tab-all"
+              class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10"
+              data-acc-grid
+            >
+              {accessoryGroups.map((g) => (
+                <div data-acc-item data-subcategory={g.items[0].subcategory}>
+                  <ProductCard group={g} />
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : isDyson ? (
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
+            {dysonGroups.map((g) => (
+              <ProductCard group={g} />
+            ))}
+          </div>
+        ) : (
+          <CatalogExplorer
+            client:load
+            products={ALL_PRODUCTS}
+            categories={CATEGORIES}
+            manifest={MANIFEST}
+            initialCategory={categoryInfo.slug}
+            primaryPhoneHref={siteData.contacts.phones[0].href}
+            telegramEnabled={isTelegramEnabled()}
+            telegramHref={getTelegramUrl()}
+            whatsappEnabled={isWhatsAppEnabled()}
+            whatsappHref={getWhatsAppUrl()}
+          />
+        )
+      }
     </div>
   </section>
 
@@ -77,3 +154,55 @@ const itemListSchema = {
     </div>
   </aside>
 </BaseLayout>
+
+{isAccessories && (
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-acc-tabs]');
+      if (!root) return;
+      const grid = document.querySelector('[data-acc-grid]');
+      const tabs = Array.from(root.querySelectorAll('[role="tab"]'));
+      const items = Array.from(grid?.querySelectorAll('[data-acc-item]') || []);
+      const panelId = grid?.id;
+
+      function activate(tab) {
+        const target = tab.dataset.tab;
+        tabs.forEach((t) => {
+          const selected = t === tab;
+          t.setAttribute('aria-selected', String(selected));
+          t.tabIndex = selected ? 0 : -1;
+          t.classList.toggle('is-selected', selected);
+        });
+        if (panelId) grid.setAttribute('aria-labelledby', tab.id);
+        items.forEach((it) => {
+          const show = target === 'all' || it.dataset.subcategory === target;
+          it.hidden = !show;
+        });
+      }
+
+      root.addEventListener('click', (e) => {
+        const tab = e.target.closest('[role="tab"]');
+        if (tab) activate(tab);
+      });
+
+      root.addEventListener('keydown', (e) => {
+        const idx = tabs.indexOf(document.activeElement);
+        if (idx === -1) return;
+        let next = -1;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (idx + 1) % tabs.length;
+        else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = (idx - 1 + tabs.length) % tabs.length;
+        else if (e.key === 'Home') next = 0;
+        else if (e.key === 'End') next = tabs.length - 1;
+        else if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          activate(tabs[idx]);
+          return;
+        }
+        if (next >= 0) {
+          e.preventDefault();
+          tabs[next].focus();
+        }
+      });
+    })();
+  </script>
+)}
