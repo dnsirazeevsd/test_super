@@ -30,9 +30,10 @@ async function main() {
     await fs.readFile(path.join(ROOT, 'src/data/site.json'), 'utf-8')
   );
 
-  // 1. Verify product count === 30
-  if (productsJson.items.length !== 30) {
-    throw new Error(`Expected 30 products, found ${productsJson.items.length}`);
+  // 1. Verify product count === 52 (30 original phones/MacBooks/Samsung/console + 22 Task 2B accessories & Dyson)
+  const EXPECTED_PRODUCT_COUNT = 52;
+  if (productsJson.items.length !== EXPECTED_PRODUCT_COUNT) {
+    throw new Error(`Expected ${EXPECTED_PRODUCT_COUNT} products, found ${productsJson.items.length}`);
   }
   console.log(`✓ Product count verified: ${productsJson.items.length} items`);
 

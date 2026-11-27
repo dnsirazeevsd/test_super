@@ -8,7 +8,12 @@
           "groups": [
             {
               "group": "Название группы",
-              "items": [{ "label": "Характеристика", "value": "Значение" }]
+              "items": [
+                {
+                  "label": "Характеристика",
+                  "value": "Значение"
+                }
+              ]
             }
           ]
         }
@@ -22,81 +27,186 @@
         {
           "group": "Основные характеристики",
           "items": [
-            { "label": "Линейка", "value": "iPhone 18 Pro" },
-            { "label": "Год выпуска", "value": "2026" },
-            { "label": "Материал корпуса", "value": "Титан" },
-            { "label": "Степень защиты", "value": "IP68" },
-            { "label": "Операционная система", "value": "iOS 20" }
+            {
+              "label": "Линейка",
+              "value": "iPhone 18 Pro"
+            },
+            {
+              "label": "Год выпуска",
+              "value": "2026"
+            },
+            {
+              "label": "Материал корпуса",
+              "value": "Титан"
+            },
+            {
+              "label": "Степень защиты",
+              "value": "IP68"
+            },
+            {
+              "label": "Операционная система",
+              "value": "iOS 20"
+            }
           ]
         },
         {
           "group": "Процессор",
           "items": [
-            { "label": "Процессор", "value": "Apple A20 Pro" },
-            { "label": "Количество ядер", "value": "6 (2 performance + 4 efficiency)" },
-            { "label": "Графический процессор", "value": "6 ядер" },
-            { "label": "Нейронный модуль", "value": "16 ядер" }
+            {
+              "label": "Процессор",
+              "value": "Apple A20 Pro"
+            },
+            {
+              "label": "Количество ядер",
+              "value": "6 (2 performance + 4 efficiency)"
+            },
+            {
+              "label": "Графический процессор",
+              "value": "6 ядер"
+            },
+            {
+              "label": "Нейронный модуль",
+              "value": "16 ядер"
+            }
           ]
         },
         {
           "group": "Экран",
           "items": [
-            { "label": "Диагональ экрана", "value": "6,3″" },
-            { "label": "Тип экрана", "value": "OLED, Super Retina XDR" },
-            { "label": "Разрешение", "value": "2622×1206" },
-            { "label": "Частота обновления", "value": "120 Гц (ProMotion)" },
-            { "label": "Яркость", "value": "до 2000 нит" }
+            {
+              "label": "Диагональ экрана",
+              "value": "6,3″"
+            },
+            {
+              "label": "Тип экрана",
+              "value": "OLED, Super Retina XDR"
+            },
+            {
+              "label": "Разрешение",
+              "value": "2622×1206"
+            },
+            {
+              "label": "Частота обновления",
+              "value": "120 Гц (ProMotion)"
+            },
+            {
+              "label": "Яркость",
+              "value": "до 2000 нит"
+            }
           ]
         },
         {
           "group": "Камера",
           "items": [
-            { "label": "Основная камера", "value": "48 МП + 48 МП + 48 МП" },
-            { "label": "Телеобъектив", "value": "5× оптический зум" },
-            { "label": "Фронтальная камера", "value": "24 МП" },
-            { "label": "Видеосъёмка", "value": "4K Dolby Vision" }
+            {
+              "label": "Основная камера",
+              "value": "48 МП + 48 МП + 48 МП"
+            },
+            {
+              "label": "Телеобъектив",
+              "value": "5× оптический зум"
+            },
+            {
+              "label": "Фронтальная камера",
+              "value": "24 МП"
+            },
+            {
+              "label": "Видеосъёмка",
+              "value": "4K Dolby Vision"
+            }
           ]
         },
         {
           "group": "Память",
           "items": [
-            { "label": "ОЗУ", "value": "12 ГБ" },
-            { "label": "Варианты накопителя", "value": "256 ГБ, 512 ГБ, 1 ТБ, 2 ТБ" }
+            {
+              "label": "ОЗУ",
+              "value": "12 ГБ"
+            },
+            {
+              "label": "Варианты накопителя",
+              "value": "256 ГБ, 512 ГБ, 1 ТБ, 2 ТБ"
+            }
           ]
         },
         {
           "group": "Питание и разъёмы",
           "items": [
-            { "label": "Аккумулятор", "value": "≈ 3650 мАч" },
-            { "label": "Проводная зарядка", "value": "USB-C, до 35 Вт" },
-            { "label": "Беспроводная зарядка", "value": "MagSafe / Qi2" },
-            { "label": "Разъём", "value": "USB-C" }
+            {
+              "label": "Аккумулятор",
+              "value": "≈ 3650 мАч"
+            },
+            {
+              "label": "Проводная зарядка",
+              "value": "USB-C, до 35 Вт"
+            },
+            {
+              "label": "Беспроводная зарядка",
+              "value": "MagSafe / Qi2"
+            },
+            {
+              "label": "Разъём",
+              "value": "USB-C"
+            }
           ]
         },
         {
           "group": "Связь",
           "items": [
-            { "label": "Сотовая связь", "value": "5G" },
-            { "label": "Wi-Fi", "value": "Wi-Fi 7" },
-            { "label": "Bluetooth", "value": "Bluetooth 5.4" },
-            { "label": "NFC", "value": "Есть" },
-            { "label": "Навигация", "value": "GPS, ГЛОНАСС, Galileo, QZSS" }
+            {
+              "label": "Сотовая связь",
+              "value": "5G"
+            },
+            {
+              "label": "Wi-Fi",
+              "value": "Wi-Fi 7"
+            },
+            {
+              "label": "Bluetooth",
+              "value": "Bluetooth 5.4"
+            },
+            {
+              "label": "NFC",
+              "value": "Есть"
+            },
+            {
+              "label": "Навигация",
+              "value": "GPS, ГЛОНАСС, Galileo, QZSS"
+            }
           ]
         },
         {
           "group": "Габариты и вес",
           "items": [
-            { "label": "Габариты", "value": "149,6 × 71,5 × 8,25 мм" },
-            { "label": "Вес", "value": "199 г" }
+            {
+              "label": "Габариты",
+              "value": "149,6 × 71,5 × 8,25 мм"
+            },
+            {
+              "label": "Вес",
+              "value": "199 г"
+            }
           ]
         },
         {
           "group": "Дополнительные характеристики",
           "items": [
-            { "label": "Face ID", "value": "Есть" },
-            { "label": "Звук", "value": "Стереодинамики" },
-            { "label": "Варианты SIM", "value": "SIM + eSIM / eSIM" },
-            { "label": "Доступные цвета", "value": "Black, Silver, Glacier, Burgundy" }
+            {
+              "label": "Face ID",
+              "value": "Есть"
+            },
+            {
+              "label": "Звук",
+              "value": "Стереодинамики"
+            },
+            {
+              "label": "Варианты SIM",
+              "value": "SIM + eSIM / eSIM"
+            },
+            {
+              "label": "Доступные цвета",
+              "value": "Black, Silver, Glacier, Burgundy"
+            }
           ]
         }
       ]
@@ -107,81 +217,186 @@
         {
           "group": "Основные характеристики",
           "items": [
-            { "label": "Линейка", "value": "iPhone 17 Pro" },
-            { "label": "Год выпуска", "value": "2025" },
-            { "label": "Материал корпуса", "value": "Титан" },
-            { "label": "Степень защиты", "value": "IP68" },
-            { "label": "Операционная система", "value": "iOS 19" }
+            {
+              "label": "Линейка",
+              "value": "iPhone 17 Pro"
+            },
+            {
+              "label": "Год выпуска",
+              "value": "2025"
+            },
+            {
+              "label": "Материал корпуса",
+              "value": "Титан"
+            },
+            {
+              "label": "Степень защиты",
+              "value": "IP68"
+            },
+            {
+              "label": "Операционная система",
+              "value": "iOS 19"
+            }
           ]
         },
         {
           "group": "Процессор",
           "items": [
-            { "label": "Процессор", "value": "Apple A19 Pro" },
-            { "label": "Количество ядер", "value": "6 (2 performance + 4 efficiency)" },
-            { "label": "Графический процессор", "value": "6 ядер" },
-            { "label": "Нейронный модуль", "value": "16 ядер" }
+            {
+              "label": "Процессор",
+              "value": "Apple A19 Pro"
+            },
+            {
+              "label": "Количество ядер",
+              "value": "6 (2 performance + 4 efficiency)"
+            },
+            {
+              "label": "Графический процессор",
+              "value": "6 ядер"
+            },
+            {
+              "label": "Нейронный модуль",
+              "value": "16 ядер"
+            }
           ]
         },
         {
           "group": "Экран",
           "items": [
-            { "label": "Диагональ экрана", "value": "6,3″" },
-            { "label": "Тип экрана", "value": "OLED, Super Retina XDR" },
-            { "label": "Разрешение", "value": "2622×1206" },
-            { "label": "Частота обновления", "value": "120 Гц (ProMotion)" },
-            { "label": "Яркость", "value": "до 2000 нит" }
+            {
+              "label": "Диагональ экрана",
+              "value": "6,3″"
+            },
+            {
+              "label": "Тип экрана",
+              "value": "OLED, Super Retina XDR"
+            },
+            {
+              "label": "Разрешение",
+              "value": "2622×1206"
+            },
+            {
+              "label": "Частота обновления",
+              "value": "120 Гц (ProMotion)"
+            },
+            {
+              "label": "Яркость",
+              "value": "до 2000 нит"
+            }
           ]
         },
         {
           "group": "Камера",
           "items": [
-            { "label": "Основная камера", "value": "48 МП + 48 МП + 48 МП" },
-            { "label": "Телеобъектив", "value": "5× оптический зум" },
-            { "label": "Фронтальная камера", "value": "24 МП" },
-            { "label": "Видеосъёмка", "value": "4K Dolby Vision" }
+            {
+              "label": "Основная камера",
+              "value": "48 МП + 48 МП + 48 МП"
+            },
+            {
+              "label": "Телеобъектив",
+              "value": "5× оптический зум"
+            },
+            {
+              "label": "Фронтальная камера",
+              "value": "24 МП"
+            },
+            {
+              "label": "Видеосъёмка",
+              "value": "4K Dolby Vision"
+            }
           ]
         },
         {
           "group": "Память",
           "items": [
-            { "label": "ОЗУ", "value": "12 ГБ" },
-            { "label": "Варианты накопителя", "value": "256 ГБ, 512 ГБ, 1 ТБ" }
+            {
+              "label": "ОЗУ",
+              "value": "12 ГБ"
+            },
+            {
+              "label": "Варианты накопителя",
+              "value": "256 ГБ, 512 ГБ, 1 ТБ"
+            }
           ]
         },
         {
           "group": "Питание и разъёмы",
           "items": [
-            { "label": "Аккумулятор", "value": "≈ 3582 мАч" },
-            { "label": "Проводная зарядка", "value": "USB-C, до 35 Вт" },
-            { "label": "Беспроводная зарядка", "value": "MagSafe / Qi2" },
-            { "label": "Разъём", "value": "USB-C" }
+            {
+              "label": "Аккумулятор",
+              "value": "≈ 3582 мАч"
+            },
+            {
+              "label": "Проводная зарядка",
+              "value": "USB-C, до 35 Вт"
+            },
+            {
+              "label": "Беспроводная зарядка",
+              "value": "MagSafe / Qi2"
+            },
+            {
+              "label": "Разъём",
+              "value": "USB-C"
+            }
           ]
         },
         {
           "group": "Связь",
           "items": [
-            { "label": "Сотовая связь", "value": "5G" },
-            { "label": "Wi-Fi", "value": "Wi-Fi 7" },
-            { "label": "Bluetooth", "value": "Bluetooth 5.4" },
-            { "label": "NFC", "value": "Есть" },
-            { "label": "Навигация", "value": "GPS, ГЛОНАСС, Galileo" }
+            {
+              "label": "Сотовая связь",
+              "value": "5G"
+            },
+            {
+              "label": "Wi-Fi",
+              "value": "Wi-Fi 7"
+            },
+            {
+              "label": "Bluetooth",
+              "value": "Bluetooth 5.4"
+            },
+            {
+              "label": "NFC",
+              "value": "Есть"
+            },
+            {
+              "label": "Навигация",
+              "value": "GPS, ГЛОНАСС, Galileo"
+            }
           ]
         },
         {
           "group": "Габариты и вес",
           "items": [
-            { "label": "Габариты", "value": "149,6 × 71,5 × 8,25 мм" },
-            { "label": "Вес", "value": "199 г" }
+            {
+              "label": "Габариты",
+              "value": "149,6 × 71,5 × 8,25 мм"
+            },
+            {
+              "label": "Вес",
+              "value": "199 г"
+            }
           ]
         },
         {
           "group": "Дополнительные характеристики",
           "items": [
-            { "label": "Face ID", "value": "Есть" },
-            { "label": "Звук", "value": "Стереодинамики" },
-            { "label": "Варианты SIM", "value": "SIM + eSIM / eSIM" },
-            { "label": "Доступные цвета", "value": "Silver, Deep Blue" }
+            {
+              "label": "Face ID",
+              "value": "Есть"
+            },
+            {
+              "label": "Звук",
+              "value": "Стереодинамики"
+            },
+            {
+              "label": "Варианты SIM",
+              "value": "SIM + eSIM / eSIM"
+            },
+            {
+              "label": "Доступные цвета",
+              "value": "Silver, Deep Blue"
+            }
           ]
         }
       ]
@@ -192,81 +407,186 @@
         {
           "group": "Основные характеристики",
           "items": [
-            { "label": "Линейка", "value": "iPhone 17 Pro Max" },
-            { "label": "Год выпуска", "value": "2025" },
-            { "label": "Материал корпуса", "value": "Титан" },
-            { "label": "Степень защиты", "value": "IP68" },
-            { "label": "Операционная система", "value": "iOS 19" }
+            {
+              "label": "Линейка",
+              "value": "iPhone 17 Pro Max"
+            },
+            {
+              "label": "Год выпуска",
+              "value": "2025"
+            },
+            {
+              "label": "Материал корпуса",
+              "value": "Титан"
+            },
+            {
+              "label": "Степень защиты",
+              "value": "IP68"
+            },
+            {
+              "label": "Операционная система",
+              "value": "iOS 19"
+            }
           ]
         },
         {
           "group": "Процессор",
           "items": [
-            { "label": "Процессор", "value": "Apple A19 Pro" },
-            { "label": "Количество ядер", "value": "6 (2 performance + 4 efficiency)" },
-            { "label": "Графический процессор", "value": "6 ядер" },
-            { "label": "Нейронный модуль", "value": "16 ядер" }
+            {
+              "label": "Процессор",
+              "value": "Apple A19 Pro"
+            },
+            {
+              "label": "Количество ядер",
+              "value": "6 (2 performance + 4 efficiency)"
+            },
+            {
+              "label": "Графический процессор",
+              "value": "6 ядер"
+            },
+            {
+              "label": "Нейронный модуль",
+              "value": "16 ядер"
+            }
           ]
         },
         {
           "group": "Экран",
           "items": [
-            { "label": "Диагональ экрана", "value": "6,9″" },
-            { "label": "Тип экрана", "value": "OLED, Super Retina XDR" },
-            { "label": "Разрешение", "value": "2868×1320" },
-            { "label": "Частота обновления", "value": "120 Гц (ProMotion)" },
-            { "label": "Яркость", "value": "до 2000 нит" }
+            {
+              "label": "Диагональ экрана",
+              "value": "6,9″"
+            },
+            {
+              "label": "Тип экрана",
+              "value": "OLED, Super Retina XDR"
+            },
+            {
+              "label": "Разрешение",
+              "value": "2868×1320"
+            },
+            {
+              "label": "Частота обновления",
+              "value": "120 Гц (ProMotion)"
+            },
+            {
+              "label": "Яркость",
+              "value": "до 2000 нит"
+            }
           ]
         },
         {
           "group": "Камера",
           "items": [
-            { "label": "Основная камера", "value": "48 МП + 48 МП + 48 МП" },
-            { "label": "Телеобъектив", "value": "5× оптический зум" },
-            { "label": "Фронтальная камера", "value": "24 МП" },
-            { "label": "Видеосъёмка", "value": "4K Dolby Vision" }
+            {
+              "label": "Основная камера",
+              "value": "48 МП + 48 МП + 48 МП"
+            },
+            {
+              "label": "Телеобъектив",
+              "value": "5× оптический зум"
+            },
+            {
+              "label": "Фронтальная камера",
+              "value": "24 МП"
+            },
+            {
+              "label": "Видеосъёмка",
+              "value": "4K Dolby Vision"
+            }
           ]
         },
         {
           "group": "Память",
           "items": [
-            { "label": "ОЗУ", "value": "12 ГБ" },
-            { "label": "Варианты накопителя", "value": "256 ГБ, 512 ГБ, 1 ТБ" }
+            {
+              "label": "ОЗУ",
+              "value": "12 ГБ"
+            },
+            {
+              "label": "Варианты накопителя",
+              "value": "256 ГБ, 512 ГБ, 1 ТБ"
+            }
           ]
         },
         {
           "group": "Питание и разъёмы",
           "items": [
-            { "label": "Аккумулятор", "value": "≈ 4685 мАч" },
-            { "label": "Проводная зарядка", "value": "USB-C, до 35 Вт" },
-            { "label": "Беспроводная зарядка", "value": "MagSafe / Qi2" },
-            { "label": "Разъём", "value": "USB-C" }
+            {
+              "label": "Аккумулятор",
+              "value": "≈ 4685 мАч"
+            },
+            {
+              "label": "Проводная зарядка",
+              "value": "USB-C, до 35 Вт"
+            },
+            {
+              "label": "Беспроводная зарядка",
+              "value": "MagSafe / Qi2"
+            },
+            {
+              "label": "Разъём",
+              "value": "USB-C"
+            }
           ]
         },
         {
           "group": "Связь",
           "items": [
-            { "label": "Сотовая связь", "value": "5G" },
-            { "label": "Wi-Fi", "value": "Wi-Fi 7" },
-            { "label": "Bluetooth", "value": "Bluetooth 5.4" },
-            { "label": "NFC", "value": "Есть" },
-            { "label": "Навигация", "value": "GPS, ГЛОНАСС, Galileo" }
+            {
+              "label": "Сотовая связь",
+              "value": "5G"
+            },
+            {
+              "label": "Wi-Fi",
+              "value": "Wi-Fi 7"
+            },
+            {
+              "label": "Bluetooth",
+              "value": "Bluetooth 5.4"
+            },
+            {
+              "label": "NFC",
+              "value": "Есть"
+            },
+            {
+              "label": "Навигация",
+              "value": "GPS, ГЛОНАСС, Galileo"
+            }
           ]
         },
         {
           "group": "Габариты и вес",
           "items": [
-            { "label": "Габариты", "value": "163 × 77,6 × 8,3 мм" },
-            { "label": "Вес", "value": "227 г" }
+            {
+              "label": "Габариты",
+              "value": "163 × 77,6 × 8,3 мм"
+            },
+            {
+              "label": "Вес",
+              "value": "227 г"
+            }
           ]
         },
         {
           "group": "Дополнительные характеристики",
           "items": [
-            { "label": "Face ID", "value": "Есть" },
-            { "label": "Звук", "value": "Стереодинамики" },
-            { "label": "Варианты SIM", "value": "SIM + eSIM / eSIM" },
-            { "label": "Доступные цвета", "value": "Cosmic Orange, Silver" }
+            {
+              "label": "Face ID",
+              "value": "Есть"
+            },
+            {
+              "label": "Звук",
+              "value": "Стереодинамики"
+            },
+            {
+              "label": "Варианты SIM",
+              "value": "SIM + eSIM / eSIM"
+            },
+            {
+              "label": "Доступные цвета",
+              "value": "Cosmic Orange, Silver"
+            }
           ]
         }
       ]
@@ -277,80 +597,182 @@
         {
           "group": "Основные характеристики",
           "items": [
-            { "label": "Линейка", "value": "iPhone 17 Air" },
-            { "label": "Год выпуска", "value": "2025" },
-            { "label": "Материал корпуса", "value": "Алюминий / титан" },
-            { "label": "Степень защиты", "value": "IP68" },
-            { "label": "Операционная система", "value": "iOS 19" }
+            {
+              "label": "Линейка",
+              "value": "iPhone 17 Air"
+            },
+            {
+              "label": "Год выпуска",
+              "value": "2025"
+            },
+            {
+              "label": "Материал корпуса",
+              "value": "Алюминий / титан"
+            },
+            {
+              "label": "Степень защиты",
+              "value": "IP68"
+            },
+            {
+              "label": "Операционная система",
+              "value": "iOS 19"
+            }
           ]
         },
         {
           "group": "Процессор",
           "items": [
-            { "label": "Процессор", "value": "Apple A19 Pro" },
-            { "label": "Количество ядер", "value": "6 (2 performance + 4 efficiency)" },
-            { "label": "Графический процессор", "value": "6 ядер" },
-            { "label": "Нейронный модуль", "value": "16 ядер" }
+            {
+              "label": "Процессор",
+              "value": "Apple A19 Pro"
+            },
+            {
+              "label": "Количество ядер",
+              "value": "6 (2 performance + 4 efficiency)"
+            },
+            {
+              "label": "Графический процессор",
+              "value": "6 ядер"
+            },
+            {
+              "label": "Нейронный модуль",
+              "value": "16 ядер"
+            }
           ]
         },
         {
           "group": "Экран",
           "items": [
-            { "label": "Диагональ экрана", "value": "6,6″" },
-            { "label": "Тип экрана", "value": "OLED, Super Retina XDR" },
-            { "label": "Разрешение", "value": "2622×1206" },
-            { "label": "Частота обновления", "value": "120 Гц (ProMotion)" },
-            { "label": "Яркость", "value": "до 1600 нит" }
+            {
+              "label": "Диагональ экрана",
+              "value": "6,6″"
+            },
+            {
+              "label": "Тип экрана",
+              "value": "OLED, Super Retina XDR"
+            },
+            {
+              "label": "Разрешение",
+              "value": "2622×1206"
+            },
+            {
+              "label": "Частота обновления",
+              "value": "120 Гц (ProMotion)"
+            },
+            {
+              "label": "Яркость",
+              "value": "до 1600 нит"
+            }
           ]
         },
         {
           "group": "Камера",
           "items": [
-            { "label": "Основная камера", "value": "48 МП (один модуль)" },
-            { "label": "Фронтальная камера", "value": "24 МП" },
-            { "label": "Видеосъёмка", "value": "4K Dolby Vision" }
+            {
+              "label": "Основная камера",
+              "value": "48 МП (один модуль)"
+            },
+            {
+              "label": "Фронтальная камера",
+              "value": "24 МП"
+            },
+            {
+              "label": "Видеосъёмка",
+              "value": "4K Dolby Vision"
+            }
           ]
         },
         {
           "group": "Память",
           "items": [
-            { "label": "ОЗУ", "value": "12 ГБ" },
-            { "label": "Варианты накопителя", "value": "256 ГБ, 512 ГБ, 1 ТБ" }
+            {
+              "label": "ОЗУ",
+              "value": "12 ГБ"
+            },
+            {
+              "label": "Варианты накопителя",
+              "value": "256 ГБ, 512 ГБ, 1 ТБ"
+            }
           ]
         },
         {
           "group": "Питание и разъёмы",
           "items": [
-            { "label": "Аккумулятор", "value": "≈ 3200 мАч" },
-            { "label": "Проводная зарядка", "value": "USB-C, до 30 Вт" },
-            { "label": "Беспроводная зарядка", "value": "MagSafe / Qi2" },
-            { "label": "Разъём", "value": "USB-C" }
+            {
+              "label": "Аккумулятор",
+              "value": "≈ 3200 мАч"
+            },
+            {
+              "label": "Проводная зарядка",
+              "value": "USB-C, до 30 Вт"
+            },
+            {
+              "label": "Беспроводная зарядка",
+              "value": "MagSafe / Qi2"
+            },
+            {
+              "label": "Разъём",
+              "value": "USB-C"
+            }
           ]
         },
         {
           "group": "Связь",
           "items": [
-            { "label": "Сотовая связь", "value": "5G" },
-            { "label": "Wi-Fi", "value": "Wi-Fi 7" },
-            { "label": "Bluetooth", "value": "Bluetooth 5.4" },
-            { "label": "NFC", "value": "Есть" },
-            { "label": "Навигация", "value": "GPS, ГЛОНАСС" }
+            {
+              "label": "Сотовая связь",
+              "value": "5G"
+            },
+            {
+              "label": "Wi-Fi",
+              "value": "Wi-Fi 7"
+            },
+            {
+              "label": "Bluetooth",
+              "value": "Bluetooth 5.4"
+            },
+            {
+              "label": "NFC",
+              "value": "Есть"
+            },
+            {
+              "label": "Навигация",
+              "value": "GPS, ГЛОНАСС"
+            }
           ]
         },
         {
           "group": "Габариты и вес",
           "items": [
-            { "label": "Габариты", "value": "156 × 75 × 5,5 мм" },
-            { "label": "Вес", "value": "165 г" }
+            {
+              "label": "Габариты",
+              "value": "156 × 75 × 5,5 мм"
+            },
+            {
+              "label": "Вес",
+              "value": "165 г"
+            }
           ]
         },
         {
           "group": "Дополнительные характеристики",
           "items": [
-            { "label": "Face ID", "value": "Есть" },
-            { "label": "Звук", "value": "Стереодинамики" },
-            { "label": "Варианты SIM", "value": "только eSIM" },
-            { "label": "Доступные цвета", "value": "Space Black" }
+            {
+              "label": "Face ID",
+              "value": "Есть"
+            },
+            {
+              "label": "Звук",
+              "value": "Стереодинамики"
+            },
+            {
+              "label": "Варианты SIM",
+              "value": "только eSIM"
+            },
+            {
+              "label": "Доступные цвета",
+              "value": "Space Black"
+            }
           ]
         }
       ]
@@ -361,81 +783,186 @@
         {
           "group": "Основные характеристики",
           "items": [
-            { "label": "Линейка", "value": "iPhone 17" },
-            { "label": "Год выпуска", "value": "2025" },
-            { "label": "Материал корпуса", "value": "Алюминий" },
-            { "label": "Степень защиты", "value": "IP68" },
-            { "label": "Операционная система", "value": "iOS 19" }
+            {
+              "label": "Линейка",
+              "value": "iPhone 17"
+            },
+            {
+              "label": "Год выпуска",
+              "value": "2025"
+            },
+            {
+              "label": "Материал корпуса",
+              "value": "Алюминий"
+            },
+            {
+              "label": "Степень защиты",
+              "value": "IP68"
+            },
+            {
+              "label": "Операционная система",
+              "value": "iOS 19"
+            }
           ]
         },
         {
           "group": "Процессор",
           "items": [
-            { "label": "Процессор", "value": "Apple A18" },
-            { "label": "Количество ядер", "value": "6 (2 performance + 4 efficiency)" },
-            { "label": "Графический процессор", "value": "5 ядер" },
-            { "label": "Нейронный модуль", "value": "16 ядер" }
+            {
+              "label": "Процессор",
+              "value": "Apple A18"
+            },
+            {
+              "label": "Количество ядер",
+              "value": "6 (2 performance + 4 efficiency)"
+            },
+            {
+              "label": "Графический процессор",
+              "value": "5 ядер"
+            },
+            {
+              "label": "Нейронный модуль",
+              "value": "16 ядер"
+            }
           ]
         },
         {
           "group": "Экран",
           "items": [
-            { "label": "Диагональ экрана", "value": "6,3″" },
-            { "label": "Тип экрана", "value": "OLED" },
-            { "label": "Разрешение", "value": "2556×1179" },
-            { "label": "Частота обновления", "value": "60 Гц" },
-            { "label": "Яркость", "value": "до 1200 нит" }
+            {
+              "label": "Диагональ экрана",
+              "value": "6,3″"
+            },
+            {
+              "label": "Тип экрана",
+              "value": "OLED"
+            },
+            {
+              "label": "Разрешение",
+              "value": "2556×1179"
+            },
+            {
+              "label": "Частота обновления",
+              "value": "60 Гц"
+            },
+            {
+              "label": "Яркость",
+              "value": "до 1200 нит"
+            }
           ]
         },
         {
           "group": "Камера",
           "items": [
-            { "label": "Основная камера", "value": "48 МП + 12 МП" },
-            { "label": "Телеобъектив", "value": "2× оптический зум" },
-            { "label": "Фронтальная камера", "value": "12 МП" },
-            { "label": "Видеосъёмка", "value": "4K" }
+            {
+              "label": "Основная камера",
+              "value": "48 МП + 12 МП"
+            },
+            {
+              "label": "Телеобъектив",
+              "value": "2× оптический зум"
+            },
+            {
+              "label": "Фронтальная камера",
+              "value": "12 МП"
+            },
+            {
+              "label": "Видеосъёмка",
+              "value": "4K"
+            }
           ]
         },
         {
           "group": "Память",
           "items": [
-            { "label": "ОЗУ", "value": "8 ГБ" },
-            { "label": "Варианты накопителя", "value": "256 ГБ, 512 ГБ" }
+            {
+              "label": "ОЗУ",
+              "value": "8 ГБ"
+            },
+            {
+              "label": "Варианты накопителя",
+              "value": "256 ГБ, 512 ГБ"
+            }
           ]
         },
         {
           "group": "Питание и разъёмы",
           "items": [
-            { "label": "Аккумулятор", "value": "≈ 3561 мАч" },
-            { "label": "Проводная зарядка", "value": "USB-C, до 30 Вт" },
-            { "label": "Беспроводная зарядка", "value": "MagSafe / Qi2" },
-            { "label": "Разъём", "value": "USB-C" }
+            {
+              "label": "Аккумулятор",
+              "value": "≈ 3561 мАч"
+            },
+            {
+              "label": "Проводная зарядка",
+              "value": "USB-C, до 30 Вт"
+            },
+            {
+              "label": "Беспроводная зарядка",
+              "value": "MagSafe / Qi2"
+            },
+            {
+              "label": "Разъём",
+              "value": "USB-C"
+            }
           ]
         },
         {
           "group": "Связь",
           "items": [
-            { "label": "Сотовая связь", "value": "5G" },
-            { "label": "Wi-Fi", "value": "Wi-Fi 6E" },
-            { "label": "Bluetooth", "value": "Bluetooth 5.3" },
-            { "label": "NFC", "value": "Есть" },
-            { "label": "Навигация", "value": "GPS, ГЛОНАСС" }
+            {
+              "label": "Сотовая связь",
+              "value": "5G"
+            },
+            {
+              "label": "Wi-Fi",
+              "value": "Wi-Fi 6E"
+            },
+            {
+              "label": "Bluetooth",
+              "value": "Bluetooth 5.3"
+            },
+            {
+              "label": "NFC",
+              "value": "Есть"
+            },
+            {
+              "label": "Навигация",
+              "value": "GPS, ГЛОНАСС"
+            }
           ]
         },
         {
           "group": "Габариты и вес",
           "items": [
-            { "label": "Габариты", "value": "149,6 × 71,5 × 7,95 мм" },
-            { "label": "Вес", "value": "190 г" }
+            {
+              "label": "Габариты",
+              "value": "149,6 × 71,5 × 7,95 мм"
+            },
+            {
+              "label": "Вес",
+              "value": "190 г"
+            }
           ]
         },
         {
           "group": "Дополнительные характеристики",
           "items": [
-            { "label": "Face ID", "value": "Есть" },
-            { "label": "Звук", "value": "Стереодинамики" },
-            { "label": "Варианты SIM", "value": "eSIM" },
-            { "label": "Доступные цвета", "value": "Must Blue" }
+            {
+              "label": "Face ID",
+              "value": "Есть"
+            },
+            {
+              "label": "Звук",
+              "value": "Стереодинамики"
+            },
+            {
+              "label": "Варианты SIM",
+              "value": "eSIM"
+            },
+            {
+              "label": "Доступные цвета",
+              "value": "Must Blue"
+            }
           ]
         }
       ]
@@ -446,81 +973,186 @@
         {
           "group": "Основные характеристики",
           "items": [
-            { "label": "Линейка", "value": "iPhone 16 Pro" },
-            { "label": "Год выпуска", "value": "2024" },
-            { "label": "Материал корпуса", "value": "Титан" },
-            { "label": "Степень защиты", "value": "IP68" },
-            { "label": "Операционная система", "value": "iOS 18" }
+            {
+              "label": "Линейка",
+              "value": "iPhone 16 Pro"
+            },
+            {
+              "label": "Год выпуска",
+              "value": "2024"
+            },
+            {
+              "label": "Материал корпуса",
+              "value": "Титан"
+            },
+            {
+              "label": "Степень защиты",
+              "value": "IP68"
+            },
+            {
+              "label": "Операционная система",
+              "value": "iOS 18"
+            }
           ]
         },
         {
           "group": "Процессор",
           "items": [
-            { "label": "Процессор", "value": "Apple A18 Pro" },
-            { "label": "Количество ядер", "value": "6 (2 performance + 4 efficiency)" },
-            { "label": "Графический процессор", "value": "6 ядер" },
-            { "label": "Нейронный модуль", "value": "16 ядер" }
+            {
+              "label": "Процессор",
+              "value": "Apple A18 Pro"
+            },
+            {
+              "label": "Количество ядер",
+              "value": "6 (2 performance + 4 efficiency)"
+            },
+            {
+              "label": "Графический процессор",
+              "value": "6 ядер"
+            },
+            {
+              "label": "Нейронный модуль",
+              "value": "16 ядер"
+            }
           ]
         },
         {
           "group": "Экран",
           "items": [
-            { "label": "Диагональ экрана", "value": "6,3″" },
-            { "label": "Тип экрана", "value": "OLED, Super Retina XDR" },
-            { "label": "Разрешение", "value": "2622×1206" },
-            { "label": "Частота обновления", "value": "120 Гц (ProMotion)" },
-            { "label": "Яркость", "value": "до 2000 нит" }
+            {
+              "label": "Диагональ экрана",
+              "value": "6,3″"
+            },
+            {
+              "label": "Тип экрана",
+              "value": "OLED, Super Retina XDR"
+            },
+            {
+              "label": "Разрешение",
+              "value": "2622×1206"
+            },
+            {
+              "label": "Частота обновления",
+              "value": "120 Гц (ProMotion)"
+            },
+            {
+              "label": "Яркость",
+              "value": "до 2000 нит"
+            }
           ]
         },
         {
           "group": "Камера",
           "items": [
-            { "label": "Основная камера", "value": "48 МП + 48 МП + 12 МП" },
-            { "label": "Телеобъектив", "value": "5× оптический зум" },
-            { "label": "Фронтальная камера", "value": "12 МП" },
-            { "label": "Видеосъёмка", "value": "4K Dolby Vision" }
+            {
+              "label": "Основная камера",
+              "value": "48 МП + 48 МП + 12 МП"
+            },
+            {
+              "label": "Телеобъектив",
+              "value": "5× оптический зум"
+            },
+            {
+              "label": "Фронтальная камера",
+              "value": "12 МП"
+            },
+            {
+              "label": "Видеосъёмка",
+              "value": "4K Dolby Vision"
+            }
           ]
         },
         {
           "group": "Память",
           "items": [
-            { "label": "ОЗУ", "value": "8 ГБ" },
-            { "label": "Варианты накопителя", "value": "128 ГБ, 256 ГБ, 512 ГБ, 1 ТБ" }
+            {
+              "label": "ОЗУ",
+              "value": "8 ГБ"
+            },
+            {
+              "label": "Варианты накопителя",
+              "value": "128 ГБ, 256 ГБ, 512 ГБ, 1 ТБ"
+            }
           ]
         },
         {
           "group": "Питание и разъёмы",
           "items": [
-            { "label": "Аккумулятор", "value": "≈ 3582 мАч" },
-            { "label": "Проводная зарядка", "value": "USB-C, до 30 Вт" },
-            { "label": "Беспроводная зарядка", "value": "MagSafe / Qi2" },
-            { "label": "Разъём", "value": "USB-C" }
+            {
+              "label": "Аккумулятор",
+              "value": "≈ 3582 мАч"
+            },
+            {
+              "label": "Проводная зарядка",
+              "value": "USB-C, до 30 Вт"
+            },
+            {
+              "label": "Беспроводная зарядка",
+              "value": "MagSafe / Qi2"
+            },
+            {
+              "label": "Разъём",
+              "value": "USB-C"
+            }
           ]
         },
         {
           "group": "Связь",
           "items": [
-            { "label": "Сотовая связь", "value": "5G" },
-            { "label": "Wi-Fi", "value": "Wi-Fi 7" },
-            { "label": "Bluetooth", "value": "Bluetooth 5.3" },
-            { "label": "NFC", "value": "Есть" },
-            { "label": "Навигация", "value": "GPS, ГЛОНАСС, Galileo" }
+            {
+              "label": "Сотовая связь",
+              "value": "5G"
+            },
+            {
+              "label": "Wi-Fi",
+              "value": "Wi-Fi 7"
+            },
+            {
+              "label": "Bluetooth",
+              "value": "Bluetooth 5.3"
+            },
+            {
+              "label": "NFC",
+              "value": "Есть"
+            },
+            {
+              "label": "Навигация",
+              "value": "GPS, ГЛОНАСС, Galileo"
+            }
           ]
         },
         {
           "group": "Габариты и вес",
           "items": [
-            { "label": "Габариты", "value": "149,6 × 71,5 × 8,25 мм" },
-            { "label": "Вес", "value": "199 г" }
+            {
+              "label": "Габариты",
+              "value": "149,6 × 71,5 × 8,25 мм"
+            },
+            {
+              "label": "Вес",
+              "value": "199 г"
+            }
           ]
         },
         {
           "group": "Дополнительные характеристики",
           "items": [
-            { "label": "Face ID", "value": "Есть" },
-            { "label": "Звук", "value": "Стереодинамики" },
-            { "label": "Доступные цвета", "value": "Уточняйте у менеджера" },
-            { "label": "Варианты SIM", "value": "Уточняйте у менеджера" }
+            {
+              "label": "Face ID",
+              "value": "Есть"
+            },
+            {
+              "label": "Звук",
+              "value": "Стереодинамики"
+            },
+            {
+              "label": "Доступные цвета",
+              "value": "Уточняйте у менеджера"
+            },
+            {
+              "label": "Варианты SIM",
+              "value": "Уточняйте у менеджера"
+            }
           ]
         }
       ]
@@ -531,67 +1163,145 @@
         {
           "group": "Основные характеристики",
           "items": [
-            { "label": "Линейка", "value": "MacBook Air 13 M5" },
-            { "label": "Год выпуска", "value": "2026" },
-            { "label": "Материал корпуса", "value": "Алюминий" },
-            { "label": "Цвета", "value": "Silver, Midnight, Sky Blue" },
-            { "label": "Операционная система", "value": "macOS" }
+            {
+              "label": "Линейка",
+              "value": "MacBook Air 13 M5"
+            },
+            {
+              "label": "Год выпуска",
+              "value": "2026"
+            },
+            {
+              "label": "Материал корпуса",
+              "value": "Алюминий"
+            },
+            {
+              "label": "Цвета",
+              "value": "Silver, Midnight, Sky Blue"
+            },
+            {
+              "label": "Операционная система",
+              "value": "macOS"
+            }
           ]
         },
         {
           "group": "Процессор",
           "items": [
-            { "label": "Процессор", "value": "Apple M5" },
-            { "label": "Ядра CPU", "value": "10" },
-            { "label": "Ядра GPU", "value": "10" },
-            { "label": "Нейронный модуль", "value": "16 ядер" }
+            {
+              "label": "Процессор",
+              "value": "Apple M5"
+            },
+            {
+              "label": "Ядра CPU",
+              "value": "10"
+            },
+            {
+              "label": "Ядра GPU",
+              "value": "10"
+            },
+            {
+              "label": "Нейронный модуль",
+              "value": "16 ядер"
+            }
           ]
         },
         {
           "group": "Экран",
           "items": [
-            { "label": "Диагональ экрана", "value": "13,6″" },
-            { "label": "Тип экрана", "value": "Liquid Retina" },
-            { "label": "Разрешение", "value": "2560×1664" },
-            { "label": "Яркость", "value": "500 нит" }
+            {
+              "label": "Диагональ экрана",
+              "value": "13,6″"
+            },
+            {
+              "label": "Тип экрана",
+              "value": "Liquid Retina"
+            },
+            {
+              "label": "Разрешение",
+              "value": "2560×1664"
+            },
+            {
+              "label": "Яркость",
+              "value": "500 нит"
+            }
           ]
         },
         {
           "group": "Память",
           "items": [
-            { "label": "ОЗУ", "value": "16 ГБ" },
-            { "label": "Накопитель", "value": "1 ТБ SSD" }
+            {
+              "label": "ОЗУ",
+              "value": "16 ГБ"
+            },
+            {
+              "label": "Накопитель",
+              "value": "1 ТБ SSD"
+            }
           ]
         },
         {
           "group": "Питание и разъёмы",
           "items": [
-            { "label": "Аккумулятор", "value": "≈ 52,6 Вт·ч" },
-            { "label": "Автономность", "value": "до 18 ч" },
-            { "label": "Зарядка", "value": "MagSafe / USB-C 35 Вт" },
-            { "label": "Разъёмы", "value": "2× Thunderbolt/USB-4, MagSafe, 3,5 мм" }
+            {
+              "label": "Аккумулятор",
+              "value": "≈ 52,6 Вт·ч"
+            },
+            {
+              "label": "Автономность",
+              "value": "до 18 ч"
+            },
+            {
+              "label": "Зарядка",
+              "value": "MagSafe / USB-C 35 Вт"
+            },
+            {
+              "label": "Разъёмы",
+              "value": "2× Thunderbolt/USB-4, MagSafe, 3,5 мм"
+            }
           ]
         },
         {
           "group": "Связь",
           "items": [
-            { "label": "Wi-Fi", "value": "Wi-Fi 6E" },
-            { "label": "Bluetooth", "value": "Bluetooth 5.3" }
+            {
+              "label": "Wi-Fi",
+              "value": "Wi-Fi 6E"
+            },
+            {
+              "label": "Bluetooth",
+              "value": "Bluetooth 5.3"
+            }
           ]
         },
         {
           "group": "Габариты и вес",
           "items": [
-            { "label": "Габариты", "value": "304,1 × 215 × 11,5 мм" },
-            { "label": "Вес", "value": "1,24 кг" }
+            {
+              "label": "Габариты",
+              "value": "304,1 × 215 × 11,5 мм"
+            },
+            {
+              "label": "Вес",
+              "value": "1,24 кг"
+            }
           ]
         },
         {
           "group": "Дополнительные характеристики",
           "items": [
-            { "label": "Веб-камера", "value": "1080p FaceTime" },
-            { "label": "Сканер отпечатков", "value": "Touch ID" },
-            { "label": "Звук", "value": "Стереодинамики" }
+            {
+              "label": "Веб-камера",
+              "value": "1080p FaceTime"
+            },
+            {
+              "label": "Сканер отпечатков",
+              "value": "Touch ID"
+            },
+            {
+              "label": "Звук",
+              "value": "Стереодинамики"
+            }
           ]
         }
       ]
@@ -602,67 +1312,145 @@
         {
           "group": "Основные характеристики",
           "items": [
-            { "label": "Линейка", "value": "MacBook Neo 13 A16" },
-            { "label": "Год выпуска", "value": "2026" },
-            { "label": "Материал корпуса", "value": "Алюминий" },
-            { "label": "Цвета", "value": "Silver, Starlight" },
-            { "label": "Операционная система", "value": "macOS" }
+            {
+              "label": "Линейка",
+              "value": "MacBook Neo 13 A16"
+            },
+            {
+              "label": "Год выпуска",
+              "value": "2026"
+            },
+            {
+              "label": "Материал корпуса",
+              "value": "Алюминий"
+            },
+            {
+              "label": "Цвета",
+              "value": "Silver, Starlight"
+            },
+            {
+              "label": "Операционная система",
+              "value": "macOS"
+            }
           ]
         },
         {
           "group": "Процессор",
           "items": [
-            { "label": "Процессор", "value": "Apple A16" },
-            { "label": "Ядра CPU", "value": "6" },
-            { "label": "Ядра GPU", "value": "6" },
-            { "label": "Нейронный модуль", "value": "Есть" }
+            {
+              "label": "Процессор",
+              "value": "Apple A16"
+            },
+            {
+              "label": "Ядра CPU",
+              "value": "6"
+            },
+            {
+              "label": "Ядра GPU",
+              "value": "6"
+            },
+            {
+              "label": "Нейронный модуль",
+              "value": "Есть"
+            }
           ]
         },
         {
           "group": "Экран",
           "items": [
-            { "label": "Диагональ экрана", "value": "13,3″" },
-            { "label": "Тип экрана", "value": "Retina" },
-            { "label": "Разрешение", "value": "2560×1664" },
-            { "label": "Яркость", "value": "400 нит" }
+            {
+              "label": "Диагональ экрана",
+              "value": "13,3″"
+            },
+            {
+              "label": "Тип экрана",
+              "value": "Retina"
+            },
+            {
+              "label": "Разрешение",
+              "value": "2560×1664"
+            },
+            {
+              "label": "Яркость",
+              "value": "400 нит"
+            }
           ]
         },
         {
           "group": "Память",
           "items": [
-            { "label": "ОЗУ", "value": "8 ГБ" },
-            { "label": "Накопитель", "value": "256 ГБ SSD" }
+            {
+              "label": "ОЗУ",
+              "value": "8 ГБ"
+            },
+            {
+              "label": "Накопитель",
+              "value": "256 ГБ SSD"
+            }
           ]
         },
         {
           "group": "Питание и разъёмы",
           "items": [
-            { "label": "Аккумулятор", "value": "≈ 49,9 Вт·ч" },
-            { "label": "Автономность", "value": "до 15 ч" },
-            { "label": "Зарядка", "value": "USB-C 30 Вт" },
-            { "label": "Разъёмы", "value": "2× USB-C, 3,5 мм" }
+            {
+              "label": "Аккумулятор",
+              "value": "≈ 49,9 Вт·ч"
+            },
+            {
+              "label": "Автономность",
+              "value": "до 15 ч"
+            },
+            {
+              "label": "Зарядка",
+              "value": "USB-C 30 Вт"
+            },
+            {
+              "label": "Разъёмы",
+              "value": "2× USB-C, 3,5 мм"
+            }
           ]
         },
         {
           "group": "Связь",
           "items": [
-            { "label": "Wi-Fi", "value": "Wi-Fi 6" },
-            { "label": "Bluetooth", "value": "Bluetooth 5.0" }
+            {
+              "label": "Wi-Fi",
+              "value": "Wi-Fi 6"
+            },
+            {
+              "label": "Bluetooth",
+              "value": "Bluetooth 5.0"
+            }
           ]
         },
         {
           "group": "Габариты и вес",
           "items": [
-            { "label": "Габариты", "value": "304 × 212 × 13,1 мм" },
-            { "label": "Вес", "value": "1,29 кг" }
+            {
+              "label": "Габариты",
+              "value": "304 × 212 × 13,1 мм"
+            },
+            {
+              "label": "Вес",
+              "value": "1,29 кг"
+            }
           ]
         },
         {
           "group": "Дополнительные характеристики",
           "items": [
-            { "label": "Веб-камера", "value": "720p" },
-            { "label": "Сканер отпечатков", "value": "Touch ID" },
-            { "label": "Звук", "value": "Стерео" }
+            {
+              "label": "Веб-камера",
+              "value": "720p"
+            },
+            {
+              "label": "Сканер отпечатков",
+              "value": "Touch ID"
+            },
+            {
+              "label": "Звук",
+              "value": "Стерео"
+            }
           ]
         }
       ]
@@ -673,77 +1461,170 @@
         {
           "group": "Основные характеристики",
           "items": [
-            { "label": "Линейка", "value": "Samsung Galaxy A57 5G" },
-            { "label": "Год выпуска", "value": "2026" },
-            { "label": "Материал корпуса", "value": "Пластик / стекло" },
-            { "label": "Степень защиты", "value": "IP67" },
-            { "label": "Операционная система", "value": "Android 16" }
+            {
+              "label": "Линейка",
+              "value": "Samsung Galaxy A57 5G"
+            },
+            {
+              "label": "Год выпуска",
+              "value": "2026"
+            },
+            {
+              "label": "Материал корпуса",
+              "value": "Пластик / стекло"
+            },
+            {
+              "label": "Степень защиты",
+              "value": "IP67"
+            },
+            {
+              "label": "Операционная система",
+              "value": "Android 16"
+            }
           ]
         },
         {
           "group": "Процессор",
           "items": [
-            { "label": "Процессор", "value": "Samsung Exynos 1580" },
-            { "label": "Количество ядер", "value": "8" },
-            { "label": "Графический процессор", "value": "Mali-G715" }
+            {
+              "label": "Процессор",
+              "value": "Samsung Exynos 1580"
+            },
+            {
+              "label": "Количество ядер",
+              "value": "8"
+            },
+            {
+              "label": "Графический процессор",
+              "value": "Mali-G715"
+            }
           ]
         },
         {
           "group": "Экран",
           "items": [
-            { "label": "Диагональ экрана", "value": "6,7″" },
-            { "label": "Тип экрана", "value": "Super AMOLED" },
-            { "label": "Разрешение", "value": "2400×1080" },
-            { "label": "Частота обновления", "value": "120 Гц" },
-            { "label": "Яркость", "value": "1200 нит" }
+            {
+              "label": "Диагональ экрана",
+              "value": "6,7″"
+            },
+            {
+              "label": "Тип экрана",
+              "value": "Super AMOLED"
+            },
+            {
+              "label": "Разрешение",
+              "value": "2400×1080"
+            },
+            {
+              "label": "Частота обновления",
+              "value": "120 Гц"
+            },
+            {
+              "label": "Яркость",
+              "value": "1200 нит"
+            }
           ]
         },
         {
           "group": "Камера",
           "items": [
-            { "label": "Основная камера", "value": "50 МП + 12 МП + 5 МП" },
-            { "label": "Фронтальная камера", "value": "32 МП" },
-            { "label": "Видеосъёмка", "value": "4K" }
+            {
+              "label": "Основная камера",
+              "value": "50 МП + 12 МП + 5 МП"
+            },
+            {
+              "label": "Фронтальная камера",
+              "value": "32 МП"
+            },
+            {
+              "label": "Видеосъёмка",
+              "value": "4K"
+            }
           ]
         },
         {
           "group": "Память",
           "items": [
-            { "label": "ОЗУ", "value": "8 ГБ" },
-            { "label": "Встроенная память", "value": "128 ГБ" },
-            { "label": "Слот microSD", "value": "до 1 ТБ" }
+            {
+              "label": "ОЗУ",
+              "value": "8 ГБ"
+            },
+            {
+              "label": "Встроенная память",
+              "value": "128 ГБ"
+            },
+            {
+              "label": "Слот microSD",
+              "value": "до 1 ТБ"
+            }
           ]
         },
         {
           "group": "Питание и разъёмы",
           "items": [
-            { "label": "Аккумулятор", "value": "5000 мАч" },
-            { "label": "Зарядка", "value": "25 Вт" },
-            { "label": "Разъём", "value": "USB-C" }
+            {
+              "label": "Аккумулятор",
+              "value": "5000 мАч"
+            },
+            {
+              "label": "Зарядка",
+              "value": "25 Вт"
+            },
+            {
+              "label": "Разъём",
+              "value": "USB-C"
+            }
           ]
         },
         {
           "group": "Связь",
           "items": [
-            { "label": "Сотовая связь", "value": "5G" },
-            { "label": "Wi-Fi", "value": "Wi-Fi 6" },
-            { "label": "Bluetooth", "value": "Bluetooth 5.3" },
-            { "label": "NFC", "value": "Есть" },
-            { "label": "Навигация", "value": "GPS, ГЛОНАСС" }
+            {
+              "label": "Сотовая связь",
+              "value": "5G"
+            },
+            {
+              "label": "Wi-Fi",
+              "value": "Wi-Fi 6"
+            },
+            {
+              "label": "Bluetooth",
+              "value": "Bluetooth 5.3"
+            },
+            {
+              "label": "NFC",
+              "value": "Есть"
+            },
+            {
+              "label": "Навигация",
+              "value": "GPS, ГЛОНАСС"
+            }
           ]
         },
         {
           "group": "Габариты и вес",
           "items": [
-            { "label": "Габариты", "value": "161 × 77,4 × 8,2 мм" },
-            { "label": "Вес", "value": "189 г" }
+            {
+              "label": "Габариты",
+              "value": "161 × 77,4 × 8,2 мм"
+            },
+            {
+              "label": "Вес",
+              "value": "189 г"
+            }
           ]
         },
         {
           "group": "Дополнительные характеристики",
           "items": [
-            { "label": "Сканер отпечатков", "value": "В экранный" },
-            { "label": "Звук", "value": "Стерео" }
+            {
+              "label": "Сканер отпечатков",
+              "value": "В экранный"
+            },
+            {
+              "label": "Звук",
+              "value": "Стерео"
+            }
           ]
         }
       ]
@@ -754,69 +1635,153 @@
         {
           "group": "Основные характеристики",
           "items": [
-            { "label": "Линейка", "value": "Samsung Galaxy Watch8 Ultra" },
-            { "label": "Год выпуска", "value": "2025" },
-            { "label": "Материал корпуса", "value": "Титан" },
-            { "label": "Степень защиты", "value": "IP68, MIL-STD-810H" },
-            { "label": "Совместимость", "value": "Android (Samsung и другие)" }
+            {
+              "label": "Линейка",
+              "value": "Samsung Galaxy Watch8 Ultra"
+            },
+            {
+              "label": "Год выпуска",
+              "value": "2025"
+            },
+            {
+              "label": "Материал корпуса",
+              "value": "Титан"
+            },
+            {
+              "label": "Степень защиты",
+              "value": "IP68, MIL-STD-810H"
+            },
+            {
+              "label": "Совместимость",
+              "value": "Android (Samsung и другие)"
+            }
           ]
         },
         {
           "group": "Процессор",
           "items": [
-            { "label": "Процессор", "value": "Exynos W1000" },
-            { "label": "Количество ядер", "value": "5" },
-            { "label": "Нейронный модуль", "value": "Есть" }
+            {
+              "label": "Процессор",
+              "value": "Exynos W1000"
+            },
+            {
+              "label": "Количество ядер",
+              "value": "5"
+            },
+            {
+              "label": "Нейронный модуль",
+              "value": "Есть"
+            }
           ]
         },
         {
           "group": "Экран",
           "items": [
-            { "label": "Диагональ экрана", "value": "1,5″" },
-            { "label": "Тип экрана", "value": "AMOLED (сапфировое стекло)" },
-            { "label": "Разрешение", "value": "480×480" },
-            { "label": "Частота обновления", "value": "60 Гц" },
-            { "label": "Яркость", "value": "3000 нит" }
+            {
+              "label": "Диагональ экрана",
+              "value": "1,5″"
+            },
+            {
+              "label": "Тип экрана",
+              "value": "AMOLED (сапфировое стекло)"
+            },
+            {
+              "label": "Разрешение",
+              "value": "480×480"
+            },
+            {
+              "label": "Частота обновления",
+              "value": "60 Гц"
+            },
+            {
+              "label": "Яркость",
+              "value": "3000 нит"
+            }
           ]
         },
         {
           "group": "Память",
           "items": [
-            { "label": "ОЗУ", "value": "2 ГБ" },
-            { "label": "Встроенная память", "value": "64 ГБ" }
+            {
+              "label": "ОЗУ",
+              "value": "2 ГБ"
+            },
+            {
+              "label": "Встроенная память",
+              "value": "64 ГБ"
+            }
           ]
         },
         {
           "group": "Питание и разъёмы",
           "items": [
-            { "label": "Аккумулятор", "value": "590 мАч" },
-            { "label": "Зарядка", "value": "Беспроводная 15 Вт" },
-            { "label": "Время работы", "value": "до 100 ч" }
+            {
+              "label": "Аккумулятор",
+              "value": "590 мАч"
+            },
+            {
+              "label": "Зарядка",
+              "value": "Беспроводная 15 Вт"
+            },
+            {
+              "label": "Время работы",
+              "value": "до 100 ч"
+            }
           ]
         },
         {
           "group": "Связь",
           "items": [
-            { "label": "Сотовая связь", "value": "LTE (опционально)" },
-            { "label": "Wi-Fi", "value": "Wi-Fi 6" },
-            { "label": "Bluetooth", "value": "Bluetooth 5.3" },
-            { "label": "NFC", "value": "Есть" },
-            { "label": "Навигация", "value": "GPS, ГЛОНАСС" }
+            {
+              "label": "Сотовая связь",
+              "value": "LTE (опционально)"
+            },
+            {
+              "label": "Wi-Fi",
+              "value": "Wi-Fi 6"
+            },
+            {
+              "label": "Bluetooth",
+              "value": "Bluetooth 5.3"
+            },
+            {
+              "label": "NFC",
+              "value": "Есть"
+            },
+            {
+              "label": "Навигация",
+              "value": "GPS, ГЛОНАСС"
+            }
           ]
         },
         {
           "group": "Габариты и вес",
           "items": [
-            { "label": "Размер корпуса", "value": "47 мм" },
-            { "label": "Габариты", "value": "46,5 × 46,5 × 12,7 мм" },
-            { "label": "Вес", "value": "60,5 г" }
+            {
+              "label": "Размер корпуса",
+              "value": "47 мм"
+            },
+            {
+              "label": "Габариты",
+              "value": "46,5 × 46,5 × 12,7 мм"
+            },
+            {
+              "label": "Вес",
+              "value": "60,5 г"
+            }
           ]
         },
         {
           "group": "Дополнительные характеристики",
           "items": [
-            { "label": "Датчики", "value": "Пульс, SpO₂, ЭКГ, BioActive" },
-            { "label": "Водонепроницаемость", "value": "10 ATM" }
+            {
+              "label": "Датчики",
+              "value": "Пульс, SpO₂, ЭКГ, BioActive"
+            },
+            {
+              "label": "Водонепроницаемость",
+              "value": "10 ATM"
+            }
           ]
         }
       ]
@@ -827,62 +1792,717 @@
         {
           "group": "Основные характеристики",
           "items": [
-            { "label": "Линейка", "value": "Sony PlayStation 5 Slim" },
-            { "label": "Тип", "value": "с дисководом" },
-            { "label": "Год выпуска", "value": "2023" },
-            { "label": "Цвет", "value": "Белый / чёрный" }
+            {
+              "label": "Линейка",
+              "value": "Sony PlayStation 5 Slim"
+            },
+            {
+              "label": "Тип",
+              "value": "с дисководом"
+            },
+            {
+              "label": "Год выпуска",
+              "value": "2023"
+            },
+            {
+              "label": "Цвет",
+              "value": "Белый / чёрный"
+            }
           ]
         },
         {
           "group": "Процессор",
           "items": [
-            { "label": "Процессор", "value": "AMD Ryzen Zen 2 (8 ядер)" },
-            { "label": "Графический процессор", "value": "AMD RDNA 2, 10,28 Тфлопс" }
+            {
+              "label": "Процессор",
+              "value": "AMD Ryzen Zen 2 (8 ядер)"
+            },
+            {
+              "label": "Графический процессор",
+              "value": "AMD RDNA 2, 10,28 Тфлопс"
+            }
           ]
         },
         {
           "group": "Экран",
           "items": [
-            { "label": "Видеовыход", "value": "HDMI 2.1, до 4K 120 Гц" },
-            { "label": "Поддержка HDR", "value": "Есть" }
+            {
+              "label": "Видеовыход",
+              "value": "HDMI 2.1, до 4K 120 Гц"
+            },
+            {
+              "label": "Поддержка HDR",
+              "value": "Есть"
+            }
           ]
         },
         {
           "group": "Память",
           "items": [
-            { "label": "ОЗУ", "value": "16 ГБ GDDR6" },
-            { "label": "Накопитель", "value": "825 ГБ SSD" },
-            { "label": "Слот расширения", "value": "NVMe SSD" }
+            {
+              "label": "ОЗУ",
+              "value": "16 ГБ GDDR6"
+            },
+            {
+              "label": "Накопитель",
+              "value": "825 ГБ SSD"
+            },
+            {
+              "label": "Слот расширения",
+              "value": "NVMe SSD"
+            }
           ]
         },
         {
           "group": "Питание и разъёмы",
           "items": [
-            { "label": "Разъёмы", "value": "USB-C, 2× USB-A, HDMI 2.1, Ethernet" },
-            { "label": "Питание", "value": "Внешний блок питания" }
+            {
+              "label": "Разъёмы",
+              "value": "USB-C, 2× USB-A, HDMI 2.1, Ethernet"
+            },
+            {
+              "label": "Питание",
+              "value": "Внешний блок питания"
+            }
           ]
         },
         {
           "group": "Связь",
           "items": [
-            { "label": "Wi-Fi", "value": "Wi-Fi 6" },
-            { "label": "Bluetooth", "value": "Bluetooth 5.1" },
-            { "label": "Ethernet", "value": "1 Гбит/с" }
+            {
+              "label": "Wi-Fi",
+              "value": "Wi-Fi 6"
+            },
+            {
+              "label": "Bluetooth",
+              "value": "Bluetooth 5.1"
+            },
+            {
+              "label": "Ethernet",
+              "value": "1 Гбит/с"
+            }
           ]
         },
         {
           "group": "Габариты и вес",
           "items": [
-            { "label": "Габариты", "value": "358 × 216 × 96 мм" },
-            { "label": "Вес", "value": "3,2 кг" }
+            {
+              "label": "Габариты",
+              "value": "358 × 216 × 96 мм"
+            },
+            {
+              "label": "Вес",
+              "value": "3,2 кг"
+            }
           ]
         },
         {
           "group": "Дополнительные характеристики",
           "items": [
-            { "label": "Поддержка игр", "value": "PS5 / PS4" },
-            { "label": "Звук", "value": "3D Audio (Tempest)" },
-            { "label": "Контроллер", "value": "DualSense" }
+            {
+              "label": "Поддержка игр",
+              "value": "PS5 / PS4"
+            },
+            {
+              "label": "Звук",
+              "value": "3D Audio (Tempest)"
+            },
+            {
+              "label": "Контроллер",
+              "value": "DualSense"
+            }
+          ]
+        }
+      ]
+    },
+    "apple-airpods-4": {
+      "category": "accessories",
+      "groups": [
+        {
+          "group": "Основные характеристики",
+          "items": [
+            {
+              "label": "Тип",
+              "value": "Наушники"
+            },
+            {
+              "label": "Бренд",
+              "value": "Apple"
+            },
+            {
+              "label": "Совместимость",
+              "value": "Любое устройство с Bluetooth"
+            },
+            {
+              "label": "Подключение",
+              "value": "Bluetooth"
+            }
+          ]
+        }
+      ]
+    },
+    "apple-airpods-4-anc": {
+      "category": "accessories",
+      "groups": [
+        {
+          "group": "Основные характеристики",
+          "items": [
+            {
+              "label": "Тип",
+              "value": "Наушники"
+            },
+            {
+              "label": "Бренд",
+              "value": "Apple"
+            },
+            {
+              "label": "Совместимость",
+              "value": "Любое устройство с Bluetooth"
+            },
+            {
+              "label": "Подключение",
+              "value": "Bluetooth"
+            }
+          ]
+        }
+      ]
+    },
+    "apple-airpods-pro-3": {
+      "category": "accessories",
+      "groups": [
+        {
+          "group": "Основные характеристики",
+          "items": [
+            {
+              "label": "Тип",
+              "value": "Наушники"
+            },
+            {
+              "label": "Бренд",
+              "value": "Apple"
+            },
+            {
+              "label": "Совместимость",
+              "value": "Любое устройство с Bluetooth"
+            },
+            {
+              "label": "Подключение",
+              "value": "Bluetooth"
+            }
+          ]
+        }
+      ]
+    },
+    "apple-airpods-max-2": {
+      "category": "accessories",
+      "groups": [
+        {
+          "group": "Основные характеристики",
+          "items": [
+            {
+              "label": "Тип",
+              "value": "Наушники"
+            },
+            {
+              "label": "Бренд",
+              "value": "Apple"
+            },
+            {
+              "label": "Совместимость",
+              "value": "Любое устройство с Bluetooth"
+            },
+            {
+              "label": "Подключение",
+              "value": "Bluetooth"
+            }
+          ]
+        }
+      ]
+    },
+    "samsung-galaxy-buds-3": {
+      "category": "accessories",
+      "groups": [
+        {
+          "group": "Основные характеристики",
+          "items": [
+            {
+              "label": "Тип",
+              "value": "Наушники"
+            },
+            {
+              "label": "Бренд",
+              "value": "Samsung"
+            },
+            {
+              "label": "Совместимость",
+              "value": "Любое устройство с Bluetooth"
+            },
+            {
+              "label": "Подключение",
+              "value": "Bluetooth"
+            }
+          ]
+        }
+      ]
+    },
+    "samsung-galaxy-buds-3-pro": {
+      "category": "accessories",
+      "groups": [
+        {
+          "group": "Основные характеристики",
+          "items": [
+            {
+              "label": "Тип",
+              "value": "Наушники"
+            },
+            {
+              "label": "Бренд",
+              "value": "Samsung"
+            },
+            {
+              "label": "Совместимость",
+              "value": "Любое устройство с Bluetooth"
+            },
+            {
+              "label": "Подключение",
+              "value": "Bluetooth"
+            }
+          ]
+        }
+      ]
+    },
+    "samsung-galaxy-buds4": {
+      "category": "accessories",
+      "groups": [
+        {
+          "group": "Основные характеристики",
+          "items": [
+            {
+              "label": "Тип",
+              "value": "Наушники"
+            },
+            {
+              "label": "Бренд",
+              "value": "Samsung"
+            },
+            {
+              "label": "Совместимость",
+              "value": "Любое устройство с Bluetooth"
+            },
+            {
+              "label": "Подключение",
+              "value": "Bluetooth"
+            }
+          ]
+        }
+      ]
+    },
+    "samsung-galaxy-buds4-pro": {
+      "category": "accessories",
+      "groups": [
+        {
+          "group": "Основные характеристики",
+          "items": [
+            {
+              "label": "Тип",
+              "value": "Наушники"
+            },
+            {
+              "label": "Бренд",
+              "value": "Samsung"
+            },
+            {
+              "label": "Совместимость",
+              "value": "Любое устройство с Bluetooth"
+            },
+            {
+              "label": "Подключение",
+              "value": "Bluetooth"
+            }
+          ]
+        }
+      ]
+    },
+    "apple-silicone-case-magsafe": {
+      "category": "accessories",
+      "groups": [
+        {
+          "group": "Основные характеристики",
+          "items": [
+            {
+              "label": "Тип",
+              "value": "Чехлы"
+            },
+            {
+              "label": "Бренд",
+              "value": "Apple"
+            },
+            {
+              "label": "Совместимость",
+              "value": "Совместимость уточняется у менеджера"
+            },
+            {
+              "label": "Материал",
+              "value": "Силикон"
+            }
+          ]
+        }
+      ]
+    },
+    "apple-clear-case-magsafe": {
+      "category": "accessories",
+      "groups": [
+        {
+          "group": "Основные характеристики",
+          "items": [
+            {
+              "label": "Тип",
+              "value": "Чехлы"
+            },
+            {
+              "label": "Бренд",
+              "value": "Apple"
+            },
+            {
+              "label": "Совместимость",
+              "value": "Совместимость уточняется у менеджера"
+            },
+            {
+              "label": "Материал",
+              "value": "Прозрачный поликарбонат"
+            }
+          ]
+        }
+      ]
+    },
+    "beats-case-magsafe-camera-control": {
+      "category": "accessories",
+      "groups": [
+        {
+          "group": "Основные характеристики",
+          "items": [
+            {
+              "label": "Тип",
+              "value": "Чехлы"
+            },
+            {
+              "label": "Бренд",
+              "value": "Beats"
+            },
+            {
+              "label": "Совместимость",
+              "value": "Совместимость уточняется у менеджера"
+            },
+            {
+              "label": "Материал",
+              "value": "Прозрачный поликарбонат"
+            }
+          ]
+        }
+      ]
+    },
+    "samsung-silicone-case": {
+      "category": "accessories",
+      "groups": [
+        {
+          "group": "Основные характеристики",
+          "items": [
+            {
+              "label": "Тип",
+              "value": "Чехлы"
+            },
+            {
+              "label": "Бренд",
+              "value": "Samsung"
+            },
+            {
+              "label": "Совместимость",
+              "value": "Совместимость уточняется у менеджера"
+            },
+            {
+              "label": "Материал",
+              "value": "Силикон"
+            }
+          ]
+        }
+      ]
+    },
+    "protective-glass-framed": {
+      "category": "accessories",
+      "groups": [
+        {
+          "group": "Основные характеристики",
+          "items": [
+            {
+              "label": "Тип",
+              "value": "Чехлы"
+            },
+            {
+              "label": "Бренд",
+              "value": "Universal"
+            },
+            {
+              "label": "Совместимость",
+              "value": "Совместимость уточняется у менеджера"
+            },
+            {
+              "label": "Материал",
+              "value": "Закалённое стекло"
+            }
+          ]
+        }
+      ]
+    },
+    "apple-usbc-adapter-20w": {
+      "category": "accessories",
+      "groups": [
+        {
+          "group": "Основные характеристики",
+          "items": [
+            {
+              "label": "Тип",
+              "value": "Зарядки и кабели"
+            },
+            {
+              "label": "Бренд",
+              "value": "Apple"
+            },
+            {
+              "label": "Совместимость",
+              "value": "Устройства с разъёмом USB-C (iPhone, MacBook)"
+            },
+            {
+              "label": "Мощность",
+              "value": "20 Вт"
+            },
+            {
+              "label": "Разъём",
+              "value": "USB-C"
+            }
+          ]
+        }
+      ]
+    },
+    "apple-usbc-adapter-35w-2port": {
+      "category": "accessories",
+      "groups": [
+        {
+          "group": "Основные характеристики",
+          "items": [
+            {
+              "label": "Тип",
+              "value": "Зарядки и кабели"
+            },
+            {
+              "label": "Бренд",
+              "value": "Apple"
+            },
+            {
+              "label": "Совместимость",
+              "value": "Устройства с разъёмом USB-C (iPhone, MacBook)"
+            },
+            {
+              "label": "Мощность",
+              "value": "35 Вт"
+            },
+            {
+              "label": "Разъём",
+              "value": "USB-C"
+            }
+          ]
+        }
+      ]
+    },
+    "apple-magsafe-charger-25w": {
+      "category": "accessories",
+      "groups": [
+        {
+          "group": "Основные характеристики",
+          "items": [
+            {
+              "label": "Тип",
+              "value": "Зарядки и кабели"
+            },
+            {
+              "label": "Бренд",
+              "value": "Apple"
+            },
+            {
+              "label": "Совместимость",
+              "value": "Устройства с разъёмом USB-C (iPhone, MacBook)"
+            },
+            {
+              "label": "Мощность",
+              "value": "25 Вт"
+            },
+            {
+              "label": "Разъём",
+              "value": "USB-C"
+            }
+          ]
+        }
+      ]
+    },
+    "samsung-45w-charger-cable": {
+      "category": "accessories",
+      "groups": [
+        {
+          "group": "Основные характеристики",
+          "items": [
+            {
+              "label": "Тип",
+              "value": "Зарядки и кабели"
+            },
+            {
+              "label": "Бренд",
+              "value": "Samsung"
+            },
+            {
+              "label": "Совместимость",
+              "value": "Устройства с разъёмом USB-C (Samsung)"
+            },
+            {
+              "label": "Мощность",
+              "value": "45 Вт"
+            },
+            {
+              "label": "Разъём",
+              "value": "USB-C"
+            }
+          ]
+        }
+      ]
+    },
+    "samsung-25w-charger-ept2510": {
+      "category": "accessories",
+      "groups": [
+        {
+          "group": "Основные характеристики",
+          "items": [
+            {
+              "label": "Тип",
+              "value": "Зарядки и кабели"
+            },
+            {
+              "label": "Бренд",
+              "value": "Samsung"
+            },
+            {
+              "label": "Совместимость",
+              "value": "Устройства с разъёмом USB-C (Samsung)"
+            },
+            {
+              "label": "Мощность",
+              "value": "25 Вт"
+            },
+            {
+              "label": "Разъём",
+              "value": "USB-C"
+            }
+          ]
+        }
+      ]
+    },
+    "samsung-usbc-cable": {
+      "category": "accessories",
+      "groups": [
+        {
+          "group": "Основные характеристики",
+          "items": [
+            {
+              "label": "Тип",
+              "value": "Зарядки и кабели"
+            },
+            {
+              "label": "Бренд",
+              "value": "Samsung"
+            },
+            {
+              "label": "Совместимость",
+              "value": "Устройства с разъёмом USB-C (Samsung)"
+            },
+            {
+              "label": "Разъём",
+              "value": "USB-C"
+            }
+          ]
+        }
+      ]
+    },
+    "apple-usbc-cable-braided-1m": {
+      "category": "accessories",
+      "groups": [
+        {
+          "group": "Основные характеристики",
+          "items": [
+            {
+              "label": "Тип",
+              "value": "Зарядки и кабели"
+            },
+            {
+              "label": "Бренд",
+              "value": "Apple"
+            },
+            {
+              "label": "Совместимость",
+              "value": "Устройства с разъёмом USB-C (iPhone, MacBook)"
+            },
+            {
+              "label": "Разъём",
+              "value": "USB-C"
+            }
+          ]
+        }
+      ]
+    },
+    "dyson-supersonic-nural-hd16": {
+      "category": "dyson",
+      "groups": [
+        {
+          "group": "Основные характеристики",
+          "items": [
+            {
+              "label": "Тип",
+              "value": "Фен"
+            },
+            {
+              "label": "Бренд",
+              "value": "Dyson"
+            },
+            {
+              "label": "Совместимость",
+              "value": "Dyson Supersonic r Professional (HD18)"
+            },
+            {
+              "label": "Серия",
+              "value": "HD16"
+            }
+          ]
+        }
+      ]
+    },
+    "dyson-supersonic-r-pro-hd18": {
+      "category": "dyson",
+      "groups": [
+        {
+          "group": "Основные характеристики",
+          "items": [
+            {
+              "label": "Тип",
+              "value": "Фен"
+            },
+            {
+              "label": "Бренд",
+              "value": "Dyson"
+            },
+            {
+              "label": "Совместимость",
+              "value": "Dyson Supersonic Nural (HD16)"
+            },
+            {
+              "label": "Серия",
+              "value": "HD18"
+            }
           ]
         }
       ]
