@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-26T10:46:51.922Z",
+  "date": "2026-11-27T16:08:22.347Z",
   "checks": [
     "Homepage JS including deferred desktop Lenis is <=150KB gzip",
     "Hero content is server rendered",
@@ -36,40 +36,40 @@
   "errors": [],
   "metrics": {
     "homepageJS": {
-      "gzipBytesIncludingDeferredDesktopLenis": 18365,
+      "gzipBytesIncludingDeferredDesktopLenis": 28851,
       "files": [
         "/_astro/ClientRouter.astro_astro_type_script_index_0_lang.B1s6EZz0.js",
-        "/_astro/LeadModal.astro_astro_type_script_index_0_lang.DyZW0zZD.js",
-        "/_astro/BaseLayout.astro_astro_type_script_index_0_lang.CqScB8RV.js",
-        "/_astro/motion.BDQLdsmi.js",
-        "/_astro/preload-helper.BlTxHScW.js",
+        "/_astro/LeadModal.astro_astro_type_script_index_0_lang.DuEUCVYN.js",
+        "/_astro/BaseLayout.astro_astro_type_script_index_0_lang.D-rr570_.js",
+        "/_astro/preact-vendor.CZ1Y7y7J.js",
+        "/_astro/favorites.Cc-T6Zlp.js",
         "/_astro/lenis.Bd7gxleh.js"
       ]
     },
     "desktopCLS": 0,
     "scrollFrames": {
-      "count": 116,
+      "count": 121,
       "medianMs": 16.699999999999818,
-      "p95Ms": 33.40000000000009,
-      "maxMs": 66.80000000000018,
+      "p95Ms": 33.30000000000018,
+      "maxMs": 83.30000000000018,
       "over50Ms": 3
     },
     "mobileCLS": 0,
     "trace": {
       "profile": "390x844 touch; 4× CPU; 1.6Mbps down / 750Kbps up; 150ms RTT",
-      "taskCount": 14093,
-      "longTasks": 8,
-      "scrollLongTasks": 1,
-      "longestTaskMs": 146.776
+      "taskCount": 14258,
+      "longTasks": 1,
+      "scrollLongTasks": 0,
+      "longestTaskMs": 101.74
     },
     "lighthouse": {
-      "performance": 100,
+      "performance": 99,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
     "lighthouseCLS": 0,
-    "lighthouseLCP": 1514.266,
-    "lighthouseTBT": 37
+    "lighthouseLCP": 1728.6000000000001,
+    "lighthouseTBT": 136
   }
 }

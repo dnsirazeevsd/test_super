@@ -17,6 +17,18 @@
  * from official manufacturer specs is encoded. Cases / the protective glass have
  * NO exact device model, so their `compatibility` is empty — the UI shows
  * «Совместимость уточняется у менеджера» and they are excluded from cross-sell.
+ *
+ * Image keys note: every `imageKey` below was assigned by OPENING the source
+ * photo and matching its content to the product — several assets/source files
+ * carry content that differs from their file name (see report table), so the
+ * keys intentionally do not always mirror the modelSlug. Two products have no
+ * matching photo at all (Samsung 25W EP-T2510, Samsung USB-C cable) and stay
+ * `imageKey: null` → UI placeholder.
+ *
+ * Color variants note: Apple AirPods Max 2 is ONE product record (same id, URL
+ * and price as before) with a `colorVariants` array — the same per-color fields
+ * (color/colorRu/colorHex/imageKey) that separate color SKUs use. The
+ * configurator expands them client-side; no extra SKUs / stock are invented.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -58,6 +70,7 @@ const items = [
     subcategory: 'headphones', brand: 'Apple',
     modelSlug: 'apple-airpods-4', modelTitle: 'Apple AirPods 4',
     title: 'Apple AirPods 4', price: 12990,
+    imageKey: 'headphones/apple-airpods-4',
     connector: 'Bluetooth', wattage: null, model: null,
     compatibility: APPLE_DEVICES,
   },
@@ -66,6 +79,7 @@ const items = [
     subcategory: 'headphones', brand: 'Apple',
     modelSlug: 'apple-airpods-4-anc', modelTitle: 'Apple AirPods 4 с шумоподавлением (ANC)',
     title: 'Apple AirPods 4 с шумоподавлением (ANC)', price: 14990,
+    imageKey: 'headphones/apple-airpods-4-anc',
     connector: 'Bluetooth', wattage: null, model: null,
     compatibility: APPLE_DEVICES,
   },
@@ -74,6 +88,7 @@ const items = [
     subcategory: 'headphones', brand: 'Apple',
     modelSlug: 'apple-airpods-pro-3', modelTitle: 'Apple AirPods Pro 3 (USB-C)',
     title: 'Apple AirPods Pro 3 (USB-C)', price: 19990,
+    imageKey: 'headphones/apple-airpods-pro-3',
     connector: 'Bluetooth', wattage: null, model: null,
     compatibility: APPLE_DEVICES,
   },
@@ -82,6 +97,14 @@ const items = [
     subcategory: 'headphones', brand: 'Apple',
     modelSlug: 'apple-airpods-max-2', modelTitle: 'Apple AirPods Max 2 (USB-C)',
     title: 'Apple AirPods Max 2 (USB-C)', price: 42990,
+    imageKey: 'headphones/apple-airpods-max-2',
+    // One product record, three colors (same id / URL / price — no extra SKUs).
+    color: 'Black', colorRu: 'Чёрный', colorHex: '#1F2024',
+    colorVariants: [
+      { color: 'Black', colorRu: 'Чёрный', colorHex: '#1F2024', imageKey: 'headphones/apple-airpods-max-2' },
+      { color: 'Orange', colorRu: 'Оранжевый', colorHex: '#E07A45', imageKey: 'headphones/apple-airpods-max-2-orange' },
+      { color: 'Purple', colorRu: 'Фиолетовый', colorHex: '#AA99BB', imageKey: 'headphones/apple-airpods-max-2-purple' },
+    ],
     connector: 'Bluetooth', wattage: null, model: null,
     compatibility: APPLE_DEVICES,
   },
@@ -90,6 +113,7 @@ const items = [
     subcategory: 'headphones', brand: 'Samsung',
     modelSlug: 'samsung-galaxy-buds-3', modelTitle: 'Samsung Galaxy Buds 3',
     title: 'Samsung Galaxy Buds 3', price: 8990,
+    imageKey: 'headphones/samsung-galaxy-buds-3',
     connector: 'Bluetooth', wattage: null, model: null,
     compatibility: SAMSUNG_DEVICES,
   },
@@ -98,6 +122,7 @@ const items = [
     subcategory: 'headphones', brand: 'Samsung',
     modelSlug: 'samsung-galaxy-buds-3-pro', modelTitle: 'Samsung Galaxy Buds 3 Pro',
     title: 'Samsung Galaxy Buds 3 Pro', price: 11990,
+    imageKey: 'headphones/samsung-galaxy-buds-3-pro',
     connector: 'Bluetooth', wattage: null, model: null,
     compatibility: SAMSUNG_DEVICES,
   },
@@ -106,6 +131,7 @@ const items = [
     subcategory: 'headphones', brand: 'Samsung',
     modelSlug: 'samsung-galaxy-buds4', modelTitle: 'Samsung Galaxy Buds4',
     title: 'Samsung Galaxy Buds4', price: 10990,
+    imageKey: 'headphones/samsung-galaxy-buds4',
     connector: 'Bluetooth', wattage: null, model: null,
     compatibility: SAMSUNG_DEVICES,
   },
@@ -114,6 +140,7 @@ const items = [
     subcategory: 'headphones', brand: 'Samsung',
     modelSlug: 'samsung-galaxy-buds4-pro', modelTitle: 'Samsung Galaxy Buds4 Pro',
     title: 'Samsung Galaxy Buds4 Pro', price: 13990,
+    imageKey: 'headphones/samsung-galaxy-buds4-pro',
     connector: 'Bluetooth', wattage: null, model: null,
     compatibility: SAMSUNG_DEVICES,
   },
@@ -124,6 +151,8 @@ const items = [
     subcategory: 'cases', brand: 'Apple',
     modelSlug: 'apple-silicone-case-magsafe', modelTitle: 'Apple Silicone Case с MagSafe',
     title: 'Apple Silicone Case с MagSafe', price: 4990,
+    // Photo content: black Apple-branded case (file apple-clear-case-magsafe.jpg).
+    imageKey: 'accessories/apple-clear-case-magsafe',
     connector: null, wattage: null, model: null,
     compatibility: [],
     material: 'Силикон',
@@ -133,6 +162,8 @@ const items = [
     subcategory: 'cases', brand: 'Apple',
     modelSlug: 'apple-clear-case-magsafe', modelTitle: 'Apple Clear Case с MagSafe',
     title: 'Apple Clear Case с MagSafe', price: 4990,
+    // Photo content: transparent case with MagSafe ring (file samsung-silicone-case.jpg).
+    imageKey: 'accessories/samsung-silicone-case',
     connector: null, wattage: null, model: null,
     compatibility: [],
     material: 'Прозрачный поликарбонат',
@@ -142,6 +173,7 @@ const items = [
     subcategory: 'cases', brand: 'Beats',
     modelSlug: 'beats-case-magsafe-camera-control', modelTitle: 'Beats Case с MagSafe и Camera Control',
     title: 'Beats Case с MagSafe и Camera Control', price: 5490,
+    imageKey: 'accessories/beats-case-magsafe-camera-control',
     connector: null, wattage: null, model: null,
     compatibility: [],
     material: 'Прозрачный поликарбонат',
@@ -151,6 +183,8 @@ const items = [
     subcategory: 'cases', brand: 'Samsung',
     modelSlug: 'samsung-silicone-case', modelTitle: 'Samsung Silicone Case для Galaxy',
     title: 'Samsung Silicone Case для Galaxy', price: 2990,
+    // Photo content: navy Samsung-branded silicone case (file apple-silicone-case-magsafe.jpg).
+    imageKey: 'accessories/apple-silicone-case-magsafe',
     connector: null, wattage: null, model: null,
     compatibility: [],
     material: 'Силикон',
@@ -160,6 +194,8 @@ const items = [
     subcategory: 'cases', brand: 'Universal',
     modelSlug: 'protective-glass-framed', modelTitle: 'Защитное стекло с установочной рамкой',
     title: 'Защитное стекло с установочной рамкой', price: 1490,
+    // Photo content: glass + installation frame (file apple-usbc-adapter-20w.jpg).
+    imageKey: 'accessories/apple-usbc-adapter-20w',
     connector: null, wattage: null, model: null,
     compatibility: [],
     material: 'Закалённое стекло',
@@ -171,6 +207,8 @@ const items = [
     subcategory: 'chargers', brand: 'Apple',
     modelSlug: 'apple-usbc-adapter-20w', modelTitle: 'Адаптер питания Apple USB-C 20W',
     title: 'Адаптер питания Apple USB-C 20W', price: 2490,
+    // Photo content: Apple adapter printed «20W USB-C Power Adapter» (file protective-glass-framed.jpg).
+    imageKey: 'accessories/protective-glass-framed',
     connector: 'USB-C', wattage: 20, model: null,
     compatibility: APPLE_DEVICES,
   },
@@ -179,6 +217,7 @@ const items = [
     subcategory: 'chargers', brand: 'Apple',
     modelSlug: 'apple-usbc-adapter-35w-2port', modelTitle: 'Адаптер питания Apple USB-C 35W (2 порта)',
     title: 'Адаптер питания Apple USB-C 35W (2 порта)', price: 5490,
+    imageKey: 'accessories/apple-usbc-adapter-35w-2port',
     connector: 'USB-C', wattage: 35, model: null,
     compatibility: APPLE_DEVICES,
   },
@@ -187,6 +226,7 @@ const items = [
     subcategory: 'chargers', brand: 'Apple',
     modelSlug: 'apple-magsafe-charger-25w', modelTitle: 'Беспроводное зарядное устройство Apple MagSafe Charger (25W)',
     title: 'Беспроводное зарядное устройство Apple MagSafe Charger (25W)', price: 3990,
+    imageKey: 'accessories/apple-magsafe-charger-25w',
     connector: 'USB-C', wattage: 25, model: null,
     compatibility: IPHONE_DEVICES, // MagSafe puck is iPhone-only
   },
@@ -195,6 +235,7 @@ const items = [
     subcategory: 'chargers', brand: 'Samsung',
     modelSlug: 'samsung-45w-charger-cable', modelTitle: 'Сетевое зарядное устройство Samsung 45W USB-C + кабель',
     title: 'Сетевое зарядное устройство Samsung 45W USB-C + кабель', price: 3690,
+    imageKey: 'accessories/samsung-45w-charger-cable',
     connector: 'USB-C', wattage: 45, model: null,
     compatibility: SAMSUNG_DEVICES,
   },
@@ -219,6 +260,7 @@ const items = [
     subcategory: 'chargers', brand: 'Apple',
     modelSlug: 'apple-usbc-cable-braided-1m', modelTitle: 'Кабель Apple USB-C (плетёный, 1 м)',
     title: 'Кабель Apple USB-C (плетёный, 1 м)', price: 2190,
+    imageKey: 'accessories/apple-usbc-cable-braided-1m',
     connector: 'USB-C', wattage: null, model: null,
     compatibility: APPLE_DEVICES,
   },
@@ -229,6 +271,7 @@ const items = [
     subcategory: 'hair-dryer', brand: 'Dyson',
     modelSlug: 'dyson-supersonic-nural-hd16', modelTitle: 'Фен Dyson Supersonic Nural (HD16)',
     title: 'Фен Dyson Supersonic Nural (HD16)', price: 34990,
+    imageKey: 'accessories/dyson-supersonic-nural-hd16',
     connector: null, wattage: null, model: 'HD16',
     compatibility: ['dyson-supersonic-r-pro-hd18'],
   },
@@ -237,6 +280,7 @@ const items = [
     subcategory: 'hair-dryer', brand: 'Dyson',
     modelSlug: 'dyson-supersonic-r-pro-hd18', modelTitle: 'Фен Dyson Supersonic r Professional (HD18)',
     title: 'Фен Dyson Supersonic r Professional (HD18)', price: 32990,
+    imageKey: 'accessories/dyson-supersonic-r-pro-hd18',
     connector: null, wattage: null, model: 'HD18',
     compatibility: ['dyson-supersonic-nural-hd16'],
   },
@@ -276,12 +320,13 @@ function buildProduct(it) {
     currency: 'RUB',
     storage: null,
     storageSlug: null,
-    color: null,
-    colorRu: null,
-    colorHex: null,
+    color: it.color ?? null,
+    colorRu: it.colorRu ?? null,
+    colorHex: it.colorHex ?? null,
+    ...(it.colorVariants ? { colorVariants: it.colorVariants } : {}),
     sim: null,
     simSlug: null,
-    imageKey: null,
+    imageKey: it.imageKey ?? null,
     isTemporaryPhoto: false,
     inStock: true,
     status: 'Новый, запечатанный',

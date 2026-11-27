@@ -84,10 +84,13 @@ export const SUMMARY_FIELDS = {
     { label: 'Графический процессор', specLabel: 'Графический процессор' },
   ],
   // Accessories & Dyson adapt the four-field summary to non-phone attributes.
+  // Цвет appears only for items that actually carry a color (e.g. AirPods Max 2);
+  // colorless accessories simply drop the row.
   accessories: [
     { label: 'Серия', variant: 'series' },
     { label: 'Тип', variant: 'subcategory' },
     { label: 'Бренд', variant: 'brand' },
+    { label: 'Цвет', variant: 'color' },
     { label: 'Совместимость', variant: 'compatibility' },
   ],
   dyson: [
