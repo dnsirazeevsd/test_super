@@ -249,6 +249,226 @@
     "webpSrcset": "/images/products/macbook/macbook_neo_citrus-400w.webp 400w, /images/products/macbook/macbook_neo_citrus-800w.webp 800w, /images/products/macbook/macbook_neo_citrus-1200w.webp 1200w",
     "src": "/images/products/macbook/macbook_neo_citrus-1200w.webp"
   },
+  "headphones/apple-airpods-4-anc": {
+    "key": "headphones/apple-airpods-4-anc",
+    "original": "/assets/source/headphones/apple-airpods-4-anc.png",
+    "width": 1200,
+    "height": 1500,
+    "aspectRatio": 0.8,
+    "avifSrcset": "/images/products/headphones/apple-airpods-4-anc-400w.avif 400w, /images/products/headphones/apple-airpods-4-anc-800w.avif 800w, /images/products/headphones/apple-airpods-4-anc-1200w.avif 1200w",
+    "webpSrcset": "/images/products/headphones/apple-airpods-4-anc-400w.webp 400w, /images/products/headphones/apple-airpods-4-anc-800w.webp 800w, /images/products/headphones/apple-airpods-4-anc-1200w.webp 1200w",
+    "src": "/images/products/headphones/apple-airpods-4-anc-1200w.webp"
+  },
+  "headphones/apple-airpods-4": {
+    "key": "headphones/apple-airpods-4",
+    "original": "/assets/source/headphones/apple-airpods-4.png",
+    "width": 1200,
+    "height": 1500,
+    "aspectRatio": 0.8,
+    "avifSrcset": "/images/products/headphones/apple-airpods-4-400w.avif 400w, /images/products/headphones/apple-airpods-4-800w.avif 800w, /images/products/headphones/apple-airpods-4-1200w.avif 1200w",
+    "webpSrcset": "/images/products/headphones/apple-airpods-4-400w.webp 400w, /images/products/headphones/apple-airpods-4-800w.webp 800w, /images/products/headphones/apple-airpods-4-1200w.webp 1200w",
+    "src": "/images/products/headphones/apple-airpods-4-1200w.webp"
+  },
+  "headphones/apple-airpods-max-2-orange": {
+    "key": "headphones/apple-airpods-max-2-orange",
+    "original": "/assets/source/headphones/apple-airpods-max-2-orange.png",
+    "width": 1200,
+    "height": 1500,
+    "aspectRatio": 0.8,
+    "avifSrcset": "/images/products/headphones/apple-airpods-max-2-orange-400w.avif 400w, /images/products/headphones/apple-airpods-max-2-orange-800w.avif 800w, /images/products/headphones/apple-airpods-max-2-orange-1200w.avif 1200w",
+    "webpSrcset": "/images/products/headphones/apple-airpods-max-2-orange-400w.webp 400w, /images/products/headphones/apple-airpods-max-2-orange-800w.webp 800w, /images/products/headphones/apple-airpods-max-2-orange-1200w.webp 1200w",
+    "src": "/images/products/headphones/apple-airpods-max-2-orange-1200w.webp"
+  },
+  "headphones/apple-airpods-max-2-purple": {
+    "key": "headphones/apple-airpods-max-2-purple",
+    "original": "/assets/source/headphones/apple-airpods-max-2-purple.png",
+    "width": 1200,
+    "height": 1500,
+    "aspectRatio": 0.8,
+    "avifSrcset": "/images/products/headphones/apple-airpods-max-2-purple-400w.avif 400w, /images/products/headphones/apple-airpods-max-2-purple-800w.avif 800w, /images/products/headphones/apple-airpods-max-2-purple-1200w.avif 1200w",
+    "webpSrcset": "/images/products/headphones/apple-airpods-max-2-purple-400w.webp 400w, /images/products/headphones/apple-airpods-max-2-purple-800w.webp 800w, /images/products/headphones/apple-airpods-max-2-purple-1200w.webp 1200w",
+    "src": "/images/products/headphones/apple-airpods-max-2-purple-1200w.webp"
+  },
+  "headphones/apple-airpods-max-2": {
+    "key": "headphones/apple-airpods-max-2",
+    "original": "/assets/source/headphones/apple-airpods-max-2.png",
+    "width": 1200,
+    "height": 1500,
+    "aspectRatio": 0.8,
+    "avifSrcset": "/images/products/headphones/apple-airpods-max-2-400w.avif 400w, /images/products/headphones/apple-airpods-max-2-800w.avif 800w, /images/products/headphones/apple-airpods-max-2-1200w.avif 1200w",
+    "webpSrcset": "/images/products/headphones/apple-airpods-max-2-400w.webp 400w, /images/products/headphones/apple-airpods-max-2-800w.webp 800w, /images/products/headphones/apple-airpods-max-2-1200w.webp 1200w",
+    "src": "/images/products/headphones/apple-airpods-max-2-1200w.webp"
+  },
+  "headphones/apple-airpods-pro-3": {
+    "key": "headphones/apple-airpods-pro-3",
+    "original": "/assets/source/headphones/apple-airpods-pro-3.png",
+    "width": 1200,
+    "height": 1500,
+    "aspectRatio": 0.8,
+    "avifSrcset": "/images/products/headphones/apple-airpods-pro-3-400w.avif 400w, /images/products/headphones/apple-airpods-pro-3-800w.avif 800w, /images/products/headphones/apple-airpods-pro-3-1200w.avif 1200w",
+    "webpSrcset": "/images/products/headphones/apple-airpods-pro-3-400w.webp 400w, /images/products/headphones/apple-airpods-pro-3-800w.webp 800w, /images/products/headphones/apple-airpods-pro-3-1200w.webp 1200w",
+    "src": "/images/products/headphones/apple-airpods-pro-3-1200w.webp"
+  },
+  "headphones/samsung-galaxy-buds-3-pro": {
+    "key": "headphones/samsung-galaxy-buds-3-pro",
+    "original": "/assets/source/headphones/samsung-galaxy-buds-3-pro.png",
+    "width": 1200,
+    "height": 1500,
+    "aspectRatio": 0.8,
+    "avifSrcset": "/images/products/headphones/samsung-galaxy-buds-3-pro-400w.avif 400w, /images/products/headphones/samsung-galaxy-buds-3-pro-800w.avif 800w, /images/products/headphones/samsung-galaxy-buds-3-pro-1200w.avif 1200w",
+    "webpSrcset": "/images/products/headphones/samsung-galaxy-buds-3-pro-400w.webp 400w, /images/products/headphones/samsung-galaxy-buds-3-pro-800w.webp 800w, /images/products/headphones/samsung-galaxy-buds-3-pro-1200w.webp 1200w",
+    "src": "/images/products/headphones/samsung-galaxy-buds-3-pro-1200w.webp"
+  },
+  "headphones/samsung-galaxy-buds-3": {
+    "key": "headphones/samsung-galaxy-buds-3",
+    "original": "/assets/source/headphones/samsung-galaxy-buds-3.png",
+    "width": 1200,
+    "height": 1500,
+    "aspectRatio": 0.8,
+    "avifSrcset": "/images/products/headphones/samsung-galaxy-buds-3-400w.avif 400w, /images/products/headphones/samsung-galaxy-buds-3-800w.avif 800w, /images/products/headphones/samsung-galaxy-buds-3-1200w.avif 1200w",
+    "webpSrcset": "/images/products/headphones/samsung-galaxy-buds-3-400w.webp 400w, /images/products/headphones/samsung-galaxy-buds-3-800w.webp 800w, /images/products/headphones/samsung-galaxy-buds-3-1200w.webp 1200w",
+    "src": "/images/products/headphones/samsung-galaxy-buds-3-1200w.webp"
+  },
+  "headphones/samsung-galaxy-buds4-pro": {
+    "key": "headphones/samsung-galaxy-buds4-pro",
+    "original": "/assets/source/headphones/samsung-galaxy-buds4-pro.png",
+    "width": 1200,
+    "height": 1500,
+    "aspectRatio": 0.8,
+    "avifSrcset": "/images/products/headphones/samsung-galaxy-buds4-pro-400w.avif 400w, /images/products/headphones/samsung-galaxy-buds4-pro-800w.avif 800w, /images/products/headphones/samsung-galaxy-buds4-pro-1200w.avif 1200w",
+    "webpSrcset": "/images/products/headphones/samsung-galaxy-buds4-pro-400w.webp 400w, /images/products/headphones/samsung-galaxy-buds4-pro-800w.webp 800w, /images/products/headphones/samsung-galaxy-buds4-pro-1200w.webp 1200w",
+    "src": "/images/products/headphones/samsung-galaxy-buds4-pro-1200w.webp"
+  },
+  "headphones/samsung-galaxy-buds4": {
+    "key": "headphones/samsung-galaxy-buds4",
+    "original": "/assets/source/headphones/samsung-galaxy-buds4.png",
+    "width": 1200,
+    "height": 1500,
+    "aspectRatio": 0.8,
+    "avifSrcset": "/images/products/headphones/samsung-galaxy-buds4-400w.avif 400w, /images/products/headphones/samsung-galaxy-buds4-800w.avif 800w, /images/products/headphones/samsung-galaxy-buds4-1200w.avif 1200w",
+    "webpSrcset": "/images/products/headphones/samsung-galaxy-buds4-400w.webp 400w, /images/products/headphones/samsung-galaxy-buds4-800w.webp 800w, /images/products/headphones/samsung-galaxy-buds4-1200w.webp 1200w",
+    "src": "/images/products/headphones/samsung-galaxy-buds4-1200w.webp"
+  },
+  "accessories/apple-clear-case-magsafe": {
+    "key": "accessories/apple-clear-case-magsafe",
+    "original": "/assets/source/accessories/apple-clear-case-magsafe.jpg",
+    "width": 800,
+    "height": 800,
+    "aspectRatio": 1,
+    "avifSrcset": "/images/products/accessories/apple-clear-case-magsafe-400w.avif 400w, /images/products/accessories/apple-clear-case-magsafe-800w.avif 800w",
+    "webpSrcset": "/images/products/accessories/apple-clear-case-magsafe-400w.webp 400w, /images/products/accessories/apple-clear-case-magsafe-800w.webp 800w",
+    "src": "/images/products/accessories/apple-clear-case-magsafe-800w.webp"
+  },
+  "accessories/apple-magsafe-charger-25w": {
+    "key": "accessories/apple-magsafe-charger-25w",
+    "original": "/assets/source/accessories/apple-magsafe-charger-25w.jpg",
+    "width": 800,
+    "height": 800,
+    "aspectRatio": 1,
+    "avifSrcset": "/images/products/accessories/apple-magsafe-charger-25w-400w.avif 400w, /images/products/accessories/apple-magsafe-charger-25w-800w.avif 800w",
+    "webpSrcset": "/images/products/accessories/apple-magsafe-charger-25w-400w.webp 400w, /images/products/accessories/apple-magsafe-charger-25w-800w.webp 800w",
+    "src": "/images/products/accessories/apple-magsafe-charger-25w-800w.webp"
+  },
+  "accessories/apple-silicone-case-magsafe": {
+    "key": "accessories/apple-silicone-case-magsafe",
+    "original": "/assets/source/accessories/apple-silicone-case-magsafe.jpg",
+    "width": 800,
+    "height": 800,
+    "aspectRatio": 1,
+    "avifSrcset": "/images/products/accessories/apple-silicone-case-magsafe-400w.avif 400w, /images/products/accessories/apple-silicone-case-magsafe-800w.avif 800w",
+    "webpSrcset": "/images/products/accessories/apple-silicone-case-magsafe-400w.webp 400w, /images/products/accessories/apple-silicone-case-magsafe-800w.webp 800w",
+    "src": "/images/products/accessories/apple-silicone-case-magsafe-800w.webp"
+  },
+  "accessories/apple-usbc-adapter-20w": {
+    "key": "accessories/apple-usbc-adapter-20w",
+    "original": "/assets/source/accessories/apple-usbc-adapter-20w.jpg",
+    "width": 800,
+    "height": 800,
+    "aspectRatio": 1,
+    "avifSrcset": "/images/products/accessories/apple-usbc-adapter-20w-400w.avif 400w, /images/products/accessories/apple-usbc-adapter-20w-800w.avif 800w",
+    "webpSrcset": "/images/products/accessories/apple-usbc-adapter-20w-400w.webp 400w, /images/products/accessories/apple-usbc-adapter-20w-800w.webp 800w",
+    "src": "/images/products/accessories/apple-usbc-adapter-20w-800w.webp"
+  },
+  "accessories/apple-usbc-adapter-35w-2port": {
+    "key": "accessories/apple-usbc-adapter-35w-2port",
+    "original": "/assets/source/accessories/apple-usbc-adapter-35w-2port.jpg",
+    "width": 800,
+    "height": 800,
+    "aspectRatio": 1,
+    "avifSrcset": "/images/products/accessories/apple-usbc-adapter-35w-2port-400w.avif 400w, /images/products/accessories/apple-usbc-adapter-35w-2port-800w.avif 800w",
+    "webpSrcset": "/images/products/accessories/apple-usbc-adapter-35w-2port-400w.webp 400w, /images/products/accessories/apple-usbc-adapter-35w-2port-800w.webp 800w",
+    "src": "/images/products/accessories/apple-usbc-adapter-35w-2port-800w.webp"
+  },
+  "accessories/apple-usbc-cable-braided-1m": {
+    "key": "accessories/apple-usbc-cable-braided-1m",
+    "original": "/assets/source/accessories/apple-usbc-cable-braided-1m.jpg",
+    "width": 800,
+    "height": 589,
+    "aspectRatio": 1.3575,
+    "avifSrcset": "/images/products/accessories/apple-usbc-cable-braided-1m-400w.avif 400w, /images/products/accessories/apple-usbc-cable-braided-1m-800w.avif 800w",
+    "webpSrcset": "/images/products/accessories/apple-usbc-cable-braided-1m-400w.webp 400w, /images/products/accessories/apple-usbc-cable-braided-1m-800w.webp 800w",
+    "src": "/images/products/accessories/apple-usbc-cable-braided-1m-800w.webp"
+  },
+  "accessories/beats-case-magsafe-camera-control": {
+    "key": "accessories/beats-case-magsafe-camera-control",
+    "original": "/assets/source/accessories/beats-case-magsafe-camera-control.jpg",
+    "width": 800,
+    "height": 800,
+    "aspectRatio": 1,
+    "avifSrcset": "/images/products/accessories/beats-case-magsafe-camera-control-400w.avif 400w, /images/products/accessories/beats-case-magsafe-camera-control-800w.avif 800w",
+    "webpSrcset": "/images/products/accessories/beats-case-magsafe-camera-control-400w.webp 400w, /images/products/accessories/beats-case-magsafe-camera-control-800w.webp 800w",
+    "src": "/images/products/accessories/beats-case-magsafe-camera-control-800w.webp"
+  },
+  "accessories/dyson-supersonic-nural-hd16": {
+    "key": "accessories/dyson-supersonic-nural-hd16",
+    "original": "/assets/source/accessories/dyson-supersonic-nural-hd16.webp",
+    "width": 800,
+    "height": 800,
+    "aspectRatio": 1,
+    "avifSrcset": "/images/products/accessories/dyson-supersonic-nural-hd16-400w.avif 400w, /images/products/accessories/dyson-supersonic-nural-hd16-800w.avif 800w",
+    "webpSrcset": "/images/products/accessories/dyson-supersonic-nural-hd16-400w.webp 400w, /images/products/accessories/dyson-supersonic-nural-hd16-800w.webp 800w",
+    "src": "/images/products/accessories/dyson-supersonic-nural-hd16-800w.webp"
+  },
+  "accessories/dyson-supersonic-r-pro-hd18": {
+    "key": "accessories/dyson-supersonic-r-pro-hd18",
+    "original": "/assets/source/accessories/dyson-supersonic-r-pro-hd18.webp",
+    "width": 1200,
+    "height": 1200,
+    "aspectRatio": 1,
+    "avifSrcset": "/images/products/accessories/dyson-supersonic-r-pro-hd18-400w.avif 400w, /images/products/accessories/dyson-supersonic-r-pro-hd18-800w.avif 800w, /images/products/accessories/dyson-supersonic-r-pro-hd18-1200w.avif 1200w",
+    "webpSrcset": "/images/products/accessories/dyson-supersonic-r-pro-hd18-400w.webp 400w, /images/products/accessories/dyson-supersonic-r-pro-hd18-800w.webp 800w, /images/products/accessories/dyson-supersonic-r-pro-hd18-1200w.webp 1200w",
+    "src": "/images/products/accessories/dyson-supersonic-r-pro-hd18-1200w.webp"
+  },
+  "accessories/protective-glass-framed": {
+    "key": "accessories/protective-glass-framed",
+    "original": "/assets/source/accessories/protective-glass-framed.jpg",
+    "width": 800,
+    "height": 800,
+    "aspectRatio": 1,
+    "avifSrcset": "/images/products/accessories/protective-glass-framed-400w.avif 400w, /images/products/accessories/protective-glass-framed-800w.avif 800w",
+    "webpSrcset": "/images/products/accessories/protective-glass-framed-400w.webp 400w, /images/products/accessories/protective-glass-framed-800w.webp 800w",
+    "src": "/images/products/accessories/protective-glass-framed-800w.webp"
+  },
+  "accessories/samsung-45w-charger-cable": {
+    "key": "accessories/samsung-45w-charger-cable",
+    "original": "/assets/source/accessories/samsung-45w-charger-cable.webp",
+    "width": 1200,
+    "height": 1200,
+    "aspectRatio": 1,
+    "avifSrcset": "/images/products/accessories/samsung-45w-charger-cable-400w.avif 400w, /images/products/accessories/samsung-45w-charger-cable-800w.avif 800w, /images/products/accessories/samsung-45w-charger-cable-1200w.avif 1200w",
+    "webpSrcset": "/images/products/accessories/samsung-45w-charger-cable-400w.webp 400w, /images/products/accessories/samsung-45w-charger-cable-800w.webp 800w, /images/products/accessories/samsung-45w-charger-cable-1200w.webp 1200w",
+    "src": "/images/products/accessories/samsung-45w-charger-cable-1200w.webp"
+  },
+  "accessories/samsung-silicone-case": {
+    "key": "accessories/samsung-silicone-case",
+    "original": "/assets/source/accessories/samsung-silicone-case.jpg",
+    "width": 800,
+    "height": 800,
+    "aspectRatio": 1,
+    "avifSrcset": "/images/products/accessories/samsung-silicone-case-400w.avif 400w, /images/products/accessories/samsung-silicone-case-800w.avif 800w",
+    "webpSrcset": "/images/products/accessories/samsung-silicone-case-400w.webp 400w, /images/products/accessories/samsung-silicone-case-800w.webp 800w",
+    "src": "/images/products/accessories/samsung-silicone-case-800w.webp"
+  },
   "other-products/sony-ps5-slim-disc-f7": {
     "key": "other-products/sony-ps5-slim-disc-f7",
     "original": "/assets/source/other-products/sony-ps5-slim-disc-f7.png",
